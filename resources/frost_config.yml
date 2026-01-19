@@ -1,0 +1,18 @@
+time_precision: MSECS
+logging_level: INFO
+reactors:
+  frost_bus:
+    logging_level: WARNING
+    parameters:
+      data_model_path: "resources/data_model/frost_bus.yml"
+    reactors:
+      message_filter:
+        logging_level: WARNING
+  hello:
+    logging_level: INFO
+    parameters:
+      data_model_path: "resources/data_model/hello.yml"
+    reactors:
+      message_filter:
+        logging_level: INFO
+  

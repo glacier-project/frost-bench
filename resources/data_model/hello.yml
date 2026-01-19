@@ -1,0 +1,65 @@
+name: "hello" 
+root:
+  !!FolderNode
+  name: "Example Folder"
+  description: ""
+  children:
+    - !!FolderNode
+      name: "Subfolder"
+      description: "A subfolder example containing various variable types"
+      children:
+      - !!NumericalVariableNode
+        name: "example_numerical"
+        description: "An example numerical variable"
+        measure_unit: "NoneMeasureUnits.NONE"
+        initial_value: 42
+      - !!StringVariableNode
+        name: "example_string"
+        description: "An example string variable"
+        initial_value: "Hello, Frost!"
+      - !!BooleanVariableNode
+        name: "example_boolean"
+        description: "An example boolean variable"
+        initial_value: true
+    - !!FolderNode
+      name: "NestedFolder"
+      description: "A folder containing an object variable"
+      children:
+        - !!ObjectVariableNode
+          name: "example_object"
+          description: "An example object variable"
+          properties:
+            - !!NumericalVariableNode
+              name: "attr1"
+              description: "First attribute of the object"
+              measure_unit: "NoneMeasureUnits.NONE"
+              initial_value: 10
+            - !!StringVariableNode
+              name: "attr2"
+              description: "Second attribute of the object"
+              initial_value: "Attribute String"
+            - !!BooleanVariableNode
+              name: "attr3"
+              description: "Third attribute of the object"
+              initial_value: false
+    - !!FolderNode
+      name: "Methods"
+      description: "A folder containing method definitions"
+      children:
+        - !!MethodNode
+          name: "example_method"
+          description: "An example method that takes an integer and a string, returns an integer"
+          parameters:
+            - !!NumericalVariableNode
+              name: "param1"
+              description: "An integer parameter"
+              measure_unit: "NoneMeasureUnits.NONE"
+            - !!StringVariableNode
+              name: "param2"
+              description: "A string parameter"   
+              initial_value: "Hello"
+          returns:
+            - !!NumericalVariableNode
+              name: "result"
+              description: "Result of the example method"
+              measure_unit: "NoneMeasureUnits.NONE"
