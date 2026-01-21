@@ -1,0 +1,22 @@
+target Python{
+    fast: false,
+    timeout: 1800 s,
+}
+
+import MetaConveyor from "../../../ice-frost/src/MetaConveyor.lf";
+import Scheduler from "Scheduler.lf";
+import FrostBus from "../../../ice-frost/frost/src/lib/FrostBus.lf";
+
+preamble{=
+import uuid
+from frost import *
+=}
+
+main reactor{
+    conveyor = new MetaConveyor(name="conveyor")
+    scheduler = new Scheduler(name="scheduler", type="real")
+    bus = new FrostBus(name="frost_bus", width = 2)
+
+    conveyor.channel_out, scheduler.channel_out -> bus.channel_in after 0
+    bus.channel_out -> conveyor.channel_in, scheduler.channel_in after 0
+}

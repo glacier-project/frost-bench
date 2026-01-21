@@ -1,2 +1,4 @@
-typing_extensions
-git+https://github.com/esd-univr/machine-data-model.git@dev
+networkx==3.6.1
+git+https://github.com/glacier-project/frost-planner.git@develop
+git+https://github.com/glacier-project/machine-data-model.git@feature/opcua-fix
+fmpy==0.3.26

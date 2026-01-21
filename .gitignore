@@ -173,3 +173,7 @@ bin/
 Lingo.lock
 *.csv
 *.tex
+.envrc
+cert.selfsigned.der
+private.selfsigned.pem
+results/

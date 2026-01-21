@@ -1,0 +1,56 @@
+time_precision: MSECS
+logging_level: ERROR
+reactors:
+  frost_bus:
+    logging_level: ERROR
+    parameters:
+      data_model_path: "resource/data-model/bus.yml"
+  conveyor:
+    logging_level: ERROR
+    parameters:
+      data_model_path: "resource/data-model/conveyor.yml"
+      metric: "DistanceMetric"
+    reactors:
+      conveyor_belt:
+        reactors:
+          Segment_1:
+            parameters:
+              segment_time: 12700
+          Segment_2:
+            parameters:
+              segment_time: 20200            
+          Segment_3:
+            parameters:
+              segment_time: 13250
+          Segment_4:
+            parameters:
+              segment_time: 4800
+          Segment_5:
+            parameters:
+              segment_time: 6900
+          Segment_6:
+            parameters:
+              segment_time: 14500
+          Segment_7:
+            parameters:
+              segment_time: 20200
+          Segment_8:
+            parameters:
+              segment_time: 12700
+          EM:
+            parameters:
+              mutex_time: 2500
+          HB: 
+            parameters:
+              interchange_time: 4800 
+  scheduler:
+    logging_level: ERROR
+    parameters:
+      data_model_path: "resource/data-model/scheduler.yml"
+      # scheduling_instance: "resource/instance/instance_medium.json"
+      task_mapping: 
+        ToWarehouseAndBack: /Scheduler/ToWarehouseAndBack
+        ToQcAndBack: /Scheduler/ToQcAndBack
+        ToRbtcAndBack: /Scheduler/ToRbtcAndBack
+        ToMillAndBack: /Scheduler/ToMillAndBack
+        WaitPalletAtSegment: /Scheduler/WaitPalletAtSegment

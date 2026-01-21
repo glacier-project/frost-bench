@@ -1,0 +1,22 @@
+target Python{
+    fast: true,
+    timeout: 1800 s,
+}
+
+import CellConveyor from "../../../ice-frost/src/CellConveyor.lf";
+import Scheduler from "Scheduler.lf";
+import FrostBus from "../../../ice-frost/frost/src/lib/FrostBus.lf";
+
+preamble{=
+import uuid
+from frost import *
+=}
+
+main reactor{
+    conveyor = new CellConveyor(name="conveyor")
+    scheduler = new Scheduler(name="scheduler")
+    bus = new FrostBus(name="frost_bus", width = 2)
+
+    conveyor.channel_out, scheduler.channel_out -> bus.channel_in after 0
+    bus.channel_out -> conveyor.channel_in, scheduler.channel_in after 0
+}

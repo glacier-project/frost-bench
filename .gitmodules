@@ -1,0 +1,4 @@
+[submodule "ice-frost"]
+	path = ice-frost
+	url = git@github.com:glacier-project/ice-frost.git
+	branch = feature/opcua-conveyor

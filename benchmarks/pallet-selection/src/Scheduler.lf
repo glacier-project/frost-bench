@@ -1,0 +1,51 @@
+target Python{
+    files:[
+        "python_utils/pallet_distance.py",
+        "python_utils/gen_instances.py",
+    ]
+}
+
+import FrostScheduler from "../../../ice-frost/frost/src/lib/scheduler/FrostScheduler.lf";
+
+preamble{=
+import uuid
+from frost import *
+from statistics import mean
+
+from frost_planner.generator.instance_generator import load_instance_from_json
+from frost_planner.solver.dummy_solver import DummySolver
+from frost_planner.executor.static_executor import StaticExecutor
+from frost_planner.core.base import TaskStatus, Task, Job, SchedulingInstance, Machine
+from pallet_distance import PalletDistanceMetric, PalletPosition, get_conveyor_position
+from gen_instances import gen_wh_job, gen_qc_job, gen_rbtc_job, gen_mill_job 
+
+OUTPUT_DIR = os.getenv("OUTPUT_DIR")
+METRIC = os.getenv("METRIC")
+INSTANCE = os.getenv("INSTANCE")
+
+# Override config parameters 
+reactors_config = FROST_CONFIG["reactors"]
+reactors_config["conveyor"]["parameters"]["metric"] = METRIC
+reactors_config["scheduler"]["parameters"]["scheduling_instance"] = INSTANCE
+=}
+
+reactor Scheduler(type="sim") extends FrostScheduler{
+
+    reaction(shutdown){=
+        schedule = self._executor.get_current_schedule()
+        task_durations = [
+            task.end_time - task.start_time
+            for task in schedule.get_tasks()
+        ]
+        self.logger.error(f"Mean task duration: {mean(task_durations)} s")
+
+        # Save schedule in the results folder with a unique name
+        instance_name = os.path.basename(INSTANCE).replace(".json", "")
+        output_file = f"{OUTPUT_DIR}/{self.type}_{instance_name}_{METRIC}_{uuid.uuid4().hex}.json"
+        
+        os.makedirs(OUTPUT_DIR, exist_ok=True)
+        with open(output_file, "w") as f:
+            f.write(schedule.model_dump_json(indent=2))
+        self.logger.error(f"Schedule saved to {output_file}")
+    =}
+}
