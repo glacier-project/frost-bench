@@ -1,115 +1,364 @@
-#!/usr/bin/env python3
+"""Plot task duration distributions from simulation result files.
+
+This module provides functionality to visualize and compare task execution times
+across different simulation runs and metrics (e.g., ID, DISTANCE, RANDOM).
 """
-Compare task durations between two simulation result files.
-"""
+
 import argparse
 import json
+import os
+import re
 from collections import defaultdict
+from pathlib import Path
+
 import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.patches import Patch
+
+# Configure matplotlib style
+plt.style.use("seaborn-v0_8-whitegrid")
+plt.rcParams.update(
+    {
+        "font.family": "sans-serif",
+        "font.size": 11,
+        "axes.titlesize": 13,
+        "axes.titleweight": "bold",
+        "axes.labelsize": 11,
+        "xtick.labelsize": 9,
+        "ytick.labelsize": 10,
+        "figure.titlesize": 14,
+        "figure.titleweight": "bold",
+    }
+)
+
+# Constants
+DEFAULT_METRICS = ["ID", "DISTANCE", "RANDOM"]
+PLOT_COLORS = ["#4C72B0", "#DD8452", "#55A868", "#C44E52", "#8172B3", "#937860"]
+MAX_SUBPLOTS = 4
+EXCLUDED_TASKS = {"WaitPalletAtSegment"}
 
 
-def load_task_durations(filepath: str) -> dict[str, list[int]]:
+def _load_task_durations(filepath: str) -> dict[str, list[int]]:
     """Load task durations from a result file.
-    
-    Returns a dict mapping task name to list of durations (end_time - start_time).
+
+    Args:
+        filepath: Path to the result JSON file.
+
+    Returns:
+        Dictionary mapping task names to lists of durations.
     """
     with open(filepath) as f:
         data = json.load(f)
-    
+
     task_durations = defaultdict(list)
-    
-    for machine_name, tasks in data.get("mapping", {}).items():
+    for tasks in data.get("mapping", {}).values():
         for entry in tasks:
             task_name = entry["task"]["name"]
-            if task_name == "WaitPalletAtSegment":
-                continue
-            duration = entry["end_time"] - entry["start_time"]
-            task_durations[task_name].append(duration)
-    
-    return task_durations
+            if task_name not in EXCLUDED_TASKS:
+                duration = entry["end_time"] - entry["start_time"]
+                task_durations[task_name].append(duration)
+
+    return dict(task_durations)
 
 
-def plot_distributions(file1: str, file2: str) -> None:
-    """Plot duration distributions for each task comparing two files."""
-    durations1 = load_task_durations(file1)
-    durations2 = load_task_durations(file2)
-    
-    # Extract metric names from filenames
-    def extract_metric(filepath: str) -> str:
-        import re
-        match = re.search(r'_(None|DistanceMetric)_', filepath)
-        return match.group(1) if match else filepath
-    
-    label1 = extract_metric(file1)
-    label2 = extract_metric(file2)
-    
-    # Get all unique task names
-    all_tasks = sorted(set(durations1.keys()) | set(durations2.keys()))
-    
-    n_tasks = len(all_tasks)
-    fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+def _extract_metric_name(filepath: str) -> str:
+    """Extract the metric name from a filepath (e.g., '_DISTANCE_' -> 'DISTANCE')."""
+    match = re.search(r"_([A-Z]+)_", filepath)
+    return match.group(1) if match else Path(filepath).name
+
+
+def _style_violin_plot(parts: dict, colors: list[str]) -> None:
+    """Apply consistent styling to violin plot elements."""
+    for i, body in enumerate(parts["bodies"]):
+        body.set_facecolor(colors[i])
+        body.set_edgecolor("white")
+        body.set_alpha(0.85)
+        body.set_linewidth(1.5)
+
+    if "cmeans" in parts:
+        parts["cmeans"].set_edgecolor("black")
+        parts["cmeans"].set_linewidth(2)
+
+    if "cquantiles" in parts:
+        parts["cquantiles"].set_edgecolor("#333333")
+        parts["cquantiles"].set_linewidth(1.2)
+        parts["cquantiles"].set_linestyle("--")
+
+    for partname in ("cbars", "cmins", "cmaxes"):
+        if partname in parts:
+            parts[partname].set_edgecolor("#555555")
+            parts[partname].set_linewidth(1)
+
+
+def _setup_axes(ax: plt.Axes) -> None:
+    """Apply common axes styling."""
+    ax.set_facecolor("#FAFAFA")
+    ax.grid(True, alpha=0.4, axis="y", linestyle="-", linewidth=0.5)
+    ax.set_axisbelow(True)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.spines["left"].set_color("#CCCCCC")
+    ax.spines["bottom"].set_color("#CCCCCC")
+
+
+def _plot_violin(
+    ax: plt.Axes,
+    plot_data: list[tuple[list[int], str, str]],
+    title: str,
+) -> None:
+    """Plot a violin comparison on the given axes.
+
+    Args:
+        ax: Matplotlib axes to plot on.
+        plot_data: List of tuples (durations, label, color).
+        title: Title for the subplot.
+    """
+    if not plot_data:
+        ax.set_visible(False)
+        return
+
+    _setup_axes(ax)
+
+    durations_list = [d[0] for d in plot_data]
+    colors = [d[2] for d in plot_data]
+    # labels = [d[1] for d in plot_data]
+    positions = list(range(1, len(plot_data) + 1))
+    quantiles = [[0.25, 0.75]] * len(durations_list)
+
+    parts = ax.violinplot(
+        durations_list,
+        positions=positions,
+        showmeans=True,
+        showextrema=True,
+        quantiles=quantiles,
+        widths=0.7,
+    )
+    _style_violin_plot(parts, colors)
+
+    # Create tick labels with statistics
+    tick_labels = [f"{lbl}\n(n={len(d)}, μ={np.mean(d):.0f})" for d, lbl, _ in plot_data]
+    ax.set_xticks(positions)
+    ax.set_xticklabels(tick_labels, fontweight="medium")
+    ax.set_title(title, pad=12)
+    ax.set_ylabel("Duration (time units)")
+    ax.set_xlim(0.3, len(plot_data) + 0.7)
+
+
+def _get_files_in_directory(directory: str, metrics: list[str]) -> list[str]:
+    """Find result files in a directory matching the specified metrics."""
+    files = os.listdir(directory)
+    return [
+        os.path.join(directory, f)
+        for metric in metrics
+        if (f := next((x for x in files if f"_{metric}_" in x), None))
+    ]
+
+
+def _plot_distributions(files: list[str]) -> None:
+    """Plot duration distributions for each task comparing multiple metrics."""
+    task_durations = {f: _load_task_durations(f) for f in files}
+    labels = [_extract_metric_name(f) for f in files]
+    colors = PLOT_COLORS[: len(files)]
+
+    all_tasks = set().union(*[d.keys() for d in task_durations.values()])
+    task_names = sorted(all_tasks)
+
+    fig, axes = plt.subplots(2, 2, figsize=(14, 11))
     axes = axes.flatten()
-    
-    for idx, task in enumerate(all_tasks[:4]):  # Max 4 tasks for 2x2 grid
-        ax = axes[idx]
-        
-        data1 = durations1.get(task, [])
-        data2 = durations2.get(task, [])
-        
-        # Create violin plots
-        if data1 and data2:
-            parts = ax.violinplot([data1, data2], positions=[1, 2], showmeans=True, showmedians=True)
-            
-            # Color the violins
-            colors = ['steelblue', 'coral']
-            for i, pc in enumerate(parts['bodies']):
-                pc.set_facecolor(colors[i])
-                pc.set_edgecolor('black')
-                pc.set_alpha(0.7)
-            
-            # Style the lines
-            for partname in ['cmeans', 'cmedians', 'cbars', 'cmins', 'cmaxes']:
-                if partname in parts:
-                    parts[partname].set_edgecolor('black')
-            
-            ax.set_xticks([1, 2])
-            ax.set_xticklabels([
-                f'{label1}\n(n={len(data1)}, μ={sum(data1)/len(data1):.1f})',
-                f'{label2}\n(n={len(data2)}, μ={sum(data2)/len(data2):.1f})'
-            ])
-        elif data1:
-            parts = ax.violinplot([data1], positions=[1], showmeans=True, showmedians=True)
-            parts['bodies'][0].set_facecolor('steelblue')
-            parts['bodies'][0].set_alpha(0.7)
-            ax.set_xticks([1])
-            ax.set_xticklabels([f'{label1}\n(n={len(data1)})'])
-        elif data2:
-            parts = ax.violinplot([data2], positions=[1], showmeans=True, showmedians=True)
-            parts['bodies'][0].set_facecolor('coral')
-            parts['bodies'][0].set_alpha(0.7)
-            ax.set_xticks([1])
-            ax.set_xticklabels([f'{label2}\n(n={len(data2)})'])
-        
-        ax.set_title(f'{task}')
-        ax.set_ylabel('Duration')
-        ax.grid(True, alpha=0.3, axis='y')
-    
-    # Hide unused subplots
-    for idx in range(len(all_tasks), 4):
+    fig.patch.set_facecolor("white")
+
+    for idx, task in enumerate(task_names[:MAX_SUBPLOTS]):
+        plot_data = [
+            (task_durations[f].get(task, []), labels[i], colors[i])
+            for i, f in enumerate(files)
+            if task_durations[f].get(task)
+        ]
+        _plot_violin(axes[idx], plot_data, task)
+
+    for idx in range(len(task_names), MAX_SUBPLOTS):
         axes[idx].set_visible(False)
-    
-    fig.suptitle(f'Task Duration Distributions\n{label1} vs {label2}', fontsize=10)
-    plt.tight_layout()
+
+    fig.suptitle(
+        f'Task Duration Distributions\n{" vs ".join(labels)}',
+        fontsize=14,
+        fontweight="bold",
+        y=0.98,
+    )
+    plt.tight_layout(rect=[0, 0, 1, 0.95])
     plt.show()
 
 
-def main():
-    parser = argparse.ArgumentParser(description='Compare task durations between two simulation result files.')
-    parser.add_argument('file1', type=str, help='First JSON result file')
-    parser.add_argument('file2', type=str, help='Second JSON result file')
+def _plot_comparisons(
+    dir1_files: list[str],
+    dir2_files: list[str],
+    dir1_label: str,
+    dir2_label: str,
+) -> None:
+    """Plot side-by-side comparisons of all metrics from two directories.
+
+    Creates a 2x2 grid (one subplot per task), where each subplot shows all metrics
+    side by side with a common legend.
+    """
+    dir1_by_metric = {_extract_metric_name(f): f for f in dir1_files}
+    dir2_by_metric = {_extract_metric_name(f): f for f in dir2_files}
+    common_metrics = sorted(set(dir1_by_metric.keys()) & set(dir2_by_metric.keys()))
+
+    if not common_metrics:
+        print("No common metrics found between directories.")
+        return
+
+    # Load all durations
+    all_durations = {}
+    all_tasks: set[str] = set()
+    for metric in common_metrics:
+        dur1 = _load_task_durations(dir1_by_metric[metric])
+        dur2 = _load_task_durations(dir2_by_metric[metric])
+        all_durations[metric] = (dur1, dur2)
+        all_tasks.update(dur1.keys(), dur2.keys())
+
+    task_names = sorted(all_tasks)
+
+    # Assign colors to each metric
+    metric_colors = {m: PLOT_COLORS[i % len(PLOT_COLORS)] for i, m in enumerate(common_metrics)}
+
+    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+    axes = axes.flatten()
+    fig.patch.set_facecolor("white")
+
+    for idx, task in enumerate(task_names[:MAX_SUBPLOTS]):
+        _setup_axes(axes[idx])
+
+        # Build data: group by metric, dir1 then dir2
+        plot_data = []
+        for metric in common_metrics:
+            dur1, dur2 = all_durations[metric]
+            color = metric_colors[metric]
+
+            if task_dur1 := dur1.get(task, []):
+                plot_data.append((task_dur1, f"{metric}\n({dir1_label})", color))
+            if task_dur2 := dur2.get(task, []):
+                # Use lighter shade for dir2
+                plot_data.append((task_dur2, f"{metric}\n({dir2_label})", color))
+
+        if not plot_data:
+            axes[idx].set_visible(False)
+            continue
+
+        durations_list = [d[0] for d in plot_data]
+        colors = [d[2] for d in plot_data]
+        positions = list(range(1, len(plot_data) + 1))
+        quantiles = [[0.25, 0.75]] * len(durations_list)
+
+        parts = axes[idx].violinplot(
+            durations_list,
+            positions=positions,
+            showmeans=True,
+            showextrema=True,
+            quantiles=quantiles,
+            widths=0.7,
+        )
+
+        # Alternate alpha for dir1 (solid) vs dir2 (lighter)
+        for i, body in enumerate(parts["bodies"]):
+            body.set_facecolor(colors[i])
+            body.set_edgecolor("white")
+            body.set_alpha(0.9 if i % 2 == 0 else 0.5)
+            body.set_linewidth(1.5)
+
+        if "cmeans" in parts:
+            parts["cmeans"].set_edgecolor("black")
+            parts["cmeans"].set_linewidth(2)
+        if "cquantiles" in parts:
+            parts["cquantiles"].set_edgecolor("#333333")
+            parts["cquantiles"].set_linewidth(1.2)
+            parts["cquantiles"].set_linestyle("--")
+        for partname in ("cbars", "cmins", "cmaxes"):
+            if partname in parts:
+                parts[partname].set_edgecolor("#555555")
+                parts[partname].set_linewidth(1)
+
+        tick_labels = [
+            f"{lbl.split(chr(10))[0]}\n(n={len(d)}, μ={np.mean(d):.0f})" for d, lbl, _ in plot_data
+        ]
+        axes[idx].set_xticks(positions)
+        axes[idx].set_xticklabels(tick_labels, fontweight="medium")
+        axes[idx].set_title(task, pad=12)
+        axes[idx].set_ylabel("Duration (time units)")
+        axes[idx].set_xlim(0.3, len(plot_data) + 0.7)
+
+    for idx in range(len(task_names), MAX_SUBPLOTS):
+        axes[idx].set_visible(False)
+
+    # Create common legend
+    legend_elements = [
+        Patch(facecolor=metric_colors[m], edgecolor="white", alpha=0.9, label=m)
+        for m in common_metrics
+    ]
+    legend_elements.extend(
+        [
+            Patch(facecolor="gray", edgecolor="white", alpha=0.9, label=f"{dir1_label} (solid)"),
+            Patch(facecolor="gray", edgecolor="white", alpha=0.5, label=f"{dir2_label} (light)"),
+        ]
+    )
+
+    fig.legend(
+        handles=legend_elements,
+        loc="upper center",
+        ncol=len(common_metrics) + 2,
+        bbox_to_anchor=(0.5, 0.02),
+        frameon=True,
+        fancybox=True,
+        shadow=False,
+    )
+
+    fig.suptitle(
+        f"Task Duration Comparison: {dir1_label} vs {dir2_label}",
+        fontsize=14,
+        fontweight="bold",
+        y=0.98,
+    )
+    plt.tight_layout(rect=[0, 0.05, 1, 0.95])
+    plt.show()
+
+
+def main() -> None:
+    """Main entry point for the plotting script."""
+    parser = argparse.ArgumentParser(
+        description="Compare task durations between simulation result files."
+    )
+    parser.add_argument(
+        "--directory",
+        "-d",
+        required=True,
+        type=str,
+        help="Directory containing result files.",
+    )
+    parser.add_argument(
+        "--compare",
+        "-c",
+        type=str,
+        default="",
+        help="Directory containing result files to compare against.",
+    )
+    parser.add_argument(
+        "--metrics",
+        "-m",
+        type=str,
+        nargs="*",
+        default=DEFAULT_METRICS,
+        help="Metric names to look for in filenames (e.g., ID DISTANCE RANDOM)",
+    )
     args = parser.parse_args()
-    
-    plot_distributions(args.file1, args.file2)
+
+    dir_files = _get_files_in_directory(args.directory, args.metrics)
+
+    if args.compare:
+        compare_files = _get_files_in_directory(args.compare, args.metrics)
+        dir1_label = Path(args.directory).name
+        dir2_label = Path(args.compare).name
+        _plot_comparisons(dir_files, compare_files, dir1_label, dir2_label)
+    else:
+        _plot_distributions(dir_files)
 
 
 if __name__ == "__main__":
