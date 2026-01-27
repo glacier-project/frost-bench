@@ -11,7 +11,7 @@ def _gen_job(job_name: str, task_name: str, requires: list[str], processing_time
         priority=priority,
         tasks=[
             task,
-            gen_wait_task(requires=requires, dependencies=[task.id])
+            # gen_wait_task(requires=requires, dependencies=[task.id])
         ]
     )
 
