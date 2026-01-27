@@ -9,7 +9,7 @@ for METRIC in "${METRICS[@]}"; do
   for INSTANCE in "${INSTANCES[@]}"; do
     echo "Running simulation with FROST_CONFIG=${FROST_CONFIG} METRIC=${METRIC} and INSTANCE=${INSTANCE}"
     INSTANCE_PATH="resource/instance/${INSTANCE}"
-    
+
     FROST_CONFIG="${FROST_CONFIG}" METRIC="${METRIC}" INSTANCE="${INSTANCE_PATH}" OUTPUT_DIR="${OUTPUT_DIR}" ./bin/SimConveyor
   done
 done

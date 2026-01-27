@@ -23,8 +23,8 @@ reactor OPCUAConveyor extends MetaConveyor{
 
     method update_pallet_position(pallet_id, pallet_position){=
         if pallet_id <= 0:
-            return 
-        
+            return
+
         self._pallet_position.schedule(MSEC(1), (pallet_id, pallet_position))
     =}
 
@@ -32,8 +32,8 @@ reactor OPCUAConveyor extends MetaConveyor{
         pallet_id, pallet_position = pallet_position.value
 
         if pallet_id <= 0:
-            return 
-        
+            return
+
         timestamp = self._get_current_logical_time_ms()
         self.logger.info(f"Updating pallet position for pallet {pallet_id} to position {pallet_position} at time {timestamp}")
         self.pallet_metric.set_pallet_position(pallet_id, pallet_position, timestamp)

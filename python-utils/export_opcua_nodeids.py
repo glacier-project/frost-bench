@@ -1,33 +1,42 @@
-from asyncua import Client
-import pandas as pd
 import argparse
 import asyncio
-from asyncua import ua
-from asyncua import Node
-from asyncua.ua import ObjectIds, NodeClass
-from asyncua.ua.uaprotocol_auto import Argument
-import re
 
-
+import pandas as pd
+from asyncua import Client, Node, ua
+from asyncua.ua import NodeClass, ObjectIds
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Export OPC UA server model to Excel.")
     parser.add_argument("--url", type=str, help="OPC UA server URL")
-    parser.add_argument("--output", type=str, default="opcua_model.xlsx", help="Output Excel file name")
-    parser.add_argument("--security_string", type=str, default="None", help="Security string for the OPC UA server")
-    parser.add_argument("--username", type=str, default="None", help="Username for the OPC UA server")
-    parser.add_argument("--password", type=str, default="None", help="Password for the OPC UA server")
+    parser.add_argument(
+        "--output", type=str, default="opcua_model.xlsx", help="Output Excel file name"
+    )
+    parser.add_argument(
+        "--security_string", type=str, default="None", help="Security string for the OPC UA server"
+    )
+    parser.add_argument(
+        "--username", type=str, default="None", help="Username for the OPC UA server"
+    )
+    parser.add_argument(
+        "--password", type=str, default="None", help="Password for the OPC UA server"
+    )
     return parser.parse_args()
 
-async def main(url: str, output: str, security_string: str = "None", username: str = "None", password: str = "None"):
+
+async def main(
+    url: str,
+    output: str,
+    security_string: str = "None",
+    username: str = "None",
+    password: str = "None",
+):
     client = Client(url)
     if security_string != "None":
-        await client.set_security_string(security_string+",my_cert.der,my_private_key.pem")
+        await client.set_security_string(security_string + ",my_cert.der,my_private_key.pem")
     if username != "None" and password != "None":
         client.set_user(username)
         client.set_password(password)
-
 
     await client.connect()
 
@@ -47,7 +56,16 @@ async def main(url: str, output: str, security_string: str = "None", username: s
                 continue
 
             # skip names that contain "Types", "ServerDiagnostics", "ServerCapabilities", "Server", "Users", or "Session" in the path
-            if name in ["Types", "ServerDiagnostics", "ServerCapabilities", "Server", "Users", "Sessions", "Aliases", "CommDrivers"]:
+            if name in [
+                "Types",
+                "ServerDiagnostics",
+                "ServerCapabilities",
+                "Server",
+                "Users",
+                "Sessions",
+                "Aliases",
+                "CommDrivers",
+            ]:
                 continue
 
             nodeid = str(child.nodeid.to_string())
@@ -56,12 +74,19 @@ async def main(url: str, output: str, security_string: str = "None", username: s
             datatype = ua.VariantType.Null
             try:
                 datatype = await child.read_data_type_as_variant_type()
-            except Exception as e:
-                pass
+            except Exception:
+                print(f"Could not read data type for node {child}, setting to Null.")
 
-            nodes.append({"Path": path + "/" + name, "NodeId": nodeid, "ParentID": parent_nodeid, "DataType": datatype.name})
+            nodes.append(
+                {
+                    "Path": path + "/" + name,
+                    "NodeId": nodeid,
+                    "ParentID": parent_nodeid,
+                    "DataType": datatype.name,
+                }
+            )
 
-            #if the node is InputArguments or OutputArguments, recurse into it
+            # if the node is InputArguments or OutputArguments, recurse into it
             if name in ["InputArguments", "OutputArguments"]:
                 try:
                     args = await child.get_value()
@@ -75,12 +100,9 @@ async def main(url: str, output: str, security_string: str = "None", username: s
                     if arg_name is None:
                         arg_name = "UnnamedArgument"
                     path += "/" + arg_name
-                    nodes.append({
-                        "Path": path,
-                        "NodeId": "None",
-                        "ParentID": nodeid,
-                        "DataType": arg_type
-                    })
+                    nodes.append(
+                        {"Path": path, "NodeId": "None", "ParentID": nodeid, "DataType": arg_type}
+                    )
 
             await recurse(child, node, path + "/" + name)
 
@@ -90,6 +112,7 @@ async def main(url: str, output: str, security_string: str = "None", username: s
     df.to_csv(output, index=False)
 
     await client.disconnect()
+
 
 if __name__ == "__main__":
     args = parse_args()

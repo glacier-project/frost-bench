@@ -88,7 +88,7 @@ root:
                       cfg:
                         - !!CallMethodNode
                           method: "Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/reservePalletOfType2"
-                          args: 
+                          args:
                             - "${numPallets}"
                             - "${contentPos1}"
                             - "${contentPos2}"
@@ -184,7 +184,7 @@ root:
                       cfg:
                         - !!CallMethodNode
                           method: "Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/callFreePalletToWithReservation"
-                          args: 
+                          args:
                             - "${destination}"
                             - "${reservationId}"
                     - !!CompositeMethodNode
@@ -209,7 +209,7 @@ root:
                       cfg:
                         - !!CallMethodNode
                           method: "Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/setDestination"
-                          args: 
+                          args:
                             - "${palletNumber}"
                             - "${destination}"
                     - !!CompositeMethodNode
@@ -239,7 +239,7 @@ root:
                       cfg:
                         - !!CallMethodNode
                           method: "Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/setDestination"
-                          args: 
+                          args:
                             - "${palletNumber}"
                             - "${destination}"
                         - !!WriteVariableNode
@@ -281,16 +281,16 @@ root:
                       cfg:
                         - !!CallMethodNode
                           method: "Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/getReservedPallet"
-                          args: 
+                          args:
                             - "${reservationId}"
                         - !!CallMethodNode
                           method: "Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/setPalletDestination"
-                          args: 
+                          args:
                             - "${pallet}"
                             - "${destination}"
                 - !!FolderNode
                   name: "ConveyorCommandsPointer"
-                  connector_name: "OpcuaConnector1" 
+                  connector_name: "OpcuaConnector1"
                   remote_resource_spec:
                     !!OpcuaRemoteResourceSpec
                     namespace: ns=2;i=49
@@ -1167,7 +1167,7 @@ root:
                       description: ""
                       measure_unit: "NoneMeasureUnits.NONE"
                       initial_value: 0
-                  
+
             - !!FolderNode #skip
               name: "Segments"
               description: ""

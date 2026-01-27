@@ -92,7 +92,7 @@ root:
                       cfg:
                         - !!CallMethodNode
                           method: "Cell_Conveyor/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/reservePalletOfType2"
-                          args: 
+                          args:
                             - "${numPallets}"
                             - "${contentPos1}"
                             - "${contentPos2}"
@@ -188,7 +188,7 @@ root:
                       cfg:
                         - !!CallMethodNode
                           method: "Cell_Conveyor/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/callFreePalletToWithReservation"
-                          args: 
+                          args:
                             - "${destination}"
                             - "${reservationId}"
                     - !!CompositeMethodNode
@@ -213,7 +213,7 @@ root:
                       cfg:
                         - !!CallMethodNode
                           method: "Cell_Conveyor/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/setDestination"
-                          args: 
+                          args:
                             - "${palletNumber}"
                             - "${destination}"
                         - !!ReadVariableNode
@@ -256,7 +256,7 @@ root:
                       cfg:
                         - !!CallMethodNode
                           method: "Cell_Conveyor/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/setDestination"
-                          args: 
+                          args:
                             - "${palletNumber}"
                             - "${destination}"
                         - !!WriteVariableNode
@@ -311,17 +311,17 @@ root:
                       cfg:
                         - !!CallMethodNode
                           method: "Cell_Conveyor/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/getReservedPallet"
-                          args: 
+                          args:
                             - "${reservationId}"
                         - !!CallMethodNode
                           method: "Cell_Conveyor/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/setPalletDestination"
-                          args: 
+                          args:
                             - "${pallet}"
                             - "${destination}"
                 - !!FolderNode
                   name: "ConveyorCommandsPointer"
                   description: ""
-                  children:                    
+                  children:
                     - !!AsyncMethodNode
                       name: "setPalletDestination"
                       description: ""
@@ -533,7 +533,7 @@ root:
                   name: "bay2Light"
                   description: ""
                   measure_unit: "NoneMeasureUnits.NONE"
-                  initial_value: 0   
+                  initial_value: 0
                 - !!NumericalVariableNode
                   name: "bay3Light"
                   description: ""
@@ -611,7 +611,7 @@ root:
                 - !!BooleanVariableNode #true if a pallet is in that position
                   name: "destination_ok_1_1"
                   description: ""
-                  initial_value: False 
+                  initial_value: False
                 - !!BooleanVariableNode
                   name: "destination_ok_2_1"
                   description: ""
@@ -659,7 +659,7 @@ root:
                 - !!BooleanVariableNode
                   name: "auxBay2"
                   description: ""
-                  initial_value: False 
+                  initial_value: False
                 - !!BooleanVariableNode
                   name: "auxBay3"
                   description: ""
@@ -725,7 +725,7 @@ root:
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
                           initial_value: 0
-                - !!ObjectVariableNode 
+                - !!ObjectVariableNode
                   name: "Bay4"
                   description: ""
                   properties:
@@ -786,7 +786,7 @@ root:
                           name: "palletNum"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
-                          initial_value: 0               
+                          initial_value: 0
                 - !!ObjectVariableNode
                   name: "Bay2"
                   description: ""
@@ -902,7 +902,7 @@ root:
                       name: "type"
                       description: ""
                       measure_unit: "NoneMeasureUnits.NONE"
-                      initial_value: 0 
+                      initial_value: 0
                 - !!ObjectVariableNode
                   name: "Pallet3"
                   description: ""
@@ -936,7 +936,7 @@ root:
                       name: "type"
                       description: ""
                       measure_unit: "NoneMeasureUnits.NONE"
-                      initial_value: 0   
+                      initial_value: 0
                 - !!ObjectVariableNode
                   name: "Pallet4"
                   description: ""
@@ -1072,7 +1072,7 @@ root:
                       name: "type"
                       description: ""
                       measure_unit: "NoneMeasureUnits.NONE"
-                      initial_value: 0 
+                      initial_value: 0
                 - !!ObjectVariableNode
                   name: "Pallet8"
                   description: ""
@@ -1176,7 +1176,7 @@ root:
                       measure_unit: "NoneMeasureUnits.NONE"
                       initial_value: 0
             - !!FolderNode #skip
-              name: "Segments"    
+              name: "Segments"
               description: ""
               children:
                 - !!ObjectVariableNode
@@ -1211,8 +1211,8 @@ root:
                           name: "item3"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
-                          initial_value: 0  
-                        - !!NumericalVariableNode 
+                          initial_value: 0
+                        - !!NumericalVariableNode
                           name: "item4"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
@@ -1274,8 +1274,8 @@ root:
                           name: "item3"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
-                          initial_value: 0  
-                        - !!NumericalVariableNode 
+                          initial_value: 0
+                        - !!NumericalVariableNode
                           name: "item4"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
@@ -1305,7 +1305,7 @@ root:
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
                           initial_value: 0
-                - !!ObjectVariableNode  
+                - !!ObjectVariableNode
                   name: "Segment3"
                   description: ""
                   properties:
@@ -1337,8 +1337,8 @@ root:
                           name: "item3"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
-                          initial_value: 0  
-                        - !!NumericalVariableNode 
+                          initial_value: 0
+                        - !!NumericalVariableNode
                           name: "item4"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
@@ -1367,11 +1367,11 @@ root:
                           name: "item9"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
-                          initial_value: 0  
+                          initial_value: 0
                 - !!ObjectVariableNode
                   name: "Segment4"
                   description: ""
-                  properties: 
+                  properties:
                     - !!ObjectVariableNode
                       name: "FIFO"
                       description: ""
@@ -1400,8 +1400,8 @@ root:
                           name: "item3"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
-                          initial_value: 0  
-                        - !!NumericalVariableNode 
+                          initial_value: 0
+                        - !!NumericalVariableNode
                           name: "item4"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
@@ -1463,8 +1463,8 @@ root:
                           name: "item3"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
-                          initial_value: 0  
-                        - !!NumericalVariableNode 
+                          initial_value: 0
+                        - !!NumericalVariableNode
                           name: "item4"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
@@ -1526,8 +1526,8 @@ root:
                           name: "item3"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
-                          initial_value: 0  
-                        - !!NumericalVariableNode 
+                          initial_value: 0
+                        - !!NumericalVariableNode
                           name: "item4"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
@@ -1589,8 +1589,8 @@ root:
                           name: "item3"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
-                          initial_value: 0  
-                        - !!NumericalVariableNode 
+                          initial_value: 0
+                        - !!NumericalVariableNode
                           name: "item4"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
@@ -1620,7 +1620,7 @@ root:
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
                           initial_value: 0
-                - !!ObjectVariableNode  
+                - !!ObjectVariableNode
                   name: "Segment8"
                   description: ""
                   properties:
@@ -1652,8 +1652,8 @@ root:
                           name: "item3"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
-                          initial_value: 0  
-                        - !!NumericalVariableNode 
+                          initial_value: 0
+                        - !!NumericalVariableNode
                           name: "item4"
                           description: ""
                           measure_unit: "NoneMeasureUnits.NONE"
@@ -1694,7 +1694,7 @@ root:
 #                - !!BooleanVariableNode
 #                  name: "modeManual"
 #                  description: ""
-#                  initial_value: False    
+#                  initial_value: False
 #            - !!FolderNode #skip
 #              name: "LTUMainBelts"
 #              description: ""
@@ -1715,7 +1715,7 @@ root:
 #            - !!BooleanVariableNode
 #              name: "PANEL_ENABLED"
 #              description: ""
-#              initial_value: True   
+#              initial_value: True
 #        - !!FolderNode #skip
 #          name: "ConveyorSystemStatus"
 #          description: ""
@@ -1876,7 +1876,7 @@ root:
 #              name: "BAY4_LTU_BACKWARD_UP"
 #              description: ""
 #              initial_value: True
-#            - !!BooleanVariableNode 
+#            - !!BooleanVariableNode
 #              name: "BAY4_LTU_BACKWARD_DOWN"
 #              description: ""
 #              initial_value: True
@@ -2004,7 +2004,3 @@ root:
 #              name: "SEGMENT8_STOP_GATE_OPENED"
 #              description: ""
 #              initial_value: True   - !!FolderNode #skip
-
-
-
-

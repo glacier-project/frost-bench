@@ -18,7 +18,7 @@ reactors:
               segment_time: 12700
           Segment_2:
             parameters:
-              segment_time: 20200            
+              segment_time: 20200
           Segment_3:
             parameters:
               segment_time: 13250
@@ -40,9 +40,9 @@ reactors:
           EM:
             parameters:
               mutex_time: 2500
-          HB: 
+          HB:
             parameters:
-              interchange_time: 4800 
+              interchange_time: 4800
   scheduler:
     logging_level: ERROR
     parameters:
@@ -53,7 +53,7 @@ reactors:
       qc_tasks: 10
       min_task_spacing: 25 # seconds
       max_task_spacing: 35 # seconds
-      task_mapping: 
+      task_mapping:
         ToWarehouseAndBack: /Scheduler/ToWarehouseAndBack
         ToQcAndBack: /Scheduler/ToQcAndBack
         ToRbtcAndBack: /Scheduler/ToRbtcAndBack

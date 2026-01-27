@@ -18,13 +18,13 @@ from frost_planner.solver.dummy_solver import DummySolver
 from frost_planner.executor.dynamic_executor import DynamicExecutor
 from frost_planner.core.base import TaskStatus, Task, Job, SchedulingInstance, Machine
 from pallet_distance import PalletPosition, get_conveyor_position, _get_pallet_metric
-from gen_instances import gen_wh_job, gen_qc_job, gen_rbtc_job, gen_mill_job 
+from gen_instances import gen_wh_job, gen_qc_job, gen_rbtc_job, gen_mill_job
 
 OUTPUT_DIR = os.getenv("OUTPUT_DIR")
 METRIC = os.getenv("METRIC")
 INSTANCE = os.getenv("INSTANCE")
 
-# Override config parameters 
+# Override config parameters
 reactors_config = FROST_CONFIG["reactors"]
 reactors_config["conveyor"]["parameters"]["pallet_metric"] = METRIC
 reactors_config["scheduler"]["parameters"]["scheduling_instance"] = INSTANCE
@@ -41,14 +41,14 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1)
     state jobs_scopes = {= {} =}    # dictionary (job.id, <job scope>)
     state task_start = {= {} =}
     state task_end = {= {} =}
-    
+
     state wh_tasks = 0
     state qc_tasks = 0
     state rbtc_tasks = 0
     state mill_tasks = 0
     state min_task_spacing = 35
     state max_task_spacing = 45
-    
+
     logical action create_wh_task
     logical action create_qc_task
     logical action create_rbtc_task
@@ -91,7 +91,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1)
     reaction(create_wh_task, create_qc_task, create_rbtc_task, create_mill_task) -> update_schedule{=
         new_jobs = []
         if create_wh_task.is_present and self.wh_tasks > 0:
-            
+
             job = gen_wh_job()
             new_jobs.append(job)
         if create_qc_task.is_present and self.qc_tasks > 0:
@@ -148,7 +148,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1)
             task_id = task.task.id
             task_name = task.task.name
             self.logger.info(f"Starting task {task_name} on machine {machine}")
-            
+
             assert task_id not in self.task_start, f"Task '{task_id}' is already started."
             self.task_start[task_id] = self._get_current_logical_time_sec()
             self._executor.task_started(task)
@@ -243,7 +243,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1)
             if self.are_all_tasks_completed():
                 self.logger.warning("All tasks completed. Stopping execution.")
                 lf.request_stop()
-                
+
             # scheduling_interval = SECS(self.scheduling_interval)
             # self.logger.debug(f"Scheduling next task in {scheduling_interval}...")
             update_schedule.schedule(0)
@@ -270,7 +270,7 @@ reactor Scheduler(type="sim") extends FrostScheduler{
         # Save schedule in the results folder with a unique name
         instance_name = os.path.basename(INSTANCE).replace(".json", "")
         output_file = f"{OUTPUT_DIR}/{self.type}_{instance_name}_{METRIC}_{uuid.uuid4().hex}.json"
-        
+
         os.makedirs(OUTPUT_DIR, exist_ok=True)
         with open(output_file, "w") as f:
             f.write(schedule.model_dump_json(indent=2))
