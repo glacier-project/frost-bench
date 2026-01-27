@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-METRICS=("DistanceMetric" "None" )
-INSTANCES=("instance_small.json") # "instance_mini.json" "instance_small.json" "instance_medium.json" "instance_large.json")
-OUTPUT_DIR="results/$(uuidgen)/"
+METRICS=("DISTANCE" "RANDOM" "ID" )
+INSTANCES=("instance_empty.json") # "instance_mini.json" "instance_small.json" "instance_medium.json" "instance_large.json")
+OUTPUT_DIR="results/$(date +%Y%m%d_%H%M%S)"
 
 FROST_CONFIG="resource/frost_config.yml"
 for METRIC in "${METRICS[@]}"; do
