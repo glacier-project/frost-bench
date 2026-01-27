@@ -20,25 +20,25 @@ root: !!FolderNode
           children:
           - !!AsyncMethodNode
             description: ''
-            id: 5fef743f-dece-46ab-bc26-80d28911713b
+            id: fa171e29-eea3-4a60-9629-770ee02b5f8d
             name: setDestination
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: b849baf2-702d-437d-a5a4-41283e3a4aa1
+              id: 82271687-31a4-483e-a4ac-60c13aa6506a
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNumber
             - !!NumericalVariableNode
               description: ''
-              id: da98e8f1-ec32-43bd-9b96-cf407eaf792f
+              id: 9b3acff4-e306-4008-a2dc-70c7a8e116cd
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: destination
             returns:
             - !!StringVariableNode
               description: ''
-              id: cced5a1f-80b5-497f-b848-5e1da6715ef9
+              id: 9b5377f9-bacf-49e6-ad2c-3a77fd075800
               initial_value: ''
               name: res
           - !!CompositeMethodNode
@@ -53,127 +53,127 @@ root: !!FolderNode
               kwargs: {}
               method: Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/reservePalletOfType2
             description: ''
-            id: 0d52d6a0-a015-41ac-867d-7460f9a33e8d
+            id: 75509760-c7fd-41c1-8edb-322ce470c1fe
             name: ReserveFreePalletOfType2
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: 7e48f4e9-0fa0-4ad9-9799-27d22a5842fc
+              id: e35d18e6-00be-4a70-afc9-0a8baae30521
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: numPallets
             - !!NumericalVariableNode
               description: ''
-              id: 6d12a266-f78c-4809-9415-bfed70220fb3
+              id: 47560f2e-4fd1-4eea-a83f-92a3eb9e23ee
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: contentPos1
             - !!NumericalVariableNode
               description: ''
-              id: 4ff040c3-7018-4026-b79d-6273bb2fc4de
+              id: 7b31b3be-4809-4007-b7e5-037196b58275
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: contentPos2
             - !!NumericalVariableNode
               description: ''
-              id: 87449d22-f529-4548-b2ba-10fcf17af341
+              id: 6ec2c526-2f51-487a-aba7-3b8631afcd4c
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: contentPos3
             - !!NumericalVariableNode
               description: ''
-              id: ca616984-eda4-4583-80c3-9a900d31e648
+              id: 640792aa-6575-4ed7-9fe8-05e42a3d1ef7
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletType
             returns:
             - !!NumericalVariableNode
               description: ''
-              id: 3193fbce-f1e2-4007-86e2-4dd60a9636e1
+              id: ef312224-786f-476d-9057-9acc9355e02e
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: reservationId
           - !!AsyncMethodNode
             description: ''
-            id: 9318746b-6c72-4f73-bba8-92031df20fed
+            id: 8c08ee14-228c-4759-b5d6-9727697fd3a1
             name: reservePalletOfType2
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: 84f0ced5-c48c-45ba-ad9a-962640b2f70b
+              id: f21410e6-fc74-4cdc-9aa8-f2837d040c05
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: numPallets
             - !!NumericalVariableNode
               description: ''
-              id: c9bb9b45-29cb-4ba8-8daa-ebef274c2356
+              id: 9827b50d-05f0-4959-a6b2-98171c6f150c
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: contentPos1
             - !!NumericalVariableNode
               description: ''
-              id: 8b691130-7e3a-4b8f-8bc3-4df83ce96c3e
+              id: 8ec76c3a-210b-41fb-a9ab-b1cf79d18c42
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: contentPos2
             - !!NumericalVariableNode
               description: ''
-              id: 06ce8862-4699-4889-9a4c-d487446de892
+              id: 4fe3df2a-df10-4977-aaa6-99d3e62a8969
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: contentPos3
             - !!NumericalVariableNode
               description: ''
-              id: be83dedc-ce57-4490-a161-ccc9c6d59cc3
+              id: 37f81cf4-f7af-4685-8d7f-1fa32a9643fe
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletType
             returns:
             - !!NumericalVariableNode
               description: ''
-              id: 100f8d52-e1f3-4b51-a834-86458b5a7689
+              id: 5cf66abe-8795-4af4-91aa-6e13cd1c1386
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: reservationId
           - !!AsyncMethodNode
             description: ''
-            id: 24ca7dfd-d698-444d-bfed-92cd8fc2bd28
+            id: 70a559f3-b0e5-4309-abbc-6fe90fe4486c
             name: CallFreePalletOfTypeTo
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: b0bd33d2-6501-411a-a0b9-3a2ecdc226ee
+              id: 563a6b1d-1037-49fd-8a9d-ac07d3c8aa6f
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: contentPos1
             - !!NumericalVariableNode
               description: ''
-              id: a85a9f05-a2fb-4ca9-ba2c-0681ce2f1110
+              id: 99f0a204-9d62-4f7e-ac9e-05eb52171726
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: contentPos2
             - !!NumericalVariableNode
               description: ''
-              id: c64d476f-c52b-4488-bac3-36861ddc843b
+              id: 134f7ac8-4d58-4fb7-9112-15fea9917a7e
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: contentPos3
             - !!NumericalVariableNode
               description: ''
-              id: c7bf4e58-6998-42c1-93d8-a2b288532278
+              id: 0283f0c0-e961-4237-a828-c65cefdd8c86
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletType
             - !!NumericalVariableNode
               description: ''
-              id: 59ccd127-37ec-46d0-a76a-fde582de1ac8
+              id: 2ae529e1-dd52-4e71-bc04-4017d324f4bb
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: destination
             returns:
             - !!NumericalVariableNode
               description: ''
-              id: cdafcbce-cb9b-4174-97f6-0eb13688e15f
+              id: 1a5b541b-dc85-4181-b82c-e7f7ae57f4ab
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNumber
@@ -191,25 +191,25 @@ root: !!FolderNode
               kwargs: {}
               method: Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/setPalletDestination
             description: ''
-            id: 0c33edb7-ca6d-4be9-90cd-66a55034b879
+            id: cba40301-b8e1-44d5-8d8e-6907c1802724
             name: callReservedPalletTo
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: 04be9375-5edf-4d12-a705-c83166875dd5
+              id: 6729852c-feb5-4aa3-8915-41df762cada7
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: reservationId
             - !!NumericalVariableNode
               description: ''
-              id: 97923331-37d4-4d92-83c3-b383e5b05403
+              id: 782f9c68-c302-4d07-951d-c1af0d596a6f
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: destination
             returns:
             - !!NumericalVariableNode
               description: ''
-              id: 8cc7cbe6-b2da-4d2b-ae0e-ada888a1d993
+              id: cd599935-d310-4ce5-8182-ea77ed46945b
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: pallet
@@ -222,25 +222,25 @@ root: !!FolderNode
               kwargs: {}
               method: Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/setDestination
             description: ''
-            id: 7fbd2962-bb72-419d-8b15-238894017ff5
+            id: 753e9296-8186-4373-aae7-a5a7374804d9
             name: setPalletDestination
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: bd00a106-d494-494e-9a7c-4dad122f2ee5
+              id: 46ed74b4-dca6-4860-9886-72207f0e1fe9
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNumber
             - !!NumericalVariableNode
               description: ''
-              id: dba2163e-ec6a-4e5b-b028-acdcc8416d65
+              id: 88479d6c-a41d-4eea-8853-16fa2c41bcb4
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: destination
             returns:
             - !!BooleanVariableNode
               description: ''
-              id: dea5a072-048c-436d-8f98-c413867a1d30
+              id: 8fb9b21e-9ba3-4f1b-ae60-23ee4fe99031
               initial_value: true
               name: result
           - !!CompositeMethodNode
@@ -255,65 +255,65 @@ root: !!FolderNode
               value: ${reservationId}
               variable: Objects/ConveyorHMI/ConveyorObjects/Pallets/Pallet${palletNumber}/reserved
             description: ''
-            id: e01ae3d6-357a-4eaa-ad19-d5e09536a320
+            id: cbaaedb5-99b1-471f-b7e1-b78e08c1ed23
             name: setPalletDestinationWithReservation
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: 79809521-3dc4-4b6f-84b5-7150923b7ae9
+              id: 92b1729a-7f0f-4a16-8282-d95c4d72a536
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNumber
             - !!NumericalVariableNode
               description: ''
-              id: 078ebed2-b97b-4670-a3df-7cd37e6dd9a8
+              id: 33a342f0-da26-4181-b699-4c0ff49958da
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: destination
             - !!NumericalVariableNode
               description: ''
-              id: fe16d193-4661-4c73-9f6c-a4889add6dee
+              id: a69b5560-2a5f-452b-b770-81b92a803e6d
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: reservationId
             returns:
             - !!BooleanVariableNode
               description: ''
-              id: d9e30d7b-a823-415a-b552-5c0cb2e52bfc
+              id: ca31e64a-9fa7-490d-a4e5-39659a7f9b8f
               initial_value: true
               name: result
           - !!AsyncMethodNode
             description: ''
-            id: bcb68b18-f4e2-49c8-9965-2e366dc5ff8c
+            id: 69364d5e-b6e9-491c-804f-68f842f4834e
             name: getReservedPallet
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: 6c2b8b52-d4a7-45a1-9061-6ece61b7b891
+              id: 1f0f6bff-6457-47f5-9e8d-6bbb7676dba9
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: reservationId
             returns:
             - !!NumericalVariableNode
               description: ''
-              id: 5436653b-853e-4115-9857-0fc5c47092b4
+              id: 0b888bce-aff2-4802-83c2-94c9aecab4a5
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: pallet
           description: ''
-          id: 7bd3334b-10c7-4c56-bf05-09655b10acef
+          id: 53498996-d662-4bba-920a-2937dc67c943
           name: UtilityMethods
         - !!FolderNode
           children:
           - !!AsyncMethodNode
             connector_name: OpcuaConnector1
             description: ''
-            id: e294e530-16e1-4807-be23-066100bbfe5b
+            id: 46d911bb-cb54-4b86-ad9f-bc4783a90929
             name: setPalletDestination
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: ea7b6d49-8f68-475e-9eac-3273e664c6fe
+              id: 7296b578-d2f7-4b20-b566-4e535d302173
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNumber
@@ -321,7 +321,7 @@ root: !!FolderNode
                 namespace: ns=2;i=49
             - !!NumericalVariableNode
               description: ''
-              id: 48ff2dc7-12e3-4ecf-85dc-3534ddc31390
+              id: 04c6f712-b36e-4374-af62-9c1e92c0f6b7
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: destination
@@ -332,7 +332,7 @@ root: !!FolderNode
             returns:
             - !!BooleanVariableNode
               description: ''
-              id: 3769ddab-c65f-47b0-b255-487ce55e1c4c
+              id: 9b08d7f5-bf26-44d8-bceb-b267494db282
               initial_value: false
               name: result
               remote_resource_spec: !!OpcuaRemoteResourceSpec
@@ -340,12 +340,12 @@ root: !!FolderNode
           - !!AsyncMethodNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 952e47fd-9390-487c-a229-5a147fbb6e0c
+            id: d6a7ba3d-a720-4d33-a5a2-4e35919ae9e1
             name: setPalletDestinationWithReservation
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: 8fac8966-36d8-402b-8686-7f191f554bae
+              id: e55218a0-f00f-4855-ba29-c2e2fbc35d0b
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNumber
@@ -353,7 +353,7 @@ root: !!FolderNode
                 namespace: ns=2;i=49
             - !!NumericalVariableNode
               description: ''
-              id: e3fd2e77-1293-4eb4-93dc-2d000ebbb380
+              id: cd59e413-fb09-48ba-90bf-cacdc88e0921
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: destination
@@ -361,7 +361,7 @@ root: !!FolderNode
                 namespace: ns=2;i=49
             - !!NumericalVariableNode
               description: ''
-              id: 2dbc977f-aaa4-4618-9ef0-4f8849ef2e25
+              id: 32dd06aa-480b-49cc-80b3-4112b45c80c2
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: reservationId
@@ -372,7 +372,7 @@ root: !!FolderNode
             returns:
             - !!BooleanVariableNode
               description: ''
-              id: 9efca69a-3e63-4c93-a9d7-31173789d23a
+              id: 9365b05d-ee59-4d76-9d53-4ba68051bf18
               initial_value: true
               name: result
               remote_resource_spec: !!OpcuaRemoteResourceSpec
@@ -380,12 +380,12 @@ root: !!FolderNode
           - !!AsyncMethodNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 2404e584-c9e2-4ff1-981d-887dd6e9423f
+            id: eaa41fb0-c25e-4d48-bc73-26b1c725ba08
             name: callFreePalletTo
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: 7ffc4ceb-ca9a-475a-be7a-b2c7210b8dea
+              id: 9c07f960-1473-474a-8d44-ff3917185925
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: destination
@@ -396,14 +396,14 @@ root: !!FolderNode
             returns:
             - !!BooleanVariableNode
               description: ''
-              id: a756c3a3-f64f-48d0-8416-ed3c3b653bb9
+              id: b34f14b9-ce8a-4e8c-8542-41fab5a73b56
               initial_value: false
               name: result
               remote_resource_spec: !!OpcuaRemoteResourceSpec
                 namespace: ns=2;i=49
             - !!NumericalVariableNode
               description: ''
-              id: deaaab76-d1b6-46f8-b5e4-4e5a94f24087
+              id: 156a7749-694a-4456-8cc2-863f293a9ddd
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNumber
@@ -412,12 +412,12 @@ root: !!FolderNode
           - !!AsyncMethodNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 66d6adb3-7416-46e1-96a0-be9541e0944e
+            id: 7f115cc8-fa53-46a3-9311-efcc1d25fc4b
             name: callFreePalletToWithReservation
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: bbaea626-a729-45bc-9864-17fb1d38469b
+              id: 91328687-be70-49a7-b3f1-9525a930d55d
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: destination
@@ -425,7 +425,7 @@ root: !!FolderNode
                 namespace: ns=2;i=49
             - !!NumericalVariableNode
               description: ''
-              id: 1eec5999-d6ee-48ab-92a5-2d981cf88efe
+              id: 128e3ded-1f6d-4de8-b4b8-348f64f9f832
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: reservationId
@@ -436,14 +436,14 @@ root: !!FolderNode
             returns:
             - !!BooleanVariableNode
               description: ''
-              id: a5e565cb-bf92-414e-b1c7-e0965aad6e6d
+              id: a34a4d6a-9c53-4783-be1f-4c8f30808b51
               initial_value: false
               name: result
               remote_resource_spec: !!OpcuaRemoteResourceSpec
                 namespace: ns=2;i=49
             - !!NumericalVariableNode
               description: ''
-              id: c26eea32-bd8f-4cbf-a419-e692d3f02b75
+              id: daf2c4af-46bc-484d-9420-c0186e1dd174
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNumber
@@ -452,12 +452,12 @@ root: !!FolderNode
           - !!AsyncMethodNode
             connector_name: OpcuaConnector1
             description: ''
-            id: e537426f-37c6-4809-b1fc-7ff63e0d833e
+            id: 05ac0f2b-210e-4285-b24b-a67cfd901658
             name: callFreePalletOfTypeTo
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: b66c0588-1756-4e3a-ac7c-2277d357aaa1
+              id: 55310faa-38d0-4439-93df-6c08efac8c45
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: destination
@@ -465,7 +465,7 @@ root: !!FolderNode
                 namespace: ns=2;i=49
             - !!NumericalVariableNode
               description: ''
-              id: da4b181d-88f4-440d-bec3-efa499895d8d
+              id: 0a0f42b8-d8e8-41d4-9a31-4709de1eea1f
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: type
@@ -476,14 +476,14 @@ root: !!FolderNode
             returns:
             - !!BooleanVariableNode
               description: ''
-              id: a9de3893-84ec-4c34-a309-d181d6136a6b
+              id: 6d912a32-3aa9-402d-9ea5-d187a5aee808
               initial_value: false
               name: result
               remote_resource_spec: !!OpcuaRemoteResourceSpec
                 namespace: ns=2;i=49
             - !!NumericalVariableNode
               description: ''
-              id: 3479bbe5-2e9d-4760-bdd9-93e7121cd1aa
+              id: c9b7ddde-efac-48a3-8080-ae4af47129cd
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNumber
@@ -492,12 +492,12 @@ root: !!FolderNode
           - !!AsyncMethodNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 1b088bca-9c54-43b4-9afa-bbfdf867fad5
+            id: da5d8c52-c797-47cb-8f63-892412f28e05
             name: callFreePalletOfTypeToWithReservation
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: 55cd907b-515e-4425-99ad-c43d43007863
+              id: 7e25933e-79cb-411c-8a9f-e88bb8d1eeb2
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: destination
@@ -505,7 +505,7 @@ root: !!FolderNode
                 namespace: ns=2;i=49
             - !!NumericalVariableNode
               description: ''
-              id: de2df413-8f8c-453e-8731-82c9e490da5b
+              id: 800e91a6-a6e6-4028-b00b-a9e7a012d10d
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: type
@@ -513,7 +513,7 @@ root: !!FolderNode
                 namespace: ns=2;i=49
             - !!NumericalVariableNode
               description: ''
-              id: 82649e89-8e14-4d38-9a1e-2ee0e99007b0
+              id: 18a61a4f-2ba6-4b4e-b084-1dd406ae962d
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: reservationId
@@ -524,14 +524,14 @@ root: !!FolderNode
             returns:
             - !!BooleanVariableNode
               description: ''
-              id: d0b45e42-d68b-4c8a-82c2-91e93ede40ae
+              id: 9456460b-fa25-4cc9-8eba-03d0b194166f
               initial_value: false
               name: result
               remote_resource_spec: !!OpcuaRemoteResourceSpec
                 namespace: ns=2;i=49
             - !!NumericalVariableNode
               description: ''
-              id: b9d91ece-fa3f-4f65-b44e-c7fcf838de09
+              id: 840e2fc9-789e-47d4-9bb2-262efb3e4769
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNumber
@@ -540,12 +540,12 @@ root: !!FolderNode
           - !!AsyncMethodNode
             connector_name: OpcuaConnector1
             description: ''
-            id: b311d101-7132-4c05-aec1-2b1d4ecf9358
+            id: 3ca256be-a4fe-4e76-b8a9-f823f19c4b9f
             name: reservePallet
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: ea0f2668-84cc-443c-932d-76ce7ff811d4
+              id: 70caa1c6-aba5-4e92-8e2c-5abb3743e98a
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNumber
@@ -553,7 +553,7 @@ root: !!FolderNode
                 namespace: ns=2;i=49
             - !!NumericalVariableNode
               description: ''
-              id: c9fa0ce2-13a3-494f-b230-30a26b7b9c41
+              id: 4562a52e-852a-4e93-b075-10ba9f76160e
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: reservationId
@@ -564,7 +564,7 @@ root: !!FolderNode
             returns:
             - !!BooleanVariableNode
               description: ''
-              id: a503f31c-7d48-4914-98de-4a89eeea3da2
+              id: dfefc22d-def8-4135-906d-27dda35860c1
               initial_value: false
               name: result
               remote_resource_spec: !!OpcuaRemoteResourceSpec
@@ -572,12 +572,12 @@ root: !!FolderNode
           - !!AsyncMethodNode
             connector_name: OpcuaConnector1
             description: ''
-            id: d7751776-20a9-4156-bc26-2b9a5b181edb
+            id: dca56097-de23-4368-b6f4-fe3980fcf986
             name: releasePallet
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: eaf4d588-ba47-4db3-8559-edd85848b892
+              id: d85eb76e-1c37-4f59-a675-297e6440f856
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNumber
@@ -588,7 +588,7 @@ root: !!FolderNode
             returns:
             - !!BooleanVariableNode
               description: ''
-              id: ad366c02-1a43-40df-a149-eee34cbfa48b
+              id: 6d629860-6339-4666-8919-cc2d8db2f33c
               initial_value: false
               name: result
               remote_resource_spec: !!OpcuaRemoteResourceSpec
@@ -596,12 +596,12 @@ root: !!FolderNode
           - !!AsyncMethodNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 4a0f60b3-a420-4d46-a834-45e3daccde5d
+            id: a41970df-85f9-4732-a4b4-fab5b593425b
             name: setPartOnPallet
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: 298fb208-e70c-473c-916d-7f16270f1c50
+              id: 9a292c4b-55b5-4e10-8081-e0717af3bb24
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNumber
@@ -609,7 +609,7 @@ root: !!FolderNode
                 namespace: ns=2;i=49
             - !!NumericalVariableNode
               description: ''
-              id: acd7572f-811d-428f-ac9d-9497146fcff6
+              id: cc0d0319-b644-4517-938e-4cc29c77469f
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: position
@@ -617,7 +617,7 @@ root: !!FolderNode
                 namespace: ns=2;i=49
             - !!NumericalVariableNode
               description: ''
-              id: 53914e98-e602-4cda-adf1-0cc2abe38104
+              id: 2e64d50a-9d3a-447e-af91-8a583b6cdb58
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: part
@@ -628,7 +628,7 @@ root: !!FolderNode
             returns:
             - !!NumericalVariableNode
               description: ''
-              id: 6c2f2c0b-7ba5-456b-a873-8f0759e1976a
+              id: e8ef5c10-d80b-44f7-99ff-1153b445ffea
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: destination
@@ -637,12 +637,12 @@ root: !!FolderNode
           - !!AsyncMethodNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 11ce28b0-9f07-46e6-931d-1690a74a6853
+            id: 72fb4c92-48a3-4619-befd-d63fff078fb5
             name: clearPartOnPallet
             parameters:
             - !!NumericalVariableNode
               description: ''
-              id: 53805455-52c7-4977-b5d0-264c062d7a1c
+              id: 9638026d-f6d7-4384-aa44-5b835e268523
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNumber
@@ -650,7 +650,7 @@ root: !!FolderNode
                 namespace: ns=2;i=49
             - !!NumericalVariableNode
               description: ''
-              id: 450f565e-27bd-4354-a188-7b72cc2efb71
+              id: 5a141bea-de37-4912-baf6-d7c9754639ff
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: position
@@ -661,7 +661,7 @@ root: !!FolderNode
             returns:
             - !!NumericalVariableNode
               description: ''
-              id: 266ca126-c8b6-4c37-8c0b-cc8c179b4de4
+              id: 2fe47816-7809-4978-98d5-8a2ba327eab0
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: destination
@@ -669,57 +669,57 @@ root: !!FolderNode
                 namespace: ns=2;i=49
           connector_name: OpcuaConnector1
           description: ''
-          id: 710f2caa-8cc0-4f3b-bb4b-3c6f43f3fa42
+          id: 7af84b50-4107-4532-8dee-90e6ffacf04f
           name: ConveyorCommandsPointer
           remote_resource_spec: !!OpcuaRemoteResourceSpec
             namespace: ns=2;i=49
         description: ''
-        id: 33493f39-96dd-439c-8c70-5031d1d0da97
+        id: c5f9002d-ec04-4752-b94d-c5d42e7c72bf
         name: Commands
       - !!FolderNode
         children:
         - !!NumericalVariableNode
           description: ''
-          id: 7a60a501-c968-4977-836a-6ac66fad2591
+          id: 5d4af21f-32cb-4e76-a3dd-e9055ddd0265
           initial_value: 0
           measure_unit: NoneMeasureUnits.NONE
           name: bay2Light
         - !!NumericalVariableNode
           description: ''
-          id: 9fcb623b-acc9-4d48-80ed-180b0cae4fb3
+          id: 6d87976c-fbb2-4e17-814e-8c0294fa27a8
           initial_value: 0
           measure_unit: NoneMeasureUnits.NONE
           name: bay3Light
         - !!NumericalVariableNode
           description: ''
-          id: de7a5d19-2c0c-404b-a973-545e6ba7ba5b
+          id: 069af643-864f-4a32-adb0-8baba9b952c9
           initial_value: 0
           measure_unit: NoneMeasureUnits.NONE
           name: bay4Light
         - !!NumericalVariableNode
           description: ''
-          id: 3f2a209a-50f4-49bd-b953-3bed0f92c5fe
+          id: f16d5aec-e925-45b0-9ae4-b9cad46bfa44
           initial_value: 0
           measure_unit: NoneMeasureUnits.NONE
           name: bay5Light
         description: ''
-        id: 8ff2deaf-8b7a-468b-9992-52f5484149d7
+        id: ee4aed19-cee7-4e95-8a91-8e9f259ab78f
         name: BayLights
       - !!ObjectVariableNode
         description: ''
-        id: 29f87d70-79ce-489a-9dd8-82ebbbff97c8
+        id: eb931635-5c9b-4288-9aef-ca3652aeb4a5
         name: Destinations
         properties:
         - !!NumericalVariableNode
           description: ''
-          id: 38d253df-6f0b-438f-80e1-cd250439222f
+          id: b2b3fd12-feac-4b3c-81e6-e0fd4e74c94e
           initial_value: 0
           measure_unit: NoneMeasureUnits.NONE
           name: destination_palletid_1_1
         - !!NumericalVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 3a2be2af-5829-4144-98d9-57b2950b58a9
+          id: 6e79401e-5ec2-43c4-a069-288ad1eea39a
           initial_value: 0
           measure_unit: NoneMeasureUnits.NONE
           name: destination_palletid_2_1
@@ -728,7 +728,7 @@ root: !!FolderNode
         - !!NumericalVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 073ef8d7-c89a-492c-84b0-07d254d08d80
+          id: d8c80076-7ce8-4ce1-a42d-cb5818736c03
           initial_value: 0
           measure_unit: NoneMeasureUnits.NONE
           name: destination_palletid_2_2
@@ -737,7 +737,7 @@ root: !!FolderNode
         - !!NumericalVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 3d499a6e-c4ad-48a7-9203-54f910272a60
+          id: 9cf4c8f0-c3b9-4d2e-ba5c-ba07808d17e4
           initial_value: 0
           measure_unit: NoneMeasureUnits.NONE
           name: destination_palletid_2_3
@@ -746,7 +746,7 @@ root: !!FolderNode
         - !!NumericalVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 071d4aa8-fde5-42fd-938e-a745f0dd4f02
+          id: ab03bf00-98c5-4048-8ba4-3e49ee4b4616
           initial_value: 0
           measure_unit: NoneMeasureUnits.NONE
           name: destination_palletid_3_1
@@ -755,7 +755,7 @@ root: !!FolderNode
         - !!NumericalVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 01a845b9-bb38-4f1d-a7b3-60820c3b57a8
+          id: b615776f-e311-48b9-82c0-6ca85ec12c35
           initial_value: 0
           measure_unit: NoneMeasureUnits.NONE
           name: destination_palletid_3_2
@@ -764,7 +764,7 @@ root: !!FolderNode
         - !!NumericalVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 8bbb43c8-acae-4e70-80fd-7d4816d6e41b
+          id: 1506ce1e-3950-4b31-945b-c71ecd53072f
           initial_value: 0
           measure_unit: NoneMeasureUnits.NONE
           name: destination_palletid_3_3
@@ -773,7 +773,7 @@ root: !!FolderNode
         - !!NumericalVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: d07e971f-2a1a-426d-b69d-a9b1d6edde66
+          id: cfdce132-442a-4454-93bc-e543b7c8b889
           initial_value: 0
           measure_unit: NoneMeasureUnits.NONE
           name: destination_palletid_4_1
@@ -782,7 +782,7 @@ root: !!FolderNode
         - !!NumericalVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: ced04d85-b3eb-4852-8d4c-2d5f42cabee4
+          id: 63e33fd4-b705-4e27-9fd2-ca6b721dc5a3
           initial_value: 0
           measure_unit: NoneMeasureUnits.NONE
           name: destination_palletid_4_2
@@ -791,7 +791,7 @@ root: !!FolderNode
         - !!NumericalVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: c6d3a32f-c738-4c7f-a7e8-8a33696f76f4
+          id: 6a0d4353-66d4-45d5-9621-588468bde35a
           initial_value: 0
           measure_unit: NoneMeasureUnits.NONE
           name: destination_palletid_4_3
@@ -800,7 +800,7 @@ root: !!FolderNode
         - !!NumericalVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: d339e864-a1af-4ef7-ae9d-67c9566756f9
+          id: b42b730d-c960-4f72-8c98-7d7f2ee23f3d
           initial_value: 0
           measure_unit: NoneMeasureUnits.NONE
           name: destination_palletid_5
@@ -808,126 +808,126 @@ root: !!FolderNode
             node_id: ns=7;g=018e1115-71d8-f09d-8ddf-c9c992bb9fdf
         - !!BooleanVariableNode
           description: ''
-          id: 36ffff3c-dc6c-420e-80fd-b36f5735ec5b
+          id: 6992acd1-0d32-479b-a4d9-1acb2826e6dd
           initial_value: true
           name: destination_ok_1_1
         - !!BooleanVariableNode
           description: ''
-          id: 25cd8144-bab0-4f70-b723-e9aa6616eac4
+          id: f4776da3-8894-46a6-b792-6d0dd3e1f6d6
           initial_value: true
           name: destination_ok_2_1
         - !!BooleanVariableNode
           description: ''
-          id: 4b3c36c2-22e9-4656-8199-5ecdce115c04
+          id: 7bdc838d-f748-45fe-a324-e6c3d017052d
           initial_value: true
           name: destination_ok_2_2
         - !!BooleanVariableNode
           description: ''
-          id: ad91de7a-593d-41a0-8673-e1ef157f1630
+          id: 8cc871fe-76eb-4703-af38-390c5a32fdbe
           initial_value: true
           name: destination_ok_2_3
         - !!BooleanVariableNode
           description: ''
-          id: 685835c4-cd4f-4a74-9cdb-b2d47b3e7363
+          id: a09f61ce-1f5f-47a2-931d-9013721cc0a3
           initial_value: true
           name: destination_ok_3_1
         - !!BooleanVariableNode
           description: ''
-          id: 1ff84607-36cd-49f6-973e-a97bd40c8583
+          id: 80014898-327d-40e3-bf0b-20522655c469
           initial_value: true
           name: destination_ok_3_2
         - !!BooleanVariableNode
           description: ''
-          id: 80d120d0-5774-441a-a68d-d3f40069703d
+          id: 4f275283-34b0-49de-b3ba-b8dbb5117c3b
           initial_value: true
           name: destination_ok_3_3
         - !!BooleanVariableNode
           description: ''
-          id: ce5bf684-f7b1-42a1-bed5-767d138b89ce
+          id: add2e3f0-bad4-4bb6-bfed-7e2109933155
           initial_value: true
           name: destination_ok_4_1
         - !!BooleanVariableNode
           description: ''
-          id: 792a24f1-6418-474f-b7cb-251f0830d462
+          id: aaee5b62-7281-4bad-957d-d2d2ee264c17
           initial_value: true
           name: destination_ok_4_2
         - !!BooleanVariableNode
           description: ''
-          id: fb237066-c20c-47bb-9220-72a53553d771
+          id: ef5c245e-f158-4295-8aa5-e0fb312398fd
           initial_value: true
           name: destination_ok_4_3
         - !!BooleanVariableNode
           description: ''
-          id: 449a305d-7edb-411c-b187-9153637eb086
+          id: 29a86d8a-8475-45ad-80cd-4a1c1734c543
           initial_value: true
           name: destination_ok_5
       - !!FolderNode
         children:
         - !!BooleanVariableNode
           description: ''
-          id: 3ac95356-1e5d-4686-906d-78d112f3f7e0
+          id: 49676f8c-76f9-41c7-a553-ef74886fdb1a
           initial_value: true
           name: auxBay2
         - !!BooleanVariableNode
           description: ''
-          id: 6c952546-fdbd-471d-8fc1-d0f1750661d0
+          id: d8163557-35f4-4334-a369-33b1704c68ab
           initial_value: true
           name: auxBay3
         - !!BooleanVariableNode
           description: ''
-          id: 6d2db570-cc0e-4013-af80-835c94a6a623
+          id: fc32c398-a012-417f-8f0d-e21940533100
           initial_value: true
           name: auxBay4
         - !!BooleanVariableNode
           description: ''
-          id: b0ece76a-5e5b-45ad-9040-9bc6f2367a33
+          id: cefabfcf-cd41-4ce9-8de4-3181b7627b63
           initial_value: true
           name: auxLoadUnloadZone
         - !!BooleanVariableNode
           description: ''
-          id: 3a897640-4489-41b7-ad0a-feebaad97a1b
+          id: 4aedcc74-ea3d-48e2-b693-056a622e0482
           initial_value: true
           name: ackBay2
         - !!BooleanVariableNode
           description: ''
-          id: a0c8619a-dcbc-4533-b214-b7383246fe09
+          id: f1907550-0b5f-4dd9-aa02-77463ec6d272
           initial_value: true
           name: ackBay3
         - !!BooleanVariableNode
           description: ''
-          id: 8fabdabd-6626-41a1-af82-43152ff200c1
+          id: 95f2fd91-2966-478b-82f9-069fa06630c6
           initial_value: true
           name: ackBay4
         - !!BooleanVariableNode
           description: ''
-          id: 743340b0-442e-4ec5-9935-1dffecea258d
+          id: 5678a5dc-e386-4759-a508-2389ad8815a1
           initial_value: true
           name: ackLoadUnloadZone
         - !!BooleanVariableNode
           description: ''
-          id: 18877f3c-e8bf-42e2-944a-6bce23e9c169
+          id: 30b422e6-27cb-41be-b50d-ef808751de3a
           initial_value: true
           name: denialBay2
         - !!BooleanVariableNode
           description: ''
-          id: 0371ed3f-9030-4dd9-9128-d82e654589a1
+          id: c3fe71b2-306b-433b-a8ec-2bfb4d7c879d
           initial_value: true
           name: denialBay3
         - !!BooleanVariableNode
           description: ''
-          id: 497dd983-524e-4fcd-b510-2250c5aa35e1
+          id: 986ce942-dbc7-422f-887e-931f2b906ae9
           initial_value: true
           name: denialBay4
         - !!BooleanVariableNode
           description: ''
-          id: a077b821-6a3f-4220-97da-a08d5614d17e
+          id: f226eb17-5c7f-4651-aabb-5bbfde2aa152
           initial_value: true
           name: denialLoadUnloadZone
         description: ''
-        id: b83792ed-b79f-42f6-bcc5-d5d7230fa8a8
+        id: 3eaf4f33-82fe-4245-83af-85b854493a3f
         name: Buttons
       description: ''
-      id: 322b1ccd-bd68-4209-a9a5-6c4da17ee0f2
+      id: e497a02b-417c-4607-b4b4-0da7ff1ac880
       name: ConveyorDataExchange
     - !!FolderNode
       children:
@@ -935,166 +935,166 @@ root: !!FolderNode
         children:
         - !!ObjectVariableNode
           description: ''
-          id: 697db8c1-d7c2-43e5-8219-96af01e648b2
+          id: 1c9acb16-c94a-4f29-a63e-f13a3eda38bc
           name: LoadUnloadZone
           properties:
           - !!ObjectVariableNode
             description: ''
-            id: 999022ce-c8d5-4b40-a375-4aef632c6a36
+            id: 09139e47-2c1e-44ab-b81c-fe8783fb369b
             name: IndexPosition
             properties:
             - !!NumericalVariableNode
               description: ''
-              id: 32145ae5-da57-4d21-8a0e-d07490e7e40f
+              id: b62bce23-99f4-4ca1-bcc7-00723ac91f47
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNum
         - !!ObjectVariableNode
           description: ''
-          id: 165fed1d-4788-4fd8-bd66-8b8842de6a17
+          id: efe31b83-7b42-40ce-abf5-88efcf036c83
           name: Bay4
           properties:
           - !!ObjectVariableNode
             description: ''
-            id: efbd4ec1-ca6b-4110-a947-236ea0b60081
+            id: a74c72da-76e2-4df9-b306-2c0fa59f2f16
             name: PalletPosition3
             properties:
             - !!NumericalVariableNode
               description: ''
-              id: a5705ca5-3434-4348-adf5-0bfd92b2fb03
+              id: 951c01f8-1643-4155-9b3d-e26fde061e61
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNum
           - !!ObjectVariableNode
             description: ''
-            id: edcc1129-a49f-4950-bd7a-885cd59f22bc
+            id: 027da912-ba53-4dc1-b688-5ae6cfc23b36
             name: PalletPosition2
             properties:
             - !!NumericalVariableNode
               description: ''
-              id: 29b3dc8b-66e0-455a-b0e1-83a30f5b3fd4
+              id: 56117f30-90e8-4f92-9585-0094ca273c0a
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNum
           - !!ObjectVariableNode
             description: ''
-            id: fe7eedf8-9ff2-4a8e-af74-707e23832c90
+            id: d48be17e-052b-4c62-bb59-0b38e7fc1a58
             name: PalletPosition1
             properties:
             - !!NumericalVariableNode
               description: ''
-              id: d9f1eb00-7350-4a3e-a004-f79027ae9353
+              id: be396b7d-7d09-41ea-bc0e-7726377d9849
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNum
         - !!ObjectVariableNode
           description: ''
-          id: c9c0590b-9bb8-435b-bca8-dd86893e49c1
+          id: f078e22a-4a33-4d2b-b11d-284b6a90163c
           name: Bay3
           properties:
           - !!ObjectVariableNode
             description: ''
-            id: a871b260-3d21-4178-b6f2-69c3cd9699f9
+            id: dcda12d1-bb6b-4ea7-85da-e03a8b12da8b
             name: PalletPosition3
             properties:
             - !!NumericalVariableNode
               description: ''
-              id: a67f87d8-f6cd-4609-907d-8aabac1e2b20
+              id: e66b2272-0c1e-4826-a3ba-050a8295c800
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNum
           - !!ObjectVariableNode
             description: ''
-            id: cfc3483a-d4a7-4106-9414-7ae70a76e928
+            id: d44942ec-15ec-4c2e-adf1-b712c3cbbf0c
             name: PalletPosition2
             properties:
             - !!NumericalVariableNode
               description: ''
-              id: 1da83779-49e0-4553-8f5f-ac2ae159cff5
+              id: eac18467-9d36-4781-af48-9e3fea9f389f
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNum
           - !!ObjectVariableNode
             description: ''
-            id: 31e7ce04-5900-48d5-9970-b05f0c96ca19
+            id: 0d000d21-8637-424a-858a-f2163741a9fb
             name: PalletPosition1
             properties:
             - !!NumericalVariableNode
               description: ''
-              id: 4e9b5762-b5f6-40c4-8731-6f3b0d683737
+              id: 210a8caa-72de-4130-b0e2-10aae047e6ae
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNum
         - !!ObjectVariableNode
           description: ''
-          id: 1da7ca24-95fd-4bc5-b9f2-cb3810389b26
+          id: 1f1b13f0-7fe7-469b-9e56-0309772c4123
           name: Bay2
           properties:
           - !!ObjectVariableNode
             description: ''
-            id: 6fb97b22-c26c-4a36-acfc-82de56546a3b
+            id: c39215bb-9ed5-4030-b7dd-144cbdbde405
             name: PalletPosition3
             properties:
             - !!NumericalVariableNode
               description: ''
-              id: cd45b799-8b46-43aa-ba4a-57e439445e68
+              id: f83f6baa-9a72-44f7-9054-de0d252027a8
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNum
           - !!ObjectVariableNode
             description: ''
-            id: 2c1ee06d-bcc6-45f4-9b56-4981fab6bbed
+            id: bef2b7b8-e201-4d81-8777-d6904bf81dc4
             name: PalletPosition2
             properties:
             - !!NumericalVariableNode
               description: ''
-              id: 5c68df91-04a2-4075-a3b7-02999fb485a2
+              id: 853d49ff-243d-4f10-a91a-2adaf540f8b5
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNum
           - !!ObjectVariableNode
             description: ''
-            id: 88ef7732-78a3-43bf-9727-e95b9813a299
+            id: c324764f-9756-4642-b5f7-2b30980af8e7
             name: PalletPosition1
             properties:
             - !!NumericalVariableNode
               description: ''
-              id: 7a68910f-8b93-48f3-a1d1-90731a842183
+              id: 70dffcf3-0acf-4ea3-acb7-412d47e14097
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNum
         - !!ObjectVariableNode
           description: ''
-          id: c6dd082f-be8f-4cf5-9a62-a9dae02512af
+          id: 241088c2-426b-4c3f-8d7f-0d9880296083
           name: Bay1
           properties:
           - !!ObjectVariableNode
             description: ''
-            id: 387cf509-5779-4b68-b5aa-132bc8b4c864
+            id: c36ded8f-ad3b-4e9d-a6da-c62691a2ae89
             name: PalletPosition1
             properties:
             - !!NumericalVariableNode
               description: ''
-              id: f4a7a51b-e36f-45d9-a315-721d762ac7ce
+              id: d145b7ad-7979-4da6-8b4d-359a127ce313
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletNum
         description: ''
-        id: 82478f24-ff58-4671-99fe-4873dd46c5b2
+        id: b5dded09-40fd-4336-9618-08c12c516cf5
         name: Bayes
       - !!FolderNode
         children:
         - !!ObjectVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 0e5f42c5-0c12-4100-a56c-0d609ee85942
+          id: 6903cf29-053d-4592-b0fe-c96e250fb218
           name: Pallet1
           properties:
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 8a433a4d-84ba-41cc-9424-363da95f4146
-            initial_value: 0
+            id: 0f7fbdf0-528b-439f-95ac-2b33892ad8f5
+            initial_value: 1
             measure_unit: NoneMeasureUnits.NONE
             name: reserved
             remote_resource_spec: !!OpcuaRemoteResourceSpec
@@ -1102,7 +1102,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: a8c5df0f-e10c-4154-ab60-20177dd407eb
+            id: 5132a160-0383-43dc-be05-8bb64a8a72ef
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition1
@@ -1111,7 +1111,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: dbaa78c8-17ec-4a55-913f-a21d21b509f4
+            id: c23886d4-a428-439c-a060-ef42346e1022
             initial_value: 2
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition2
@@ -1120,7 +1120,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: b823fc94-fa06-4069-9700-c7335c37ea2b
+            id: e29d9be4-2678-4bf4-be32-f9acb4b7af87
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition3
@@ -1129,24 +1129,24 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 1344d683-11d5-477f-b17a-84ec9bd169f3
+            id: 8132f80c-5f0d-4d3c-977b-7aea4a1c757f
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: type
             remote_resource_spec: !!OpcuaRemoteResourceSpec
               node_id: ns=7;g=176bccde-ce1b-8a04-f01f-61243f951f81
           remote_resource_spec: !!OpcuaRemoteResourceSpec
-            namespace: ns=7;g=7a49ff3d-6963-3a24-3302-ded7e307ea5f
+            node_id: ns=7;g=a3f7ec0e-a16d-ad49-f5d2-12253b54c069
         - !!ObjectVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 83b550de-aefb-42ab-b7ef-d0d75c5e2457
+          id: 326724d3-4930-4329-962e-0f70842578b6
           name: Pallet2
           properties:
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 7209c9f7-1851-4fd1-957d-e6993516e119
+            id: b97e0665-e12e-4391-81b9-f2d666dd0e1b
             initial_value: 1
             measure_unit: NoneMeasureUnits.NONE
             name: reserved
@@ -1155,7 +1155,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 031f2fa2-c7a7-416a-a192-1852b38e0384
+            id: 7546f5ec-eafc-4a56-9f1e-f3091d68f490
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition1
@@ -1164,7 +1164,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 6f7ad716-d174-4eb7-b22a-d675437dbd58
+            id: 75a6a795-3e54-49d5-9533-4ecbc86c1d80
             initial_value: 2
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition2
@@ -1173,7 +1173,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: b0dda6c3-d25c-4df4-8e33-617f45d2840b
+            id: 940b401c-47ff-45a1-bfbe-df77985c0948
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition3
@@ -1182,25 +1182,25 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: e043c9b7-8d07-4844-ab3a-1b9316ce0676
+            id: 071063f8-5c08-4242-b2bc-46c7caad40d4
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: type
             remote_resource_spec: !!OpcuaRemoteResourceSpec
               node_id: ns=7;g=772da22e-f51f-5883-8a09-a955f00e7a7f
           remote_resource_spec: !!OpcuaRemoteResourceSpec
-            namespace: ns=7;g=7a49ff3d-6963-3a24-3302-ded7e307ea5f
+            node_id: ns=7;g=68cf8ad1-760a-0763-9a1c-c86dd5e1a905
         - !!ObjectVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 4e8982b3-9f62-48dc-804a-7d8262a221eb
+          id: 8c8cb85d-c29d-4235-a797-ad6718a284c1
           name: Pallet3
           properties:
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: a164a17c-da7f-44ca-9e22-7cec13158687
-            initial_value: 0
+            id: e898dcc5-b535-4f87-94f0-99a30ad63ae3
+            initial_value: 1
             measure_unit: NoneMeasureUnits.NONE
             name: reserved
             remote_resource_spec: !!OpcuaRemoteResourceSpec
@@ -1208,7 +1208,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 014b1d22-31c5-40a1-96dd-de611bd04b06
+            id: 7d103ba3-0030-4d25-994a-14482ca1de35
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition1
@@ -1217,7 +1217,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 5ebc14be-7781-419e-b25a-392bb0692083
+            id: 9af07d28-fdcd-4736-945d-3bc8bab2f140
             initial_value: 2
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition2
@@ -1226,7 +1226,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: b9b00241-8539-4d7f-aec3-ffba87bcade0
+            id: 35253262-2c10-4c69-a516-cdf1df4f107a
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition3
@@ -1235,25 +1235,25 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: be310382-c22b-41c7-8c01-1e80eab1688c
+            id: c4ae3db8-f623-4b39-8d11-68544e3c82db
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: type
             remote_resource_spec: !!OpcuaRemoteResourceSpec
               node_id: ns=7;g=22d2f1cb-b807-3124-f1c5-69e688f44b00
           remote_resource_spec: !!OpcuaRemoteResourceSpec
-            namespace: ns=7;g=7a49ff3d-6963-3a24-3302-ded7e307ea5f
+            node_id: ns=7;g=4edd7c1e-0fbf-3a03-14db-64a08f98b8aa
         - !!ObjectVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 41b0470e-8114-45a2-9915-e5b933e83847
+          id: 9ea07027-5875-4e34-8d52-00d1bb36f951
           name: Pallet4
           properties:
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 8a47759f-17a9-457c-bf1a-483097a47310
-            initial_value: 0
+            id: b7ab9338-b48b-4d6d-9fc3-8986a103c778
+            initial_value: 1
             measure_unit: NoneMeasureUnits.NONE
             name: reserved
             remote_resource_spec: !!OpcuaRemoteResourceSpec
@@ -1261,7 +1261,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 31ee6ecb-b94e-4f7f-8238-e9ac0880b003
+            id: a0a56d0c-095a-46f1-9322-b89dd23badcc
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition1
@@ -1270,7 +1270,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 29411053-9aa4-4b8f-a25c-d4dd8e575ac6
+            id: 268e9f67-0324-4b87-a8f0-b08d30fe5a9a
             initial_value: 2
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition2
@@ -1279,7 +1279,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 468d4eb9-3612-42e1-bc36-ee9b7f024b56
+            id: 060c25b9-f217-4788-9e2e-ca02e5538af9
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition3
@@ -1288,25 +1288,25 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 9abf43ad-42ac-499d-8f3a-fe1c261ff80f
+            id: 09868b0d-6d6a-4cd8-8bb1-24dd2f5949b7
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: type
             remote_resource_spec: !!OpcuaRemoteResourceSpec
               node_id: ns=7;g=1d795f1d-917f-9763-86d3-89dccb25e627
           remote_resource_spec: !!OpcuaRemoteResourceSpec
-            namespace: ns=7;g=7a49ff3d-6963-3a24-3302-ded7e307ea5f
+            node_id: ns=7;g=d95b2226-cf41-3e42-bf04-616232aa7c84
         - !!ObjectVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 080ba020-11fc-4f6b-9b93-8d953c3d9418
+          id: a024525d-a25c-4450-9dd7-45e531651044
           name: Pallet5
           properties:
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 81317fa0-796e-4368-93b5-11597e52e24d
-            initial_value: 0
+            id: 57e5a1f4-4ec1-4f27-b584-2ef64e44258c
+            initial_value: 1
             measure_unit: NoneMeasureUnits.NONE
             name: reserved
             remote_resource_spec: !!OpcuaRemoteResourceSpec
@@ -1314,7 +1314,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 3e4ce89c-452f-4340-823b-eb0a71d06eb3
+            id: 5a255ab1-a598-4113-b1c1-66db5346d296
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition1
@@ -1323,7 +1323,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 0f206094-db5a-43d2-add9-956059930fef
+            id: 6e92c614-d107-4be5-8ebb-f46859c46ed7
             initial_value: 2
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition2
@@ -1332,7 +1332,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: e358f1a7-d020-4b46-bf8b-bdd59b195ccf
+            id: 824887ae-8475-4fe6-abd6-7c4d148a1456
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition3
@@ -1341,24 +1341,24 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: a19316c3-3879-47c1-b97a-e5caa4bbef4d
+            id: 617b3a44-049a-4e82-bdf4-fccb5a3fb653
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: type
             remote_resource_spec: !!OpcuaRemoteResourceSpec
               node_id: ns=7;g=23d8a6e7-026f-a808-8bb3-73b3b7adf1f4
           remote_resource_spec: !!OpcuaRemoteResourceSpec
-            namespace: ns=7;g=7a49ff3d-6963-3a24-3302-ded7e307ea5f
+            node_id: ns=7;g=af35f21c-daa6-54c8-414e-8342926c5a80
         - !!ObjectVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: bc89e57e-039a-4d51-aadb-9ca16a01f379
+          id: 9b27b1b5-d560-4fa0-aa0e-b2a331dd1986
           name: Pallet6
           properties:
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: f75c8aab-0a4f-4cb7-a803-ae15e0c5de31
+            id: 440a0d4e-1c57-4714-959d-ae0c992bd14c
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: reserved
@@ -1367,7 +1367,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: ccbd950d-1920-4095-a2c6-b8724763ebee
+            id: 5550f707-b2ff-4caa-b946-8c8ae43067c0
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition1
@@ -1376,7 +1376,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 43446ce9-c671-41b6-80aa-9171b8967e65
+            id: f4f6e37e-2f6b-49e6-aede-2f67019d818e
             initial_value: 2
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition2
@@ -1385,7 +1385,7 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 34b11576-4077-4ef6-b2c6-b547ce59b2ff
+            id: da6a88d2-c9a4-4f64-995b-4b263efa4f0d
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: contentPosition3
@@ -1394,39 +1394,248 @@ root: !!FolderNode
           - !!NumericalVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 0b5e9154-ec5c-4d24-857d-8a8286a8b309
+            id: b04e5ad3-1b8c-4d8e-ad09-574d24a339de
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: type
             remote_resource_spec: !!OpcuaRemoteResourceSpec
               node_id: ns=7;g=d052b3c9-0a95-c4a1-25ac-28dde4bd7ff0
           remote_resource_spec: !!OpcuaRemoteResourceSpec
-            namespace: ns=7;g=7a49ff3d-6963-3a24-3302-ded7e307ea5f
-        connector_name: OpcuaConnector1
+            node_id: ns=7;g=b9366a47-fc53-379c-582c-92c9aedc1a55
+        - !!ObjectVariableNode
+          connector_name: OpcuaConnector1
+          description: ''
+          id: 2af322fc-bbe6-44ab-a854-67015a24da30
+          name: Pallet7
+          properties:
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: b6f1794c-62a7-47d7-8fde-6043edfdda06
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: reserved
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=541ad6f8-5b2e-8c5b-d632-cbd2c8f2a942
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: b91fb68c-2e48-4b7b-b4d7-7339f8bdac5e
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: contentPosition1
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=0252e6a6-6df0-cdae-5b3e-3945c8495e67
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: 56eed643-6564-40d6-9d79-c889547a3523
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: contentPosition2
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=220053a1-8114-600e-46a1-526631f3ab90
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: 34d91cd3-7b73-496d-b094-7cab35178666
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: contentPosition3
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=b3601134-e198-d140-4ab6-e2603e1d490d
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: 7c45a3c5-11ea-4823-98d6-27638796cb11
+            initial_value: 1
+            measure_unit: NoneMeasureUnits.NONE
+            name: type
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=12585c79-2156-03cf-7f2b-279030702730
+          remote_resource_spec: !!OpcuaRemoteResourceSpec
+            node_id: ns=7;g=fefe6941-0358-9125-c6e5-78075f5fded5
+        - !!ObjectVariableNode
+          connector_name: OpcuaConnector1
+          description: ''
+          id: d4e4a0b2-8e19-49d0-a1ae-21356e2ff6c1
+          name: Pallet8
+          properties:
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: 7e9e8d10-c645-486e-b2fe-2dbebd9b7356
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: reserved
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=27a93a26-88a4-a201-b115-9af1b4ecae95
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: 0a4edd1a-111b-472a-ae3a-cd7670de231e
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: contentPosition1
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=d2022e78-f1ff-a1d8-f945-5f01f1e36064
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: c5f77f88-692c-4943-816f-8b1c31c8b51b
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: contentPosition2
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=75c0c920-d582-5b57-31e7-3a42bf5c2e63
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: 4044cece-8b04-4286-a96c-a6ffef786c18
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: contentPosition3
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=2d557813-6328-5cbc-1755-b1cada1cb6a7
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: a321dc82-d9bf-45c1-aff3-68cd27c3d66a
+            initial_value: 1
+            measure_unit: NoneMeasureUnits.NONE
+            name: type
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=52a0201b-00b3-1bae-cd17-f6ecba58f15b
+          remote_resource_spec: !!OpcuaRemoteResourceSpec
+            node_id: ns=7;g=4a566262-dc01-95d6-684c-177fe09f4aea
+        - !!ObjectVariableNode
+          connector_name: OpcuaConnector1
+          description: ''
+          id: 4e7bfa75-321c-4202-a936-b9b4352525db
+          name: Pallet9
+          properties:
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: 7e0fa6a2-62d2-40c7-85a5-b6640c670844
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: reserved
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=8169ce11-b147-682e-4d39-b6c8c93629c1
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: 7b2ff930-eefb-4c66-ab6f-cda1e74974a6
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: contentPosition1
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=24416cfb-5cbc-f032-3aed-3cf098ea31ac
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: ef83985b-843a-4c43-9563-c43a8a9218d8
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: contentPosition2
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=386a5ea7-c553-981e-09d8-61f7d5b1b359
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: a446bc83-045f-4f8f-b162-47231a47b4bc
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: contentPosition3
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=59fab152-0bae-1b39-1bd2-fdca9dd35dee
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: b5c5e247-423c-4252-8c20-c4812f934c3a
+            initial_value: 2
+            measure_unit: NoneMeasureUnits.NONE
+            name: type
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=2a8a19d0-07a1-8527-eae5-03c67e349630
+          remote_resource_spec: !!OpcuaRemoteResourceSpec
+            node_id: ns=7;g=8d0b82a4-987a-ec85-d14f-7fe77e371454
+        - !!ObjectVariableNode
+          connector_name: OpcuaConnector1
+          description: ''
+          id: 62742999-dd28-4e5b-b001-75b0e462beb5
+          name: Pallet10
+          properties:
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: 0570851e-00a6-4aeb-9778-07f3f752844e
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: reserved
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=50b87231-2af7-a5a8-96df-599ca9e6936c
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: 61210a0d-cfb5-4918-83b1-b4778773942b
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: contentPosition1
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=2e8c222f-4b74-496b-aa3f-219e38473655
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: 22f2c961-4e99-4aa9-83fc-9998d2eb6693
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: contentPosition2
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=56c5f447-bed4-5e9d-fc23-628b72489d8b
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: 5909f0b8-91ee-42e5-8c94-7b9a0c26775c
+            initial_value: 0
+            measure_unit: NoneMeasureUnits.NONE
+            name: contentPosition3
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=17162d2b-77a8-d775-3187-4afeecd2fe25
+          - !!NumericalVariableNode
+            connector_name: OpcuaConnector1
+            description: ''
+            id: b34e4c3c-4e21-44eb-8050-6cd4388161d6
+            initial_value: 2
+            measure_unit: NoneMeasureUnits.NONE
+            name: type
+            remote_resource_spec: !!OpcuaRemoteResourceSpec
+              node_id: ns=7;g=05d42a60-8f90-ed47-87d0-068a68cce2f6
+          remote_resource_spec: !!OpcuaRemoteResourceSpec
+            node_id: ns=7;g=8940a6fc-0679-b2a6-aec4-99bfba13df68
         description: ''
-        id: 2e4b4b98-bb2a-46dc-9f6f-82ac285dbd95
+        id: 1a197036-320c-4056-953a-0f1e3175a07f
         name: Pallets
-        remote_resource_spec: !!OpcuaRemoteResourceSpec
-          namespace: ns=7;g=7a49ff3d-6963-3a24-3302-ded7e307ea5f
       - !!FolderNode
         children:
         - !!ObjectVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 6f379854-af88-4405-980e-b7f749cf82ba
+          id: b58ca0e0-5dda-4458-b0fe-5ace95865d63
           name: Segment1
           properties:
           - !!ObjectVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 098816b2-4f33-423f-87f0-b107190fa4c9
+            id: 695a3479-12b9-42cf-a294-19897d55f7cc
             name: FIFO
             properties:
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: c46a5308-1bc1-442c-9b92-19a1f14cfdde
-              initial_value: 2
+              id: 2ffa09ad-9002-4090-b085-0e04e92a8013
+              initial_value: 1
               measure_unit: NoneMeasureUnits.NONE
               name: size
               remote_resource_spec: !!OpcuaRemoteResourceSpec
@@ -1434,8 +1643,8 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 64bfcbed-51d6-457f-b2ca-29a8aa59f2d7
-              initial_value: 4
+              id: 2f269cb8-817b-4f8b-ab8a-67c220ad788d
+              initial_value: 9
               measure_unit: NoneMeasureUnits.NONE
               name: item0
               remote_resource_spec: !!OpcuaRemoteResourceSpec
@@ -1443,8 +1652,8 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 3f2873df-9a6a-4ff6-897e-49549cc9a84a
-              initial_value: 7
+              id: c1115c24-073c-43e2-891a-741358cf41b9
+              initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item1
               remote_resource_spec: !!OpcuaRemoteResourceSpec
@@ -1452,7 +1661,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 3e121435-9cba-4459-b2e3-578d1a709542
+              id: e88318ba-9903-4825-9fb8-7aed3ce3f4ee
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item2
@@ -1461,7 +1670,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: c2d5a26b-bbc8-4cda-b277-4508e08cf121
+              id: b628d761-f135-4ba6-bb6b-44552b94e153
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item3
@@ -1470,7 +1679,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 56da6a60-653f-4f35-aefd-3a88b76f19e6
+              id: 773b025f-1907-4d50-8548-fa6d84a522f8
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item4
@@ -1479,7 +1688,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 8e07384a-d6f8-4851-a0f0-a12d2d3b913b
+              id: 7b7c8fbd-b05a-4d1c-9438-8d1a10e3fcc1
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item5
@@ -1488,7 +1697,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 6dfa5abd-7557-4629-8e2c-bb0c999dcd10
+              id: c4376144-9085-4e0b-bc0d-42d30877e429
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item6
@@ -1497,7 +1706,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: f14dab22-f534-4aac-98d2-9b2dd3e102ac
+              id: f9105fcb-63c0-4201-95d6-3aad15d9093d
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item7
@@ -1506,7 +1715,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 968e5c3d-9119-42aa-a5d2-f737a3adfbe2
+              id: d72dc141-aff9-4556-9ba6-100ec5f78639
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item8
@@ -1515,7 +1724,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 64eabc7c-bfc2-42ec-bb12-d0b36eadf5a1
+              id: 10ada583-2046-40ef-9a26-8b36bf4a7835
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item9
@@ -1528,19 +1737,19 @@ root: !!FolderNode
         - !!ObjectVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 4fbfa97f-86c8-4e91-b0a9-e1156ed41e79
+          id: 039122ff-f5f0-4819-a6a4-14ed8696f1e3
           name: Segment2
           properties:
           - !!ObjectVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: b429c0de-d2d3-4b8c-8116-2e4e5bcd29d6
+            id: 5ce2c6e9-0f92-479e-9d29-f5792fbc1d2a
             name: FIFO
             properties:
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: da0917c8-29d7-4fc1-8a1f-a5e53f123331
+              id: f339bb82-b985-4f37-a57d-cbf9a0bd6820
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: size
@@ -1549,7 +1758,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 1666f260-b9a8-4ba9-8135-992ba8599697
+              id: 4c863eae-0471-4cca-8ecb-a1de04826a5b
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item0
@@ -1558,7 +1767,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 6b73f956-d5f2-4ff6-acd8-76c61dd04b1b
+              id: 24b791a9-aeb2-45ed-ad9d-df8a5dc3f403
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item1
@@ -1567,7 +1776,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: ec63b1ef-179a-4f4b-a5b0-b8f6dbb0860e
+              id: 96deb140-1196-4c87-b3bf-290724f12de0
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item2
@@ -1576,7 +1785,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 57399182-f758-4951-b640-1dd6aaecfb52
+              id: b35e23a0-e967-47c1-928e-d9db292525fe
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item3
@@ -1585,7 +1794,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 91e030a0-7bfb-46cc-b333-4f48bc89752b
+              id: af52b208-a176-4d8a-9b2f-33e734fbaace
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item4
@@ -1594,7 +1803,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 122f0ea1-33ed-437f-9363-2e08accee6e6
+              id: 5a7e9673-2153-4f4e-8fac-75978c04ff24
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item5
@@ -1603,7 +1812,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: c4af7a6f-e5ab-46b9-8d44-80843dbc209f
+              id: 6a327b42-a056-4d4b-8e50-3dccb0bff5e6
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item6
@@ -1612,7 +1821,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 3d91ce32-130b-4a02-a6f9-e909d96c8f65
+              id: 531c2b24-38cc-4492-9c3a-ff686e1312d4
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item7
@@ -1621,7 +1830,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 84a6ebb3-b80a-47a2-9303-091b885608a9
+              id: f0e86a15-d9f0-44cb-adec-ff4479fc2cce
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item8
@@ -1630,7 +1839,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 965c8ac8-3a6d-4bcf-9899-acbb0a81e4ad
+              id: b61027a6-2102-4866-b1b4-71f61fb0826a
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item9
@@ -1643,19 +1852,19 @@ root: !!FolderNode
         - !!ObjectVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: acf3062f-13d0-423c-b6b6-f677fa2be342
+          id: 9d0b2a86-f3f5-488a-b827-ca9f748b9d97
           name: Segment3
           properties:
           - !!ObjectVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 462fbbea-ed26-4e05-a624-87d6a93a22d7
+            id: 38241e97-bc3c-4f23-a749-b188d718524c
             name: FIFO
             properties:
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 52d71ea5-4df0-4b81-bab8-4716d3770a40
+              id: bbd3c049-6607-4eb3-b8d4-8baab5d3bc0e
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: size
@@ -1664,7 +1873,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 9e1398c4-ecf4-4943-b590-b402c6fe6a8b
+              id: f166ac63-ed2c-42aa-ae02-aa9db6204fd3
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item0
@@ -1673,7 +1882,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: c7203ad1-67a4-4c08-8f10-00c69c27de0e
+              id: 87b79f5a-52bc-4742-9ab3-607fd0f60c32
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item1
@@ -1682,7 +1891,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 3ca1b3ec-1728-4171-a4d5-185b53f9bd5b
+              id: 804f1741-6ee7-4eb6-b909-da1b27508fc9
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item2
@@ -1691,7 +1900,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: ce668ece-530b-453f-b759-d203baed116b
+              id: 4ae3d7c1-92b6-48b8-a836-927fe4020e0c
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item3
@@ -1700,7 +1909,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: b3daf205-1a00-471f-8a32-d694544e77e4
+              id: eaaa7672-cf07-41de-b65c-0229a60f8061
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item4
@@ -1709,7 +1918,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 10ee7136-8d84-4411-92c8-96bd451d4a15
+              id: 849c4a40-fc2a-42aa-a9b0-30b609ff5dd3
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item5
@@ -1718,7 +1927,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: b775f09e-00b6-4d19-b392-53f4ee332c8d
+              id: b9c57027-d86c-4c0f-b5ad-ee4763a48d58
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item6
@@ -1727,7 +1936,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: db853537-13c0-49b0-a358-3d44dd13d540
+              id: 8fea07db-0fc5-4f01-ae40-9557560d8c5b
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item7
@@ -1736,7 +1945,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: fc3bba5b-ab0a-4a38-ab6b-af0bfa235749
+              id: b9f4d8ea-2249-4199-b683-33417e33735b
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item8
@@ -1745,7 +1954,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 60c6db10-24cb-4efe-8e98-5293b90cdcea
+              id: 87d1e23d-a733-43c5-b4c7-6e896aaa2c85
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item9
@@ -1758,19 +1967,19 @@ root: !!FolderNode
         - !!ObjectVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 9d67e0f0-e795-48a0-b914-f73a29b1983f
+          id: 2e77e9d9-779e-4ccf-b735-196dbc9669b4
           name: Segment4
           properties:
           - !!ObjectVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: c885eb41-1400-43e4-aa29-d7b7359ed77b
+            id: 2c7ea240-b40c-4a80-8920-8ebf2c469b00
             name: FIFO
             properties:
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: b2284b78-1f39-4ea4-888c-533ca864a612
+              id: c92e34b9-51da-4a19-8f9a-6e20d1405bf9
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: size
@@ -1779,7 +1988,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: b02e44dd-319f-4a7f-a68f-b6823c09163b
+              id: ae199a60-8886-45f5-8def-30c007a2a59c
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item0
@@ -1788,7 +1997,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 081feb2f-b103-4c1d-9cec-f122406a6e43
+              id: a0ce0a2c-24d0-44cb-ba9e-c8c1a64ea76e
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item1
@@ -1797,7 +2006,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 93cafccd-11e7-448b-9ec6-137c459264b0
+              id: f5004a5e-e839-484c-9bd7-40f27e8ab248
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item2
@@ -1806,7 +2015,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: d3b3bd90-47ab-40cb-99df-2c738a9e9452
+              id: 18286850-609b-4b3f-91b6-85d940242fc2
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item3
@@ -1815,7 +2024,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 2eaae5c3-d39d-4223-b478-4081732963b0
+              id: 66400f93-71c8-4327-b7cf-f4f9ec685e0b
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item4
@@ -1824,7 +2033,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 701b9029-b057-4d11-b93f-4c40a8b70779
+              id: 3fd28afd-8801-45a9-96ca-78fed08dcc79
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item5
@@ -1833,7 +2042,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 13df46c0-2d73-4ac1-a7a0-c103c70d5eeb
+              id: 71c2ebcd-233f-47bc-940b-89a7ef76bef2
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item6
@@ -1842,7 +2051,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: e4812a1b-e9c9-4524-9330-bffefc0d69a8
+              id: 1c1f7f96-3d9c-4981-a7a6-b41615c2838e
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item7
@@ -1851,7 +2060,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: ee29e078-0ef0-43a2-afcc-948f2512f907
+              id: 0ac54acb-3d9b-4d84-bf5e-3566fa49c5cf
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item8
@@ -1860,7 +2069,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 1acea42b-d0d5-4011-9cb6-ecf884c56a78
+              id: 1f5ee731-66c0-46b8-9e24-02c327ff291d
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item9
@@ -1873,19 +2082,19 @@ root: !!FolderNode
         - !!ObjectVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 8538ceb5-3f7a-4b20-9e2c-19936478d1e0
+          id: b2a0e17a-bb11-42a4-bb1c-22a6d70e6fc0
           name: Segment5
           properties:
           - !!ObjectVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: fd6153c3-629a-4750-b14f-12f67b7ab462
+            id: 6958a4e3-4dc2-42a6-885f-6d5c23a189a0
             name: FIFO
             properties:
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: d8a21f43-b689-4fd6-8127-3b53aeb39f1e
+              id: 696b2a7b-2146-4bd8-aabd-4f4d1c2b649f
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: size
@@ -1894,7 +2103,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: caf83a6d-3448-4936-934e-0255d4c346dd
+              id: 08455896-0fa2-4da7-a5d7-2cd0060150b0
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item0
@@ -1903,7 +2112,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 9cb422d7-e8dc-46d5-ab59-bbe8fbd27c4c
+              id: 2cca2b8e-6309-4f59-be12-caca587a8c7e
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item1
@@ -1912,7 +2121,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: dc7ac43d-765d-44d5-ae5b-99c64a290328
+              id: da9611aa-3891-4001-9e65-a9c9dced762c
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item2
@@ -1921,7 +2130,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: f3c6d591-2359-4574-a0de-1f80b6314901
+              id: eac08fb7-81c1-4312-bddd-8be18767d336
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item3
@@ -1930,7 +2139,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: ff2f4b46-3dda-4453-91cb-acd433a32334
+              id: 89228e18-1a37-4d50-96c9-b373a41f56bd
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item4
@@ -1939,7 +2148,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: f453b6f0-4756-4f04-a127-4942670ac168
+              id: a2c2ba96-1d87-46c3-be55-7853ee706df6
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item5
@@ -1948,7 +2157,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 098fc6dd-256a-42e5-9a6e-84ed6965d940
+              id: 52ae19df-797f-4021-81c6-818e61544933
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item6
@@ -1957,7 +2166,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: b5ee9d3f-6b99-493d-8696-b611545dcb39
+              id: acfe7ddd-be9a-4b44-9347-39eff960d9d6
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item7
@@ -1966,7 +2175,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 80a487c2-9d21-468d-add1-5c8c96bc32ec
+              id: b109028a-29c3-4f24-ae9a-46eb886008b5
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item8
@@ -1975,7 +2184,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: bb54b1f7-685b-4324-8e76-f45d8d634297
+              id: 4aeb8cd8-e278-46d7-a2e0-0ab4a8819bba
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item9
@@ -1988,19 +2197,19 @@ root: !!FolderNode
         - !!ObjectVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: fc1c017d-370d-4e21-962b-f0c22918a675
+          id: 7ffffc37-5fdf-4682-a7ed-c76a6320907c
           name: Segment6
           properties:
           - !!ObjectVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 7cf7330c-c32e-4545-9aa7-8ece25e45a98
+            id: 9fe85c20-816d-47ef-8e9e-bfad06300f5c
             name: FIFO
             properties:
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 26d511d1-4c74-4f04-af4a-eb1470486cb6
+              id: 2ad8237b-a795-454d-8173-cc18a2788902
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: size
@@ -2009,7 +2218,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 9ce1893a-477f-4044-9be8-d0cf7628b0e7
+              id: 9e5f26fa-bb31-4b8b-ba52-d720c64eb7a5
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item0
@@ -2018,7 +2227,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: b8a05f17-9fff-45c6-bfd0-a6fa62986351
+              id: a15208c6-151c-4336-aee7-d48b55bfb800
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item1
@@ -2027,7 +2236,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 619b8565-9aea-4cb0-8908-a42f1bf32b1e
+              id: 20e2a110-6dba-4bad-81fa-06b01a1b1086
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item2
@@ -2036,7 +2245,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 54d888a2-6d51-49d7-acee-2d5e7edc84af
+              id: 61064726-cbd0-4b5a-b6ea-3d72e2c54ec4
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item3
@@ -2045,7 +2254,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 2f8e271d-d07b-4d31-b101-be3e6ed3ed91
+              id: 0fd83ed4-1cd8-4c0e-b51c-76b4cd4c93a8
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item4
@@ -2054,7 +2263,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 32e29938-690e-4fc4-850a-b4d250a3be47
+              id: 1bfe29e9-a871-4f81-b01d-8e66a8632294
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item5
@@ -2063,7 +2272,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: c6e182ef-4be6-418e-8287-9755a4793d4b
+              id: bc8c7e3a-30bf-4907-8af2-cdcfe1ee188f
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item6
@@ -2072,7 +2281,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 37fde443-60a2-4ae2-ab24-a67f32ae7a02
+              id: fd3994c9-6741-4eae-b962-a3dc8a0b92dd
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item7
@@ -2081,7 +2290,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 624ce7a4-2121-4d95-b8e0-2cb801dc76fc
+              id: 6ac78a1c-213d-4de3-ad69-8727c487d58c
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item8
@@ -2090,7 +2299,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 0bfba645-9f29-430d-9cee-e92280fc0c38
+              id: 9c71bd3f-496b-4c67-9f12-3b6812f7673a
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item9
@@ -2103,19 +2312,19 @@ root: !!FolderNode
         - !!ObjectVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 8af00362-7f6c-4171-9e53-4b8bc190c006
+          id: fd9817a1-455e-4d9f-8f9c-af1dde9d075f
           name: Segment7
           properties:
           - !!ObjectVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 9d67f71c-21b9-4b83-a0e5-f7401b0068f9
+            id: e2d71b56-b978-45d1-b97a-3e5add2992b5
             name: FIFO
             properties:
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 0e6557c5-5903-47d2-ac32-5bb1e3417238
+              id: a244c4be-5b46-4bd3-9314-a9ee230643eb
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: size
@@ -2124,7 +2333,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 4b2d8542-318d-46e1-999f-f7aa54f79d28
+              id: 58949755-e8de-493d-bcdc-dc5f4fbf2116
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item0
@@ -2133,7 +2342,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 9395089d-639b-41b0-a9bf-ec239bb258f6
+              id: 1744345b-b350-48c2-9e31-8c93dbbf3d29
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item1
@@ -2142,7 +2351,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: d7234289-1fbf-40c8-9869-2a06ebbdc717
+              id: 250850a1-18e6-4188-9e15-93c6d84f8cbc
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item2
@@ -2151,7 +2360,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 7348da33-1de5-4c6c-9ede-429423a821e6
+              id: c46bb95b-f3b8-44fa-a10b-2c9767667e24
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item3
@@ -2160,7 +2369,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 06c67784-e717-4ef2-ad96-192bf45a1b4d
+              id: 44577df1-dda2-4f58-9021-c805121c62c0
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item4
@@ -2169,7 +2378,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 171e264f-234c-48e4-a900-5548a08b5e4b
+              id: b013c015-736a-4273-a358-9abed8b0b477
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item5
@@ -2178,7 +2387,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 779eb0aa-5591-4c07-afe3-4e1c37ea4320
+              id: 24f4d612-e06e-4c17-b413-401b9343e2ed
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item6
@@ -2187,7 +2396,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 195178f2-5320-4572-8cc6-584bf76fed03
+              id: 0ee40bbf-6e88-4135-9e54-f97929c9c323
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item7
@@ -2196,7 +2405,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 42451af8-f927-4ca6-b7d7-ae367fcfe30b
+              id: 5b6e06b1-8841-48fc-a05d-6f88c2d7d348
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item8
@@ -2205,7 +2414,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 2d4abf24-5f1e-4501-b83b-3608a8ed8c9b
+              id: f3154766-80e9-413b-b6dc-7eba3a9496cd
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item9
@@ -2218,19 +2427,19 @@ root: !!FolderNode
         - !!ObjectVariableNode
           connector_name: OpcuaConnector1
           description: ''
-          id: 889d6e3c-660c-4a98-8333-ce646ee80b46
+          id: 9f72025a-3462-47be-81df-c722a106a830
           name: Segment8
           properties:
           - !!ObjectVariableNode
             connector_name: OpcuaConnector1
             description: ''
-            id: 144de45a-9895-4d36-b420-89dcfee18346
+            id: 2a78932a-0729-453f-9dd7-1aa0baeacddb
             name: FIFO
             properties:
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: dd95eea6-af9c-4c80-bfea-7ebbd08244ec
+              id: 9366763a-cac8-404b-b67f-b4e76b4edcd3
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: size
@@ -2239,7 +2448,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: c3a1f450-efec-4b88-9b07-fd5ffe5f52f6
+              id: a16c9ca9-82e7-4bd2-b46d-863764007e12
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item0
@@ -2248,7 +2457,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 60a946b7-e866-4e79-8a0a-152c833fc1b2
+              id: ad675ee0-37c6-4137-b72f-02d39aecc004
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item1
@@ -2257,7 +2466,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: b86d28dd-edd1-4938-b4fd-dfa737f96e7e
+              id: a35664e2-dcbc-4b60-ade7-0a8508f9d025
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item2
@@ -2266,7 +2475,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 51650ece-b6b2-4bd0-a0ea-ab8d98f1c7ef
+              id: e5a961f5-ee86-48b9-91ee-f775662c8712
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item3
@@ -2275,7 +2484,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 5edadd80-ab5f-482e-855e-94f05f47e4ce
+              id: 493e4bf1-8274-4124-a783-295b8d782850
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item4
@@ -2284,7 +2493,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: d9c62c79-5950-44cb-b944-6a28754933ae
+              id: 729cff03-b215-4cd9-8273-bd0ad1cae7c1
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item5
@@ -2293,7 +2502,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: ccc043e0-ecca-4c1c-b978-382344c5711b
+              id: 8e976ded-545b-4dfd-adb0-88bea19735bb
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item6
@@ -2302,7 +2511,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 420597cc-7eca-46a4-bf58-72e3226581a2
+              id: 833f48f1-f6bb-4601-b967-d1e1e8ca8854
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item7
@@ -2311,7 +2520,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: 2f6a546c-6625-4c54-99ce-ec8808705838
+              id: 77bec11b-bd5f-4783-956c-2c97742617a5
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item8
@@ -2320,7 +2529,7 @@ root: !!FolderNode
             - !!NumericalVariableNode
               connector_name: OpcuaConnector1
               description: ''
-              id: eeda060a-3bfe-41f9-9261-39b298bd9cad
+              id: 5ecb1861-5349-4367-9a99-5df02622310e
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: item9
@@ -2331,400 +2540,400 @@ root: !!FolderNode
           remote_resource_spec: !!OpcuaRemoteResourceSpec
             node_id: ns=7;g=3aca9669-7db1-a9c5-87af-8d50951e0be1
         description: ''
-        id: f1464ab2-2b22-4203-affc-a4378ef335cd
+        id: dde73004-c88a-4b6d-a5f3-71a0764d17cd
         name: Segments
       - !!FolderNode
         children:
         - !!BooleanVariableNode
           description: ''
-          id: 7d0ae6bc-2f62-457e-b618-5a2c72d15e52
+          id: c2191dad-10ba-49ce-8512-060df1167a01
           initial_value: true
           name: modeAutomatic
         - !!BooleanVariableNode
           description: ''
-          id: a258b2dc-9543-495a-b6b4-0bd63067bfda
+          id: fbb56729-386d-48e4-87b4-22e65b4e2865
           initial_value: false
           name: modeManual
         description: ''
-        id: b4e38e6c-fb09-4353-b5ae-7d47c46aa7a4
+        id: e3eea807-3239-4d8c-92f0-6aaa8445ddc4
         name: RunningMode
       - !!FolderNode
         children:
         - !!ObjectVariableNode
           description: ''
-          id: d95f1420-3644-49dc-869c-9280daf3f5bd
+          id: 59d887f8-70cf-4988-8e62-057653cab943
           name: LTUWarehouse
           properties:
           - !!NumericalVariableNode
             description: ''
-            id: a7d09bbe-90c1-45d9-9d85-9afff4961ee9
+            id: 915c9331-0378-43a1-9878-54415a7f643b
             initial_value: 0
             measure_unit: NoneMeasureUnits.NONE
             name: pallet
         description: ''
-        id: 503ba63e-1ca6-49a5-b793-366651619aa9
+        id: 96801c5f-ecc5-4083-a2e6-4fb203335fa1
         name: LTUMainBelts
       description: ''
-      id: 40cb9ccc-50a2-477f-8d1b-4b48a0c02c76
+      id: bbcc7826-eaa7-49d6-a2a7-80d9e5e8220a
       name: ConveyorObjects
     - !!FolderNode
       children:
       - !!BooleanVariableNode
         description: ''
-        id: 68442391-c789-469d-b782-6a733e4311b7
+        id: 78549675-ba80-48ad-af77-687b41e1b47c
         initial_value: true
         name: PANEL_ENABLED
       description: ''
-      id: 18861d2d-9a32-446b-bc5e-da7e1782ae81
+      id: 9a594333-8863-4f57-86d4-8c585a0fd317
       name: ConveyorHMIVars
     - !!FolderNode
       children:
       - !!BooleanVariableNode
         description: ''
-        id: 1f05751d-ca41-4924-b6e9-8e9814233c87
+        id: 5401a132-0ebf-4f72-9510-0abfa1d181cd
         initial_value: true
         name: MAIN_MOTORS_ON
       - !!BooleanVariableNode
         description: ''
-        id: 3cb44978-b003-4b2a-a9dd-634b3531046d
+        id: de782a1d-c5a6-4fbb-ab84-705084992f48
         initial_value: true
         name: BAY2_MOTOR_ON
       - !!BooleanVariableNode
         description: ''
-        id: 11219c37-5358-4c74-b339-9b36de09aeba
+        id: a8238114-52cc-4f01-b572-54e7aff8554c
         initial_value: true
         name: BAY3_MOTOR_ON
       - !!BooleanVariableNode
         description: ''
-        id: 9a9bda4a-199a-4090-ab82-3889a034443e
+        id: 7bcaf049-a860-4800-96f4-c08a18b52df6
         initial_value: true
         name: BAY4_MOTOR_ON
       - !!BooleanVariableNode
         description: ''
-        id: 57089e10-b5ad-4919-85be-2f464f853c7d
+        id: 598c9b51-b598-4025-a488-4d0ca5d0d482
         initial_value: true
         name: BAY2_LTU_BACKWARD_MOTOR_ON
       - !!BooleanVariableNode
         description: ''
-        id: 1cff14c5-1f24-4695-b3f0-3a652f81ee27
+        id: 423b0344-d8a8-4f11-9c13-5363ba7be0d1
         initial_value: true
         name: BAY3_LTU_BACKWARD_MOTOR_ON
       - !!BooleanVariableNode
         description: ''
-        id: fefa9c0e-ef68-49c2-bd38-c53b51cc88b9
+        id: ab35b526-a9ab-4c72-8174-81371c0860a9
         initial_value: true
         name: BAY3_LTU_FORWARD_MOTOR_ON
       - !!BooleanVariableNode
         description: ''
-        id: 8f28d831-3869-428b-89e7-31a39a44d19d
+        id: e28fd6b9-2a7e-4035-8b57-e1872f18bf81
         initial_value: true
         name: BAY4_LTU_FORWARD_MOTOR_ON
       - !!BooleanVariableNode
         description: ''
-        id: 83921e39-4b4c-4c94-bb8b-7452da00b9c4
+        id: 1985bb26-7c61-4e9f-afc0-2e2082400483
         initial_value: true
         name: BAY4_LTU_BACKWARD_MOTOR_ON
       - !!BooleanVariableNode
         description: ''
-        id: cf6f8c70-3f1f-4fb0-93ce-c08b991d29f1
+        id: 45215094-b89f-4035-819a-2a68f0ce18c7
         initial_value: true
         name: LTU_WAREHOUSE_MOTOR_ON
       - !!BooleanVariableNode
         description: ''
-        id: 36de6994-3006-41ed-ada4-781ff4955958
+        id: d9cae435-39aa-4e9a-a476-89aa9ac60fda
         initial_value: true
         name: LTU_2_TO_1_MOTOR_ON
       - !!BooleanVariableNode
         description: ''
-        id: a3a1d10c-37df-4d1e-aa79-61d5ec1b5e7d
+        id: fe69f929-406b-4877-b100-08293e9e6b98
         initial_value: true
         name: BAY2_LTU_FORWARD_ACTIVE
       - !!BooleanVariableNode
         description: ''
-        id: 60617603-b070-4925-968d-aec1bd4b6cb0
+        id: 80787b1e-f3fd-432f-a264-da3ada722466
         initial_value: true
         name: BAY2_LTU_BACKWARD_ACTIVE
       - !!BooleanVariableNode
         description: ''
-        id: 9c6f6813-c79a-4343-bea0-85f83cce5789
+        id: 4ef412be-7ec7-4c8e-a623-a6e22778f324
         initial_value: true
         name: BAY3_LTU_FORWARD_ACTIVE
       - !!BooleanVariableNode
         description: ''
-        id: 6803dab4-3472-44f2-9fe9-5288f577b13d
+        id: d0bce0b9-6201-4467-8647-19da2b5e929e
         initial_value: true
         name: BAY3_LTU_BACKWARD_ACTIVE
       - !!BooleanVariableNode
         description: ''
-        id: 31b266d9-d506-4915-b4f9-a7f4f1cef14d
+        id: 2f809ed1-afad-406b-801c-3b37ed75c440
         initial_value: true
         name: BAY4_LTU_FORWARD_ACTIVE
       - !!BooleanVariableNode
         description: ''
-        id: 025bd00c-0c2b-42e6-9df1-690d5502d9c8
+        id: 34b42943-240f-4d6d-8d71-2d7b0717cc32
         initial_value: true
         name: BAY4_LTU_BACKWARD_ACTIVE
       - !!BooleanVariableNode
         description: ''
-        id: ae6c980b-8a89-4733-acb5-c7cceb35a4ee
+        id: 75fe1bd7-2e4d-4ee4-8d37-2d5ac9fa407e
         initial_value: true
         name: LTU_WAREHOUSE_ACTIVE
       - !!BooleanVariableNode
         description: ''
-        id: c50cc8e3-ee96-4fee-ac7d-8663bbef7cf6
+        id: 63d769ef-8b29-433d-a2aa-32d007102ee9
         initial_value: true
         name: BAY2_INDEX_UP
       - !!BooleanVariableNode
         description: ''
-        id: 950a9e87-9230-41e0-8b69-0f14e33fb2c0
+        id: 180116af-675a-4ec1-b788-8735dbaa6791
         initial_value: true
         name: BAY3_INDEX_UP
       - !!BooleanVariableNode
         description: ''
-        id: 12bd9f87-d044-4c40-870d-2d7e0c4e5e0c
+        id: b9ae2a1e-ee74-4fdb-b02f-6a078f559621
         initial_value: true
         name: BAY4_INDEX_UP
       - !!BooleanVariableNode
         description: ''
-        id: e88e5ce1-df85-41a9-bf88-579dda933c6d
+        id: 8f327643-0c86-4264-8bf7-e2a5127d08f3
         initial_value: true
         name: LOAD_UNLOAD_ZONE_INDEX_UP
       - !!BooleanVariableNode
         description: ''
-        id: 07f4a086-5f3f-43ef-8ccf-b9ce278024ca
+        id: b379e78f-a19f-44a5-b889-2a1675830bd3
         initial_value: true
         name: BAY2_LTU_FORWARD_UP
       - !!BooleanVariableNode
         description: ''
-        id: 1a6dd3d5-1f51-4de5-8399-cdbe89498005
+        id: 440c3c2d-50e8-45c8-8603-d4b956f95d04
         initial_value: true
         name: BAY2_LTU_FORWARD_DOWN
       - !!BooleanVariableNode
         description: ''
-        id: faad2515-cd03-4f09-a58c-744c7b754af2
+        id: 299bcb17-63a1-44ce-9216-e40c237276e3
         initial_value: true
         name: BAY2_LTU_BACKWARD_UP
       - !!BooleanVariableNode
         description: ''
-        id: 468186c1-a341-42e7-9080-4ef5f701bb29
+        id: 593a0934-be5c-411c-9050-70e027f143b5
         initial_value: true
         name: BAY2_LTU_BACKWARD_DOWN
       - !!BooleanVariableNode
         description: ''
-        id: b8246f07-8b58-4492-bf46-3d762053c72c
+        id: a78bbb07-ece6-4b74-bf49-fdcd50ae831b
         initial_value: true
         name: BAY2_VARIABLE_STOPPER_LTU_SIDE_UP
       - !!BooleanVariableNode
         description: ''
-        id: 5f3b8109-5c72-42f7-95c7-828cfdf9178a
+        id: 5b163912-84bc-45b2-a9ca-4b859ebcdc16
         initial_value: true
         name: BAY2_VARIABLE_STOPPER_BAY_SIDE_UP
       - !!BooleanVariableNode
         description: ''
-        id: 7cbdcbc9-e619-4331-9b4b-3b908f7b8631
+        id: fd85e160-f6c6-4503-8ef9-d3de1be95dc2
         initial_value: true
         name: BAY3_LTU_FORWARD_UP
       - !!BooleanVariableNode
         description: ''
-        id: a16b28f2-0506-4ba3-bd72-69e59af3e7c5
+        id: 06b4d70f-0d27-4786-b232-e755eb1e8dc2
         initial_value: true
         name: BAY3_LTU_FORWARD_DOWN
       - !!BooleanVariableNode
         description: ''
-        id: e256e9c9-556d-4b21-8ecb-488adfee6336
+        id: 7a217473-da0f-42a9-b98d-9b939929ba17
         initial_value: true
         name: BAY3_LTU_BACKWARD_UP
       - !!BooleanVariableNode
         description: ''
-        id: 61644010-3cec-49c6-ad46-6894f5076aec
+        id: c3f57abc-ab53-42e6-94d6-f0059a755063
         initial_value: true
         name: BAY3_LTU_BACKWARD_DOWN
       - !!BooleanVariableNode
         description: ''
-        id: e2d01416-786c-4249-9af6-382f44a7cd5c
+        id: d15d9b64-6eb1-47b3-8452-e1e5f8eee2fd
         initial_value: true
         name: BAY3_VARIABLE_STOPPER_LTU_SIDE_UP
       - !!BooleanVariableNode
         description: ''
-        id: bfa7a7e7-8d35-4286-b934-8cce07da9b6e
+        id: a8477a43-5785-42fe-9994-d9e9103d8d48
         initial_value: true
         name: BAY3_VARIABLE_STOPPER_BAY_SIDE_UP
       - !!BooleanVariableNode
         description: ''
-        id: 8c64b157-5645-452b-ba17-a91ab67c2a9d
+        id: 2e16cd27-8979-46da-8926-7bea3937c9f0
         initial_value: true
         name: BAY4_LTU_FORWARD_UP
       - !!BooleanVariableNode
         description: ''
-        id: b9d4d068-c4aa-445f-be5e-6d5ce5b90cd7
+        id: 9a21ceeb-4c85-4e2b-9aaf-09b4cbfc4147
         initial_value: true
         name: BAY4_LTU_FORWARD_DOWN
       - !!BooleanVariableNode
         description: ''
-        id: 54e864c3-9217-43fa-910e-925609503bea
+        id: 9fe1631a-acfc-4264-b4d3-7d637b80050d
         initial_value: true
         name: BAY4_LTU_BACKWARD_UP
       - !!BooleanVariableNode
         description: ''
-        id: e1d11060-a34d-4cbd-bafe-ac3d91e4811a
+        id: 4042a1d3-ecc9-40f6-ac6d-2449816832a3
         initial_value: true
         name: BAY4_LTU_BACKWARD_DOWN
       - !!BooleanVariableNode
         description: ''
-        id: 9558edb3-8384-4827-bfdc-ca13beb0238f
+        id: b0fb9dc9-2164-4587-b3c1-c65a3ec84066
         initial_value: true
         name: BAY4_VARIABLE_STOPPER_LTU_SIDE_UP
       - !!BooleanVariableNode
         description: ''
-        id: f542cb50-36ea-465f-925f-427146abc7db
+        id: e3616bc3-2e60-4f3d-a7be-d2fe493cf0fa
         initial_value: true
         name: BAY4_VARIABLE_STOPPER_BAY_SIDE_UP
       - !!BooleanVariableNode
         description: ''
-        id: dae9df4e-0c56-4db1-aee5-3db7653a6834
+        id: 3fdd9a77-0e7f-4572-888b-45974ba21f74
         initial_value: true
         name: LTU_WAREHOUSE_UP
       - !!BooleanVariableNode
         description: ''
-        id: 36f5c865-a7b9-4770-a96e-72a27abb49c3
+        id: 8bbd2b69-1cf1-4930-906b-030e1a70e38b
         initial_value: true
         name: BAY2_POSITION_1_ENTRANCE_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 70d03616-730f-4e0d-8e23-bc549cf23145
+        id: 496f4b09-1799-4ca8-889a-3bb40299090f
         initial_value: true
         name: BAY2_POSITION_1_EXIT_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 252327ec-6a6e-45d1-928c-0907ad881442
+        id: fcb4c9ec-2078-4060-afb5-ef097b43568a
         initial_value: true
         name: BAY2_POSITION_2_ENTRANCE_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: afadce6b-9eec-45e6-b6d5-592342ad28fc
+        id: 9d7894e6-182f-466c-a4d5-e75ac7aa62d6
         initial_value: true
         name: BAY2_POSITION_2_EXIT_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 21590d6e-dacc-441e-abc2-5ec918bb813e
+        id: 72f5ae53-694c-4623-ae2a-e82828149589
         initial_value: true
         name: BAY2_POSITION_3_ENTRANCE_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 4fce7ed7-9d63-495b-b8b5-671cd480711f
+        id: c0a332e3-ed9a-4f21-960a-70db1003d25f
         initial_value: true
         name: BAY2_POSITION_3_EXIT_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: adb944f5-05de-4d8e-b1e0-805ff0fe24cf
+        id: d5ad604c-6970-49a3-919e-659bc2e56e1d
         initial_value: true
         name: BAY3_POSITION_1_ENTRANCE_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 08f4f9a3-43f9-401f-8c45-9c05d650eee9
+        id: 7f4926cd-7e94-4adb-85dd-1e5308d9bf3e
         initial_value: true
         name: BAY3_POSITION_1_EXIT_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: e54dfdb1-7ec1-4036-814b-19516aaa0237
+        id: 46a5ac36-c3a1-4cb1-b35f-25a5b33f5db8
         initial_value: true
         name: BAY3_POSITION_2_ENTRANCE_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 309d4545-da90-4d5e-bbee-3963f0ee459f
+        id: 7e1c6e3c-6743-4159-a89e-7dc31b65fffc
         initial_value: true
         name: BAY3_POSITION_2_EXIT_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 21ab47e8-05aa-4025-87d8-054201e84096
+        id: 07f1eaca-1026-491a-9286-9099a06efc7f
         initial_value: true
         name: BAY3_POSITION_3_ENTRANCE_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: e830bd7f-413a-42ce-b6b4-6e10e09c2564
+        id: c34a23a1-b67c-4901-8500-267c52e965aa
         initial_value: true
         name: BAY3_POSITION_3_EXIT_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: b9a4842c-d37d-4020-b593-e1bf31c66721
+        id: bd0d144f-df5f-494e-aeab-e4d000300ede
         initial_value: true
         name: BAY4_POSITION_1_ENTRANCE_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 8d1cf243-f84f-4f0a-9e66-dc3364dbce4c
+        id: 9af26dcc-79be-4f12-83eb-e924bbb4bb5c
         initial_value: true
         name: BAY4_POSITION_1_EXIT_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 4f054910-ede2-4b50-86f2-ee42d7ce4311
+        id: ecf22eec-f658-4d1d-af7b-8a6f9d3a6564
         initial_value: true
         name: BAY4_POSITION_2_ENTRANCE_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: e61f5090-4e1b-4313-978d-4008e8247085
+        id: f2048f61-cb70-4c06-a810-286aca95189c
         initial_value: true
         name: BAY4_POSITION_2_EXIT_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 9124bed1-8e01-473e-9d3a-093cef2cbb0d
+        id: 30813472-1ed6-44ec-b7ab-dc78821b995c
         initial_value: true
         name: BAY4_POSITION_3_ENTRANCE_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 63841fcf-b290-471e-b2c9-22cbe6e2840f
+        id: 6befbbc1-57d9-46f1-a42f-3d9107375c00
         initial_value: true
         name: BAY4_POSITION_3_EXIT_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 373c7339-6c9c-41b7-947c-82fd970e2504
+        id: 7ed8b780-75d3-40f5-96b0-ba8c993b3d75
         initial_value: true
         name: LOAD_UNLOAD_ZONE_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 2f419dc0-64f5-4fb9-8bd7-ead7dd0d2260
+        id: 090d535c-d5ef-4976-a4eb-567dc13ebfda
         initial_value: true
         name: SEGMENT1_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: e35df767-0516-44d6-a13a-107fe0934b14
+        id: 26b4950a-3dcf-49b3-8917-a223141ff6b3
         initial_value: true
         name: SEGMENT2_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 31d36880-509e-4dfa-b237-df5e358ad226
+        id: 08439fd8-6e1c-46c8-8b69-5c5c07dd0f73
         initial_value: true
         name: SEGMENT3_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 7fd3abff-7827-4af1-89c3-376f60a04ebc
+        id: f17ba854-170a-4b08-8d08-103e5bcaa570
         initial_value: true
         name: SEGMENT4_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 9aaa28a2-dfa6-4c59-a7cc-d384238ecccb
+        id: 9c6902da-5fba-49d3-a1fd-77a44610e73c
         initial_value: true
         name: SEGMENT5_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 84fb5f4d-0ccb-4f70-9719-6b251fb2c7f0
+        id: d8c0a0c6-b074-4350-86d1-209bed709aca
         initial_value: true
         name: SEGMENT6_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 16a136b3-c023-4b21-bfa9-7593c8c0f01f
+        id: db6f34c0-c524-4e1d-94ea-30e9871e7975
         initial_value: true
         name: SEGMENT7_STOP_GATE_OPENED
       - !!BooleanVariableNode
         description: ''
-        id: 1699bcd2-ef07-457d-9b3f-2672335af4a4
+        id: 6fa5d235-e198-4215-a5d5-1f0827245046
         initial_value: true
         name: SEGMENT8_STOP_GATE_OPENED
       description: ''
-      id: def08643-2b84-409b-ba5e-39fe5df24020
+      id: 8a8880c8-5462-44a5-9b0a-e3ea50ef9350
       name: ConveyorSystemStatus
     description: HMI
-    id: 2fda3804-9224-4fa0-a652-a8e9a9bed4c5
+    id: 058db5ea-9cf0-4277-b458-9454318ebab3
     name: ConveyorHMI
   description: OPCUA
-  id: e7616980-4398-49a9-b2d0-89144616676c
+  id: 4ca24cdb-a575-4dcd-8e0a-1c2e6f4805e2
   name: Objects

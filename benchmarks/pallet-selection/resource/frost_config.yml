@@ -9,7 +9,8 @@ reactors:
     logging_level: ERROR
     parameters:
       data_model_path: "resource/data-model/conveyor.yml"
-      metric: "DistanceMetric"
+      conveyor_graph: "resource/conveyor-graph.gml"
+      # pallet_metric: "DISTANCE"
     reactors:
       conveyor_belt:
         reactors:
@@ -48,6 +49,12 @@ reactors:
     parameters:
       data_model_path: "resource/data-model/scheduler.yml"
       # scheduling_instance: "resource/instance/instance_medium.json"
+      wh_tasks: 70
+      mill_tasks: 70
+      rbtc_tasks: 70
+      qc_tasks: 70
+      min_task_spacing: 25 # seconds
+      max_task_spacing: 35 # seconds
       task_mapping: 
         ToWarehouseAndBack: /Scheduler/ToWarehouseAndBack
         ToQcAndBack: /Scheduler/ToQcAndBack

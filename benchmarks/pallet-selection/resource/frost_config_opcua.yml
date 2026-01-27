@@ -9,7 +9,8 @@ reactors:
     logging_level: ERROR
     parameters:
       data_model_path: "resource/data-model/opcua_conveyor_full.yml"
-      metric: "DistanceMetric"
+      _pactions: true
+      # pallet_metric: "DISTANCE"
     reactors:
       conveyor_belt:
         reactors:
@@ -44,10 +45,16 @@ reactors:
             parameters:
               interchange_time: 4800 
   scheduler:
-    logging_level: INFO
+    logging_level: ERROR
     parameters:
       data_model_path: "resource/data-model/scheduler.yml"
       # scheduling_instance: "resource/instance/instance_medium.json"
+      wh_tasks: 10
+      mill_tasks: 10
+      rbtc_tasks: 10
+      qc_tasks: 10
+      min_task_spacing: 25 # seconds
+      max_task_spacing: 35 # seconds
       task_mapping: 
         ToWarehouseAndBack: /Scheduler/ToWarehouseAndBack
         ToQcAndBack: /Scheduler/ToQcAndBack
