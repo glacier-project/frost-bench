@@ -9,8 +9,7 @@ reactors:
     logging_level: ERROR
     parameters:
       data_model_path: "resource/data-model/opcua_conveyor_full.yml"
-      _pactions: true
-      # pallet_metric: "DISTANCE"
+      conveyor_graph: "resource/conveyor-graph.gml"
     reactors:
       conveyor_belt:
         reactors:
@@ -48,7 +47,6 @@ reactors:
     logging_level: ERROR
     parameters:
       data_model_path: "resource/data-model/scheduler.yml"
-      # scheduling_instance: "resource/instance/instance_medium.json"
       wh_tasks: 10
       mill_tasks: 10
       rbtc_tasks: 10
