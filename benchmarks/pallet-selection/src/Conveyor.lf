@@ -1,5 +1,5 @@
 target Python{
-    fast: false,
+    // fast: false,
     timeout: 1800 s,
 }
 
@@ -12,9 +12,37 @@ import uuid
 from frost import *
 =}
 
+reactor OPCUAConveyor extends MetaConveyor{
+    state _pallet_position
+    physical action pallet_position
+
+    reaction(startup) -> pallet_position{=
+        self._pallet_position = pallet_position
+        self.init_data_model_nodes()
+    =}
+
+    method update_pallet_position(pallet_id, pallet_position){=
+        if pallet_id <= 0:
+            return 
+        
+        self._pallet_position.schedule(MSEC(1), (pallet_id, pallet_position))
+    =}
+
+    reaction(pallet_position){=
+        pallet_id, pallet_position = pallet_position.value
+
+        if pallet_id <= 0:
+            return 
+        
+        timestamp = self._get_current_logical_time_ms()
+        self.logger.info(f"Updating pallet position for pallet {pallet_id} to position {pallet_position} at time {timestamp}")
+        self.pallet_metric.set_pallet_position(pallet_id, pallet_position, timestamp)
+    =}
+}
+
 main reactor{
-    conveyor = new MetaConveyor(name="conveyor")
-    scheduler = new Scheduler(name="scheduler", type="real")
+    conveyor = new OPCUAConveyor(name="conveyor", update_interval=10 ms)
+    scheduler = new Scheduler(name="scheduler", type="real", update_interval=10 ms)
     bus = new FrostBus(name="frost_bus", width = 2)
 
     conveyor.channel_out, scheduler.channel_out -> bus.channel_in after 0
