@@ -34,14 +34,6 @@ root:
         - !!StringVariableNode
           name: "destination_name"
           default_value: "destination_palletid_5"
-        - !!StringVariableNode
-          name: "segment_name"
-          default_value: "Segment8"
-      returns:
-        - !!StringVariableNode
-          name: "segment_name"
-        - !!StringVariableNode
-          name: "palletNumber"
       cfg:
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
@@ -69,6 +61,11 @@ root:
           kwargs:
             palletNumber: ${palletNumber}
             destination: 0
+        - !!CallRemoteMethodNode
+          remote_id: "conveyor"
+          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/releasePallet"
+          kwargs: 
+            palletNumber: ${palletNumber}
     - !!CompositeMethodNode
       name: "ToQcAndBack"
       parameters:
@@ -81,17 +78,6 @@ root:
         - !!StringVariableNode
           name: "destination_name"
           default_value: "destination_palletid_4_2"
-        - !!StringVariableNode
-          name: "exit_destination_name"
-          default_value: "destination_palletid_4_1"
-        - !!StringVariableNode
-          name: "segment_name"
-          default_value: "Segment5"
-      returns:
-        - !!StringVariableNode
-          name: "segment_name"
-        - !!StringVariableNode
-          name: "palletNumber"
       cfg:
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
@@ -119,16 +105,11 @@ root:
           kwargs:
             palletNumber: ${palletNumber}
             destination: 0
-        - !!WaitRemoteEventNode
+        - !!CallRemoteMethodNode
           remote_id: "conveyor"
-          variable: "/Objects/ConveyorHMI/ConveyorDataExchange/Destinations/${exit_destination_name}"
-          rhs: "${palletNumber}"
-          operator: "=="
-        - !!WaitRemoteEventNode
-          remote_id: "conveyor"
-          variable: "/Objects/ConveyorHMI/ConveyorDataExchange/Destinations/${exit_destination_name}"
-          rhs: 0
-          operator: "=="
+          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/releasePallet"
+          kwargs: 
+            palletNumber: ${palletNumber}
     - !!CompositeMethodNode
       name: "ToRbtcAndBack"
       parameters:
@@ -141,17 +122,6 @@ root:
         - !!StringVariableNode
           name: "destination_name"
           default_value: "destination_palletid_3_2"
-        - !!StringVariableNode
-          name: "exit_destination_name"
-          default_value: "destination_palletid_3_1"
-        - !!StringVariableNode
-          name: "segment_name"
-          default_value: "Segment6"
-      returns:
-        - !!StringVariableNode
-          name: "segment_name"
-        - !!StringVariableNode
-          name: "palletNumber"
       cfg:
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
@@ -179,16 +149,11 @@ root:
           kwargs:
             palletNumber: ${palletNumber}
             destination: 0
-        - !!WaitRemoteEventNode
+        - !!CallRemoteMethodNode
           remote_id: "conveyor"
-          variable: "/Objects/ConveyorHMI/ConveyorDataExchange/Destinations/${exit_destination_name}"
-          rhs: "${palletNumber}"
-          operator: "=="
-        - !!WaitRemoteEventNode
-          remote_id: "conveyor"
-          variable: "/Objects/ConveyorHMI/ConveyorDataExchange/Destinations/${exit_destination_name}"
-          rhs: 0
-          operator: "=="
+          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/releasePallet"
+          kwargs: 
+            palletNumber: ${palletNumber}
     - !!CompositeMethodNode
       name: "ToMillAndBack"
       parameters:
@@ -201,17 +166,6 @@ root:
         - !!StringVariableNode
           name: "destination_name"
           default_value: "destination_palletid_2_2"
-        - !!StringVariableNode
-          name: "exit_destination_name"
-          default_value: "destination_palletid_2_1"
-        - !!StringVariableNode
-          name: "segment_name"
-          default_value: "Segment5"
-      returns:
-        - !!StringVariableNode
-          name: "segment_name"
-        - !!StringVariableNode
-          name: "palletNumber"
       cfg:
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
@@ -239,14 +193,9 @@ root:
           kwargs:
             palletNumber: ${palletNumber}
             destination: 0
-        - !!WaitRemoteEventNode
+        - !!CallRemoteMethodNode
           remote_id: "conveyor"
-          variable: "/Objects/ConveyorHMI/ConveyorDataExchange/Destinations/${exit_destination_name}"
-          rhs: "${palletNumber}"
-          operator: "=="
-        - !!WaitRemoteEventNode
-          remote_id: "conveyor"
-          variable: "/Objects/ConveyorHMI/ConveyorDataExchange/Destinations/${exit_destination_name}"
-          rhs: 0
-          operator: "=="
+          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/releasePallet"
+          kwargs: 
+            palletNumber: ${palletNumber}
    

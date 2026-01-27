@@ -5,18 +5,19 @@ target Python{
     ]
 }
 
-import FrostScheduler from "../../../ice-frost/frost/src/lib/scheduler/FrostScheduler.lf";
+import FrostMachine from "../../../ice-frost/frost/src/lib/FrostMachine.lf";
 
 preamble{=
 import uuid
+import random
 from frost import *
 from statistics import mean
 
 from frost_planner.generator.instance_generator import load_instance_from_json
 from frost_planner.solver.dummy_solver import DummySolver
-from frost_planner.executor.static_executor import StaticExecutor
+from frost_planner.executor.dynamic_executor import DynamicExecutor
 from frost_planner.core.base import TaskStatus, Task, Job, SchedulingInstance, Machine
-from pallet_distance import PalletDistanceMetric, PalletPosition, get_conveyor_position
+from pallet_distance import PalletPosition, get_conveyor_position, _get_pallet_metric
 from gen_instances import gen_wh_job, gen_qc_job, gen_rbtc_job, gen_mill_job 
 
 OUTPUT_DIR = os.getenv("OUTPUT_DIR")
@@ -25,14 +26,241 @@ INSTANCE = os.getenv("INSTANCE")
 
 # Override config parameters 
 reactors_config = FROST_CONFIG["reactors"]
-reactors_config["conveyor"]["parameters"]["metric"] = METRIC
+reactors_config["conveyor"]["parameters"]["pallet_metric"] = METRIC
 reactors_config["scheduler"]["parameters"]["scheduling_instance"] = INSTANCE
+random.seed(42)
 =}
+
+reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1) extends FrostMachine {
+    state scheduling_instance = _scheduling_instance
+    state scheduling_interval = _scheduling_interval # in seconds
+    state _executor
+    state _active_tasks = {= {} =}
+
+    state task_mapping = {= {} =}  # dictionary (<schedule task name>, <CompositeMethodNode path>)
+    state jobs_scopes = {= {} =}    # dictionary (job.id, <job scope>)
+    state task_start = {= {} =}
+    state task_end = {= {} =}
+    
+    state wh_tasks = 0
+    state qc_tasks = 0
+    state rbtc_tasks = 0
+    state mill_tasks = 0
+    state min_task_spacing = 35
+    state max_task_spacing = 45
+    
+    logical action create_wh_task
+    logical action create_qc_task
+    logical action create_rbtc_task
+    logical action create_mill_task
+
+    logical action start_tasks
+    logical action update_schedule
+
+    reaction(startup) {=
+        self.scheduling_instance = load_instance_from_json(self.scheduling_instance)
+        self._executor = DynamicExecutor(DummySolver(instance=self.scheduling_instance))
+    =}
+
+    method create_method_request(t, method_path, args, kwargs) {=
+        return self.message_builder.build_invoke_method_message(
+            target=t,
+            node=method_path,
+            args=args,
+            kwargs=kwargs
+        )
+    =}
+
+    method get_task_spacing() {=
+        return SECS(random.randint(
+            int(self.min_task_spacing),
+            int(self.max_task_spacing)
+        ))
+    =}
+
+    // @label connected_to_bus
+    reaction(connected_to_bus) -> update_schedule,create_wh_task,create_qc_task,create_rbtc_task,create_mill_task {=
+        self.logger.info("Connected to bus. Starting scheduling...")
+        update_schedule.schedule(0)
+        create_wh_task.schedule(self.get_task_spacing())
+        create_qc_task.schedule(self.get_task_spacing())
+        create_rbtc_task.schedule(self.get_task_spacing())
+        create_mill_task.schedule(self.get_task_spacing())
+    =}
+
+    reaction(create_wh_task, create_qc_task, create_rbtc_task, create_mill_task) -> update_schedule{=
+        new_jobs = []
+        if create_wh_task.is_present and self.wh_tasks > 0:
+            
+            job = gen_wh_job()
+            new_jobs.append(job)
+        if create_qc_task.is_present and self.qc_tasks > 0:
+            job = gen_qc_job()
+            new_jobs.append(job)
+        if create_rbtc_task.is_present and self.rbtc_tasks > 0:
+            job = gen_rbtc_job()
+            new_jobs.append(job)
+        if create_mill_task.is_present and self.mill_tasks > 0:
+            job = gen_mill_job()
+            new_jobs.append(job)
+
+        # Update the scheduling instance with the new jobs and request a schedule update
+        self.logger.info(f"Creating new jobs: {[job.id for job in new_jobs]}")
+        current_instance = self._executor.solver.instance
+        self._executor.solver = DummySolver(instance= SchedulingInstance(
+            jobs=current_instance.jobs + new_jobs,
+            machines=current_instance.machines,
+            travel_times=current_instance.travel_times,
+        ))
+        update_schedule.schedule(0)
+    =}
+
+    // @label update_schedule
+    reaction(update_schedule) -> start_tasks {=
+        '''
+        Update the current schedule to run new tasks.
+        '''
+        executor = self._executor
+        logical_time = self._get_current_logical_time_sec()
+        self.logger.debug(f"Scheduling at logical time {logical_time} sec")
+        executor.update_task_status()
+        schedule = executor.update_schedule(start_time=0)
+
+        # get the tasks that can be started now
+        next_tasks = executor.next_ready_tasks()
+
+        if len(next_tasks) > 0:
+            start_tasks.schedule(0, next_tasks)
+    =}
+
+    // @label run_tasks
+    reaction(start_tasks) {=
+        '''
+        When there are new tasks to run, send a method invoke request
+        to the scheduler's CompositeMethodNode that has the same name of the task to run.
+
+        The CompositeMethodNode, which handles the task, has access to the job's scope.
+        '''
+        self.logger.debug(f"Starting tasks: {start_tasks.value}")
+
+        for task, machine in start_tasks.value:
+            machine = machine.name
+            task_id = task.task.id
+            task_name = task.task.name
+            self.logger.info(f"Starting task {task_name} on machine {machine}")
+            
+            assert task_id not in self.task_start, f"Task '{task_id}' is already started."
+            self.task_start[task_id] = self._get_current_logical_time_sec()
+            self._executor.task_started(task)
+
+            # given the current task, retrieve the scope of its job
+            parent_job_id = task.task.job_id
+            if parent_job_id not in self.jobs_scopes:
+                self.jobs_scopes[parent_job_id] = {}
+            job_scope = self.jobs_scopes[parent_job_id]
+
+            assert task_name in self.task_mapping, f"Task '{task_name}' has no mapping to its CompositeMethodNode path. Add it to the frost config file using the 'task_mapping' parameter."
+            composite_method_node_path = self.task_mapping[task_name]
+            msg = self.create_method_request(self.data_model.name, composite_method_node_path, args=[machine], kwargs=job_scope)
+            self._active_tasks[msg.correlation_id] = task
+            response = self.protocol_mng.handle_request(msg)
+            self.logger.debug(f"Requesting method start with msg {msg}, got response {response}")
+    =}
+
+    method merge_scopes(scope1, scope2) {=
+        '''
+        Given two scopes, returns a new scope
+        which contains the values of `scope1`,
+        modified by the values inside of `scope2`
+        '''
+        new_scope = copy.deepcopy(scope1)
+        new_scope.update(scope2)
+        return new_scope
+    =}
+
+    method are_all_tasks_completed() {=
+        '''
+        Returns True if all the tasks are in the 'COMPLETED' state.
+        '''
+        return sum([self.wh_tasks, self.qc_tasks, self.rbtc_tasks, self.mill_tasks]) == 0
+        #     return False
+        # return True
+
+        # tasks = [task for job in self.scheduling_instance.jobs for task in job.tasks]
+        # return all(task.status == TaskStatus.COMPLETED for task in tasks)
+    =}
+
+    reaction(response_messages) -> update_schedule, create_wh_task, create_qc_task, create_rbtc_task, create_mill_task {=
+        '''
+        When the scheduler receives response messages,
+        check if a task was completed and save its
+        return values inside the parent job's scope.
+        '''
+        for bank_index, message in response_messages.value:
+
+            if message.correlation_id not in self._active_tasks:
+                continue
+
+            if message.header.msg_name != MethodMsgName.COMPLETED:
+                continue
+
+            task = self._active_tasks.pop(message.correlation_id)
+            task_id = task.task.id
+            task_name = task.task.name
+            assert task_id in self.task_start, f"Task '{task_id}' was not started."
+            assert task_id not in self.task_end, f"Task '{task_id}' was already completed."
+            self.task_end[task_id] = self._get_current_logical_time_sec()
+
+            # save return values in the job's scope
+            returned_values = message.payload.ret
+            parent_job_id = task.task.job_id
+            job_scope = self.jobs_scopes[parent_job_id]
+            self.jobs_scopes[parent_job_id] = self.merge_scopes(job_scope, returned_values)
+            self.logger.debug(f"[response_messages] {self.jobs_scopes=}")
+
+            self._executor.task_completed(task)
+            self.logger.warning(f"Task {task_name} completed on machine {task.machine.name}")
+
+            # Schedule new Jobs
+            if task_name == "ToWarehouseAndBack":
+                self.wh_tasks -= 1
+                if self.wh_tasks > 0:
+                    create_wh_task.schedule(self.get_task_spacing())
+            if task_name == "ToQcAndBack":
+                self.qc_tasks -= 1
+                if self.qc_tasks > 0:
+                    create_qc_task.schedule(self.get_task_spacing())
+            if task_name == "ToRbtcAndBack":
+                self.rbtc_tasks -= 1
+                if self.rbtc_tasks > 0:
+                    create_rbtc_task.schedule(self.get_task_spacing())
+            if task_name == "ToMillAndBack":
+                self.mill_tasks -= 1
+                if self.mill_tasks > 0:
+                    create_mill_task.schedule(self.get_task_spacing())
+
+            # check if there are other tasks to complete
+            if self.are_all_tasks_completed():
+                self.logger.warning("All tasks completed. Stopping execution.")
+                lf.request_stop()
+                
+            # scheduling_interval = SECS(self.scheduling_interval)
+            # self.logger.debug(f"Scheduling next task in {scheduling_interval}...")
+            update_schedule.schedule(0)
+    =}
+}
+
 
 reactor Scheduler(type="sim") extends FrostScheduler{
 
     reaction(shutdown){=
         schedule = self._executor.get_current_schedule()
+        # Update task start/end times
+        for task in schedule.get_tasks():
+            task_id = task.task.id
+            task.start_time = self.task_start[task_id]
+            task.end_time = self.task_end[task_id]
+
         task_durations = [
             task.end_time - task.start_time
             for task in schedule.get_tasks()
