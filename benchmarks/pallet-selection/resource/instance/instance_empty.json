@@ -1,0 +1,35 @@
+{
+  "jobs": [
+    
+  ],
+  "machines": [
+    {
+      "id": "RoboticCell",
+      "name": "cell3",
+      "capabilities": [
+        "assemble"
+      ]
+    },
+    {
+      "id": "QualityCell",
+      "name": "cell4",
+      "capabilities": [
+        "quality_check"
+      ]
+    },
+    {
+      "id": "Milling",
+      "name": "cell2",
+      "capabilities": [
+        "mill"
+      ]
+    },
+    {
+      "id": "Warehouse",
+      "name": "cell5",
+      "capabilities": [
+        "store"
+      ]
+    }
+  ]
+}
