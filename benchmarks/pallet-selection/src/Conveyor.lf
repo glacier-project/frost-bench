@@ -1,6 +1,5 @@
 target Python{
     // fast: false,
-    timeout: 1800 s,
 }
 
 import MetaConveyor from "../../../ice-frost/src/MetaConveyor.lf";
@@ -25,7 +24,7 @@ reactor OPCUAConveyor extends MetaConveyor{
         if pallet_id <= 0:
             return
 
-        self._pallet_position.schedule(MSEC(1), (pallet_id, pallet_position))
+        self._pallet_position.schedule(0, (pallet_id, pallet_position))
     =}
 
     reaction(pallet_position){=

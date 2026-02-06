@@ -189,6 +189,7 @@ def render_graph_visual(graph: nx.DiGraph) -> None:
         "34": (6, 2),
         "35": (6, 2.5),
         "36": (6, 3),
+        "UNDEFINED": (8, 0.5),  
     }
 
     # Filter to only nodes in the graph

@@ -1,6 +1,5 @@
 target Python{
     fast: true,
-    // timeout: 1800 s,
 }
 
 import CellConveyor from "../../../ice-frost/src/CellConveyor.lf";

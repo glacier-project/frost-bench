@@ -15,44 +15,38 @@ reactors:
         reactors:
           Segment_1:
             parameters:
-              segment_time: 12700
+              segment_time: 17340
           Segment_2:
             parameters:
-              segment_time: 20200
+              segment_time: 22038
           Segment_3:
             parameters:
-              segment_time: 13250
+              segment_time: 17778
           Segment_4:
             parameters:
-              segment_time: 4800
+              segment_time: 8670
           Segment_5:
             parameters:
-              segment_time: 6900
+              segment_time: 9861
           Segment_6:
             parameters:
-              segment_time: 14500
+              segment_time: 17144
           Segment_7:
             parameters:
               segment_time: 20200
           Segment_8:
             parameters:
-              segment_time: 12700
-          EM:
-            parameters:
-              mutex_time: 2500
-          HB:
-            parameters:
-              interchange_time: 4800
+              segment_time: 18160         
   scheduler:
     logging_level: ERROR
     parameters:
       data_model_path: "resource/data-model/scheduler.yml"
-      wh_tasks: 10
-      mill_tasks: 10
-      rbtc_tasks: 10
-      qc_tasks: 10
-      min_task_spacing: 25 # seconds
-      max_task_spacing: 35 # seconds
+      wh_tasks: 35
+      mill_tasks: 35
+      rbtc_tasks: 35
+      qc_tasks: 35
+      min_task_spacing: 15 # seconds
+      max_task_spacing: 20 # seconds
       task_mapping:
         ToWarehouseAndBack: /Scheduler/ToWarehouseAndBack
         ToQcAndBack: /Scheduler/ToQcAndBack

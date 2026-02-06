@@ -74,10 +74,10 @@ root:
           default_value: ""
         - !!NumericalVariableNode
           name: "destination"
-          default_value: 34
+          default_value: 35
         - !!StringVariableNode
           name: "destination_name"
-          default_value: "destination_palletid_4_2"
+          default_value: "destination_palletid_4_3"
       cfg:
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
@@ -118,10 +118,10 @@ root:
           default_value: ""
         - !!NumericalVariableNode
           name: "destination"
-          default_value: 26
+          default_value: 27
         - !!StringVariableNode
           name: "destination_name"
-          default_value: "destination_palletid_3_2"
+          default_value: "destination_palletid_3_3"
       cfg:
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
@@ -162,10 +162,10 @@ root:
           default_value: ""
         - !!NumericalVariableNode
           name: "destination"
-          default_value: 18
+          default_value: 19
         - !!StringVariableNode
           name: "destination_name"
-          default_value: "destination_palletid_2_2"
+          default_value: "destination_palletid_2_3"
       cfg:
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
