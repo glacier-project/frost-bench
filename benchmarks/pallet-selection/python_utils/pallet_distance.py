@@ -25,10 +25,26 @@ SEGMENT_7_TT = 21649
 SEGMENT_8_TT = 13399
 # Are these correct?
 INTERCHANGE_TT = 7000
+HALF_INTERCHANGE_TT = INTERCHANGE_TT // 2.5
 BAY_TRANSFER_TT = 2000
-# H -> 40 2s?
-# 40 -> F 2s?
+BAY2_IO = 1272
+BAY3_IO = 2833
+BAY4_IO = 1585
 
+BAY2_12 = 2077
+BAY2_21 = 1766
+BAY2_23 = 4857
+BAY2_32 = 4413
+
+BAY3_12 = 3779
+BAY3_21 = 3925
+BAY3_23 = 2173
+BAY3_32 = 2061
+
+BAY4_12 = 2603
+BAY4_21 = 2809
+BAY4_23 = 4292
+BAY4_32 = 3492
 
 class ConveyorPosition:
     """Represents a position on the conveyor system.
@@ -178,24 +194,24 @@ def create_default_conveyor_graph(pallets: list[PalletStatus] | None = None) -> 
         "A": {
             "B": {"weight": SEGMENT_5_TT},
             "H": {"weight": SEGMENT_5_TT + INTERCHANGE_TT},
-            "34": {"weight": SEGMENT_5_TT + BAY_TRANSFER_TT + INTERCHANGE_TT},
+            "34": {"weight": SEGMENT_5_TT + BAY4_IO + INTERCHANGE_TT},
         },
         "34": {
-            "35": {"weight": BAY_TRANSFER_TT},
-            "H": {"weight": BAY_TRANSFER_TT},
-            "B": {"weight": BAY_TRANSFER_TT + INTERCHANGE_TT},
+            "35": {"weight": BAY4_12},
+            "H": {"weight": BAY4_IO},
+            "B": {"weight": BAY4_IO + INTERCHANGE_TT},
         },
-        "35": {"36": {"weight": BAY_TRANSFER_TT}, "34": {"weight": BAY_TRANSFER_TT}},
-        "36": {"35": {"weight": BAY_TRANSFER_TT}},
+        "35": {"36": {"weight": BAY4_23}, "34": {"weight": BAY4_21}},
+        "36": {"35": {"weight": BAY4_32}},
         "B": {
             "C": {"weight": SEGMENT_6_TT},
             "I": {"weight": SEGMENT_6_TT + INTERCHANGE_TT},
-            "25": {"weight": SEGMENT_6_TT + BAY_TRANSFER_TT + INTERCHANGE_TT},
+            "25": {"weight": SEGMENT_6_TT + BAY3_IO + INTERCHANGE_TT},
         },
         "C": {
             "D": {"weight": SEGMENT_7_TT},
             "L": {"weight": SEGMENT_7_TT + INTERCHANGE_TT},
-            "17": {"weight": SEGMENT_7_TT + BAY_TRANSFER_TT + INTERCHANGE_TT},
+            "17": {"weight": SEGMENT_7_TT + BAY2_IO + INTERCHANGE_TT},
         },
         "D": {
             "M": {"weight": SEGMENT_8_TT + INTERCHANGE_TT},
@@ -204,38 +220,38 @@ def create_default_conveyor_graph(pallets: list[PalletStatus] | None = None) -> 
         "M": {
             "L": {"weight": SEGMENT_1_TT},
             "D": {"weight": SEGMENT_1_TT + INTERCHANGE_TT},
-            "17": {"weight": SEGMENT_1_TT + BAY_TRANSFER_TT},
+            "17": {"weight": SEGMENT_1_TT + BAY2_IO + HALF_INTERCHANGE_TT},
         },
         "9": {"M": {"weight": BAY_TRANSFER_TT}},
         "L": {
             "I": {"weight": SEGMENT_2_TT},
-            "25": {"weight": SEGMENT_2_TT + BAY_TRANSFER_TT},
+            "25": {"weight": SEGMENT_2_TT + BAY3_IO + HALF_INTERCHANGE_TT},
             "C": {"weight": SEGMENT_2_TT + INTERCHANGE_TT},
         },
         "17": {
-            "18": {"weight": BAY_TRANSFER_TT},
-            "L": {"weight": BAY_TRANSFER_TT},
-            "D": {"weight": BAY_TRANSFER_TT + INTERCHANGE_TT},
+            "18": {"weight": BAY2_12},
+            "L": {"weight": BAY2_IO},
+            "D": {"weight": BAY2_IO + INTERCHANGE_TT},
         },
-        "18": {"19": {"weight": BAY_TRANSFER_TT}, "17": {"weight": BAY_TRANSFER_TT}},
-        "19": {"18": {"weight": BAY_TRANSFER_TT}},
+        "18": {"19": {"weight": BAY2_23}, "17": {"weight": BAY2_21}},
+        "19": {"18": {"weight": BAY2_32}},
         "I": {
             "H": {"weight": SEGMENT_3_TT},
-            "34": {"weight": SEGMENT_3_TT + BAY_TRANSFER_TT},
+            "34": {"weight": SEGMENT_3_TT + BAY4_IO + HALF_INTERCHANGE_TT},
             "B": {"weight": SEGMENT_3_TT + INTERCHANGE_TT},
         },
         "25": {
-            "26": {"weight": BAY_TRANSFER_TT},
-            "I": {"weight": BAY_TRANSFER_TT},
-            "C": {"weight": BAY_TRANSFER_TT + INTERCHANGE_TT},
+            "26": {"weight": BAY3_12},
+            "I": {"weight": BAY3_IO},
+            "C": {"weight": BAY3_IO + INTERCHANGE_TT},
         },
-        "26": {"27": {"weight": BAY_TRANSFER_TT}, "25": {"weight": BAY_TRANSFER_TT}},
-        "27": {"26": {"weight": BAY_TRANSFER_TT}},
+        "26": {"27": {"weight": BAY3_23}, "25": {"weight": BAY3_21}},
+        "27": {"26": {"weight": BAY3_32}},
         "H": {
             "40": {"weight": SEGMENT_4_TT},
         },
         "40": {
-            "A": {"weight": BAY_TRANSFER_TT},
+            "A": {"weight": INTERCHANGE_TT + BAY_TRANSFER_TT},
         },
         "UNDEFINED": {
             "A": {"weight": 1e9},
