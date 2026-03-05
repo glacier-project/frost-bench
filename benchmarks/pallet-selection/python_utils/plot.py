@@ -140,27 +140,30 @@ def _plot_violin(
     ax.set_xticks(positions)
     ax.set_xticklabels(tick_labels, fontweight="medium")
     ax.set_title(title, pad=12)
-    ax.set_ylabel("Duration (time units)")
+    ax.set_ylabel("Duration (in seconds)")
     ax.set_xlim(0.3, len(plot_data) + 0.7)
 
 
 def _get_files_in_directory(directory: str, metrics: list[str]) -> list[str]:
-    """Find result files in a directory matching the specified metrics."""
-    files = os.listdir(directory)
-    return [
-        os.path.join(directory, f)
-        for metric in metrics
-        if (f := next((x for x in files if f"_{metric}_" in x), None))
-    ]
+    """Find result files in a directory (recursively) matching the specified metrics."""
+    all_files = [str(p) for p in Path(directory).rglob("*.json")]
+    return [f for metric in metrics for f in all_files if f"_{metric}_" in f]
 
 
 def _plot_distributions(files: list[str]) -> None:
     """Plot duration distributions for each task comparing multiple metrics."""
-    task_durations = {f: _load_task_durations(f) for f in files}
-    labels = [_extract_metric_name(f) for f in files]
-    colors = PLOT_COLORS[: len(files)]
+    # Aggregate durations across all files of the same metric
+    metric_durations: dict[str, dict[str, list[int]]] = defaultdict(lambda: defaultdict(list))
+    for f in files:
+        metric = _extract_metric_name(f)
+        for task, durations in _load_task_durations(f).items():
+            metric_durations[metric][task].extend(durations)
 
-    all_tasks = set().union(*[d.keys() for d in task_durations.values()])
+    metrics = sorted(metric_durations.keys())
+    labels = metrics
+    colors = PLOT_COLORS[: len(metrics)]
+
+    all_tasks = set().union(*[d.keys() for d in metric_durations.values()])
     task_names = sorted(all_tasks)
 
     fig, axes = plt.subplots(2, 2, figsize=(14, 11))
@@ -169,9 +172,9 @@ def _plot_distributions(files: list[str]) -> None:
 
     for idx, task in enumerate(task_names[:MAX_SUBPLOTS]):
         plot_data = [
-            (task_durations[f].get(task, []), labels[i], colors[i])
-            for i, f in enumerate(files)
-            if task_durations[f].get(task)
+            (metric_durations[m].get(task, []), m, colors[i])
+            for i, m in enumerate(metrics)
+            if metric_durations[m].get(task)
         ]
         _plot_violin(axes[idx], plot_data, task)
 
@@ -179,7 +182,7 @@ def _plot_distributions(files: list[str]) -> None:
         axes[idx].set_visible(False)
 
     fig.suptitle(
-        f'Task Duration Distributions\n{" vs ".join(labels)}',
+        f'Task Duration Distributions — {" vs ".join(labels)} (n={len(files)} runs)',
         fontsize=14,
         fontweight="bold",
         y=0.98,

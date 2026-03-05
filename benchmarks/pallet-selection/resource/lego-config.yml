@@ -1,0 +1,32 @@
+time_precision: MSECS
+logging_level: ERROR
+reactors:
+  frost_bus:
+    logging_level: ERROR
+    parameters:
+      data_model_path: "resource/data-model/bus.yml"
+  conveyor:
+    logging_level: ERROR
+    parameters:
+      data_model_path: "resource/data-model/opcua_conveyor_full.yml"
+  scheduler:
+    logging_level: ERROR
+    parameters:
+      data_model_path: "resource/data-model/demo_lego_scheduler.yml"
+      scheduling_instance: "resource/instance/simulation_lego_demo.json"
+      task_mapping: 
+        LD: /Scheduler/LD
+        RBTC: /Scheduler/RBTC
+        QC: /Scheduler/QC
+        DISASSEMBLE: /Scheduler/DISASSEMBLE
+        RESERVE: /Scheduler/RESERVE
+        PUT_BACK: /Scheduler/PUT_BACK
+  cell5:
+    logging_level: ERROR
+    parameters:
+      data_model_path: "resource/data-model/opcua_cell5.yml"
+  cell4:
+    logging_level: ERROR
+    parameters:
+      data_model_path: "resource/data-model/opcua_cell4.yml"
+  

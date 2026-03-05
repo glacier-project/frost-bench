@@ -2,7 +2,7 @@ target Python{
     // fast: false,
 }
 
-import MetaConveyor from "../../../ice-frost/src/MetaConveyor.lf";
+import OpcuaConveyor from "../../../ice-frost/src/OpcuaConveyor.lf";
 import Scheduler from "Scheduler.lf";
 import FrostBus from "../../../ice-frost/frost/src/lib/FrostBus.lf";
 
@@ -11,36 +11,10 @@ import uuid
 from frost import *
 =}
 
-reactor OPCUAConveyor extends MetaConveyor{
-    state _pallet_position
-    physical action pallet_position
 
-    reaction(startup) -> pallet_position{=
-        self._pallet_position = pallet_position
-        self.init_data_model_nodes()
-    =}
-
-    method update_pallet_position(pallet_id, pallet_position){=
-        if pallet_id <= 0:
-            return
-
-        self._pallet_position.schedule(0, (pallet_id, pallet_position))
-    =}
-
-    reaction(pallet_position){=
-        pallet_id, pallet_position = pallet_position.value
-
-        if pallet_id <= 0:
-            return
-
-        timestamp = self._get_current_logical_time_ms()
-        self.logger.info(f"Updating pallet position for pallet {pallet_id} to position {pallet_position} at time {timestamp}")
-        self.pallet_metric.set_pallet_position(pallet_id, pallet_position, timestamp)
-    =}
-}
 
 main reactor{
-    conveyor = new OPCUAConveyor(name="conveyor", update_interval=10 ms)
+    conveyor = new OpcuaConveyor(name="conveyor", update_interval=10 ms)
     scheduler = new Scheduler(name="scheduler", type="real", update_interval=10 ms)
     bus = new FrostBus(name="frost_bus", width = 2)
 

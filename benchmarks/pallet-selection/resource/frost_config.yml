@@ -9,50 +9,147 @@ reactors:
     logging_level: ERROR
     parameters:
       data_model_path: "resource/data-model/conveyor.yml"
-      conveyor_graph: "resource/conveyor-graph.gml"
-      # pallet_metric: "DISTANCE"
     reactors:
-      conveyor_belt:
-        reactors:
+     message_filter:
+       logging_level: ERROR
+     conveyor_belt:
+       logging_level: ERROR
+       reactors:
+          controller:
+            logging_level: ERROR
           Segment_1:
+            logging_level: ERROR
             parameters:
               segment_time: 12700
           Segment_2:
-            parameters:
-              segment_time: 20200
+              logging_level: ERROR
+              parameters:
+                segment_time: 20200            
           Segment_3:
+            logging_level: ERROR
             parameters:
               segment_time: 13250
           Segment_4:
+            logging_level: ERROR
             parameters:
-              segment_time: 4800
+              segment_time: 8691
           Segment_5:
+            logging_level: ERROR
             parameters:
               segment_time: 6900
           Segment_6:
+            logging_level: ERROR
             parameters:
               segment_time: 14500
           Segment_7:
+            logging_level: ERROR
             parameters:
               segment_time: 20200
           Segment_8:
+            logging_level: ERROR
             parameters:
               segment_time: 12700
           EM:
+            logging_level: ERROR
             parameters:
               mutex_time: 2500
-          HB:
+          HB: 
+            logging_level: ERROR
             parameters:
-              interchange_time: 4800
+              interchange_time: 4800           
+          Bay2:
+            logging_level: ERROR
+            reactors:      
+              "1":
+                logging_level: ERROR
+                parameters:
+                  forward_time: 2077
+                  backward_time: 1272
+              "2":
+                logging_level: ERROR
+                parameters:
+                  forward_time: 4857
+                  backward_time: 1766
+              "3":
+                logging_level: ERROR
+                parameters:
+                  forward_time: 2000
+                  backward_time: 4413
+          Bay3:
+            logging_level: ERROR
+            reactors:      
+              "1":
+                logging_level: ERROR
+                parameters:
+                  forward_time: 3779
+                  backward_time: 2833
+              "2":
+                logging_level: ERROR
+                parameters:
+                  forward_time: 2173
+                  backward_time: 3925
+              "3":
+                logging_level: ERROR
+                parameters:
+                  forward_time: 2000
+                  backward_time: 2061
+          Bay4:
+            logging_level: ERROR
+            reactors:    
+              "1":
+                logging_level: ERROR
+                parameters:
+                  forward_time: 2603
+                  backward_time: 1585
+              "2":
+                logging_level: ERROR
+                parameters:
+                  forward_time: 4292
+                  backward_time: 2809
+              "3":
+                logging_level: ERROR
+                parameters:
+                  forward_time: 2000
+                  backward_time: 3492
+          LoadUnloadZone:
+            logging_level: ERROR
+          H:
+            logging_level: ERROR
+          IC:
+            logging_level: ERROR  
+          A:
+            logging_level: ERROR
+          B:
+            logging_level: ERROR
+          C:
+            logging_level: ERROR
+          D:
+            logging_level: ERROR
+          E:
+            logging_level: ERROR
+          F:
+            logging_level: ERROR
+          FA:
+            logging_level: ERROR
+          I:
+            logging_level: ERROR
+          L:
+            logging_level: ERROR
+          M:
+            logging_level: ERROR
+          LD:
+            logging_level: ERROR
+          Bay1_1:
+            logging_level: ERROR
   scheduler:
     logging_level: ERROR
     parameters:
       data_model_path: "resource/data-model/scheduler.yml"
       # scheduling_instance: "resource/instance/instance_medium.json"
-      wh_tasks: 70
-      mill_tasks: 70
-      rbtc_tasks: 70
-      qc_tasks: 70
+      wh_tasks: 30
+      mill_tasks: 30
+      rbtc_tasks: 30
+      qc_tasks: 30
       min_task_spacing: 25 # seconds
       max_task_spacing: 35 # seconds
       task_mapping:

@@ -27,7 +27,8 @@ INSTANCE = os.getenv("INSTANCE")
 # Override config parameters
 reactors_config = FROST_CONFIG["reactors"]
 reactors_config["conveyor"]["parameters"]["pallet_metric"] = METRIC
-reactors_config["scheduler"]["parameters"]["scheduling_instance"] = INSTANCE
+if INSTANCE is not None and INSTANCE != "":
+    reactors_config["scheduler"]["parameters"]["scheduling_instance"] = INSTANCE
 random.seed(42)
 =}
 
@@ -81,7 +82,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1)
     // @label connected_to_bus
     reaction(connected_to_bus) -> update_schedule,create_wh_task,create_qc_task,create_rbtc_task,create_mill_task {=
         self.logger.info("Connected to bus. Starting scheduling...")
-        update_schedule.schedule(0)
+        update_schedule.schedule(SEC(20))
         create_wh_task.schedule(self.get_task_spacing())
         create_qc_task.schedule(self.get_task_spacing())
         create_rbtc_task.schedule(self.get_task_spacing())
@@ -105,7 +106,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1)
             new_jobs.append(job)
 
         # Update the scheduling instance with the new jobs and request a schedule update
-        self.logger.info(f"Creating new jobs: {[job.id for job in new_jobs]}")
+        self.logger.error(f"Creating new jobs: {[job.id for job in new_jobs]} at time {self._get_current_logical_time_sec()} sec")
         current_instance = self._executor.solver.instance
         self._executor.solver = DummySolver(instance= SchedulingInstance(
             jobs=current_instance.jobs + new_jobs,
@@ -182,12 +183,10 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1)
         '''
         Returns True if all the tasks are in the 'COMPLETED' state.
         '''
-        return sum([self.wh_tasks, self.qc_tasks, self.rbtc_tasks, self.mill_tasks]) == 0
-        #     return False
-        # return True
-
-        # tasks = [task for job in self.scheduling_instance.jobs for task in job.tasks]
-        # return all(task.status == TaskStatus.COMPLETED for task in tasks)
+        if sum([self.wh_tasks, self.qc_tasks, self.rbtc_tasks, self.mill_tasks]) > 0:
+            return False
+        tasks = [task for job in self._executor.solver.instance.jobs for task in job.tasks]
+        return all(task.status == TaskStatus.COMPLETED for task in tasks)
     =}
 
     reaction(response_messages) -> update_schedule, create_wh_task, create_qc_task, create_rbtc_task, create_mill_task {=
@@ -219,7 +218,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1)
             self.logger.debug(f"[response_messages] {self.jobs_scopes=}")
 
             self._executor.task_completed(task)
-            self.logger.warning(f"Task {task_name} completed on machine {task.machine.name}")
+            self.logger.error(f"Task {task_name} completed on machine {task.machine.name} at logical time {self._get_current_logical_time_sec()} sec")
 
             # Schedule new Jobs
             if task_name == "ToWarehouseAndBack":
@@ -258,17 +257,21 @@ reactor Scheduler(type="sim") extends FrostScheduler{
         # Update task start/end times
         for task in schedule.get_tasks():
             task_id = task.task.id
+            if task_id not in self.task_start or task_id not in self.task_end:
+                continue
             task.start_time = self.task_start[task_id]
             task.end_time = self.task_end[task_id]
 
         task_durations = [
             task.end_time - task.start_time
             for task in schedule.get_tasks()
+            if task.end_time is not None and task.start_time is not None
         ]
-        self.logger.error(f"Mean task duration: {mean(task_durations)} s")
+        if task_durations:
+            self.logger.error(f"Mean task duration: {mean(task_durations)} s")
 
         # Save schedule in the results folder with a unique name
-        instance_name = os.path.basename(INSTANCE).replace(".json", "")
+        instance_name = os.path.basename(INSTANCE).replace(".json", "") if INSTANCE else "lego"
         output_file = f"{OUTPUT_DIR}/{self.type}_{instance_name}_{METRIC}_{uuid.uuid4().hex}.json"
 
         os.makedirs(OUTPUT_DIR, exist_ok=True)

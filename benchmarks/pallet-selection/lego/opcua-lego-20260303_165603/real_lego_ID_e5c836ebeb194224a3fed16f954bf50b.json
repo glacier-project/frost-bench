@@ -1,0 +1,277 @@
+{
+  "machines": [
+    {
+      "id": "lock",
+      "name": "conveyor",
+      "capabilities": [
+        "reserve_pallet"
+      ]
+    },
+    {
+      "id": "RoboticCell",
+      "name": "cell4",
+      "capabilities": [
+        "assemble",
+        "disassemble"
+      ]
+    },
+    {
+      "id": "QualityCell",
+      "name": "cell5",
+      "capabilities": [
+        "quality_check"
+      ]
+    }
+  ],
+  "mapping": {
+    "QualityCell": [
+      {
+        "start_time": 135,
+        "end_time": 159,
+        "task": {
+          "id": "0003",
+          "name": "QC",
+          "processing_time": 30,
+          "dependencies": [
+            "0002"
+          ],
+          "requires": [
+            "quality_check"
+          ],
+          "priority": 1,
+          "status": "COMPLETED"
+        },
+        "machine": {
+          "id": "QualityCell",
+          "name": "cell5",
+          "capabilities": [
+            "quality_check"
+          ]
+        }
+      },
+      {
+        "start_time": 135,
+        "end_time": 159,
+        "task": {
+          "id": "0003",
+          "name": "QC",
+          "processing_time": 30,
+          "dependencies": [
+            "0002"
+          ],
+          "requires": [
+            "quality_check"
+          ],
+          "priority": 1,
+          "status": "COMPLETED"
+        },
+        "machine": {
+          "id": "QualityCell",
+          "name": "cell5",
+          "capabilities": [
+            "quality_check"
+          ]
+        }
+      }
+    ],
+    "RoboticCell": [
+      {
+        "start_time": 159,
+        "end_time": 217,
+        "task": {
+          "id": "0004",
+          "name": "DISASSEMBLE",
+          "processing_time": 60,
+          "dependencies": [
+            "0003"
+          ],
+          "requires": [
+            "disassemble"
+          ],
+          "priority": 1,
+          "status": "COMPLETED"
+        },
+        "machine": {
+          "id": "RoboticCell",
+          "name": "cell4",
+          "capabilities": [
+            "assemble",
+            "disassemble"
+          ]
+        }
+      },
+      {
+        "start_time": 217,
+        "end_time": 273,
+        "task": {
+          "id": "0006",
+          "name": "PUT_BACK",
+          "processing_time": 30,
+          "dependencies": [
+            "0005"
+          ],
+          "requires": [
+            "disassemble"
+          ],
+          "priority": 1,
+          "status": "COMPLETED"
+        },
+        "machine": {
+          "id": "RoboticCell",
+          "name": "cell4",
+          "capabilities": [
+            "assemble",
+            "disassemble"
+          ]
+        }
+      },
+      {
+        "start_time": 20,
+        "end_time": 135,
+        "task": {
+          "id": "0002",
+          "name": "RBTC",
+          "processing_time": 45,
+          "dependencies": [
+            "0001"
+          ],
+          "requires": [
+            "assemble"
+          ],
+          "priority": 1,
+          "status": "COMPLETED"
+        },
+        "machine": {
+          "id": "RoboticCell",
+          "name": "cell4",
+          "capabilities": [
+            "assemble",
+            "disassemble"
+          ]
+        }
+      },
+      {
+        "start_time": 159,
+        "end_time": 217,
+        "task": {
+          "id": "0004",
+          "name": "DISASSEMBLE",
+          "processing_time": 60,
+          "dependencies": [
+            "0003"
+          ],
+          "requires": [
+            "disassemble"
+          ],
+          "priority": 1,
+          "status": "COMPLETED"
+        },
+        "machine": {
+          "id": "RoboticCell",
+          "name": "cell4",
+          "capabilities": [
+            "assemble",
+            "disassemble"
+          ]
+        }
+      },
+      {
+        "start_time": 217,
+        "end_time": 273,
+        "task": {
+          "id": "0006",
+          "name": "PUT_BACK",
+          "processing_time": 30,
+          "dependencies": [
+            "0005"
+          ],
+          "requires": [
+            "disassemble"
+          ],
+          "priority": 1,
+          "status": "COMPLETED"
+        },
+        "machine": {
+          "id": "RoboticCell",
+          "name": "cell4",
+          "capabilities": [
+            "assemble",
+            "disassemble"
+          ]
+        }
+      }
+    ],
+    "lock": [
+      {
+        "start_time": 217,
+        "end_time": 217,
+        "task": {
+          "id": "0005",
+          "name": "RESERVE",
+          "processing_time": 60,
+          "dependencies": [
+            "0004"
+          ],
+          "requires": [
+            "reserve_pallet"
+          ],
+          "priority": 1,
+          "status": "COMPLETED"
+        },
+        "machine": {
+          "id": "lock",
+          "name": "conveyor",
+          "capabilities": [
+            "reserve_pallet"
+          ]
+        }
+      },
+      {
+        "start_time": 20,
+        "end_time": 20,
+        "task": {
+          "id": "0001",
+          "name": "LD",
+          "processing_time": 60,
+          "dependencies": [],
+          "requires": [
+            "reserve_pallet"
+          ],
+          "priority": 1,
+          "status": "COMPLETED"
+        },
+        "machine": {
+          "id": "lock",
+          "name": "conveyor",
+          "capabilities": [
+            "reserve_pallet"
+          ]
+        }
+      },
+      {
+        "start_time": 217,
+        "end_time": 217,
+        "task": {
+          "id": "0005",
+          "name": "RESERVE",
+          "processing_time": 60,
+          "dependencies": [
+            "0004"
+          ],
+          "requires": [
+            "reserve_pallet"
+          ],
+          "priority": 1,
+          "status": "COMPLETED"
+        },
+        "machine": {
+          "id": "lock",
+          "name": "conveyor",
+          "capabilities": [
+            "reserve_pallet"
+          ]
+        }
+      }
+    ]
+  }
+}

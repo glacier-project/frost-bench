@@ -41,10 +41,10 @@ reactors:
     logging_level: ERROR
     parameters:
       data_model_path: "resource/data-model/scheduler.yml"
-      wh_tasks: 35
-      mill_tasks: 35
-      rbtc_tasks: 35
-      qc_tasks: 35
+      wh_tasks: 5
+      mill_tasks: 5
+      rbtc_tasks: 5
+      qc_tasks: 5
       min_task_spacing: 15 # seconds
       max_task_spacing: 20 # seconds
       task_mapping:

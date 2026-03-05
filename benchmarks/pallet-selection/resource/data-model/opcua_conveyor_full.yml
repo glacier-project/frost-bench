@@ -96,7 +96,7 @@ root: !!FolderNode
           - !!AsyncMethodNode
             description: ''
             id: 8c08ee14-228c-4759-b5d6-9727697fd3a1
-            name: reservePalletOfType2
+            name: "reservePalletOfTypeWithDestination"
             parameters:
             - !!NumericalVariableNode
               description: ''
@@ -128,6 +128,12 @@ root: !!FolderNode
               initial_value: 0
               measure_unit: NoneMeasureUnits.NONE
               name: palletType
+            - !!NumericalVariableNode
+              description: ''
+              id: 1c8e7b9c-5a0c-4d9b-8f1c-2a3e5a9c8b0d
+              default_value: -1
+              measure_unit: NoneMeasureUnits.NONE
+              name: destination
             returns:
             - !!NumericalVariableNode
               description: ''
