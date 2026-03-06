@@ -82,7 +82,7 @@ def gen_lego_job() -> Job:
     rbtc = Task(id=str(uuid.uuid4()), name="RBTC", processing_time=45, requires=["assemble"], priority=1, dependencies=[ld.id])
     qc = Task(id=str(uuid.uuid4()), name="QC", processing_time=45, requires=["quality_check"], priority=1, dependencies=[rbtc.id])
     disassemble = Task(id=str(uuid.uuid4()), name="DISASSEMBLE", processing_time=45, requires=["disassemble"], priority=1, dependencies=[qc.id])
-    reserve = Task(id=str(uuid.uuid4()), name="RESERVE", processing_time=45, requires=["reserve_pallet"], priority=1, dependencies=[disassemble.id])
+    reserve = Task(id=str(uuid.uuid4()), name="RESERVE", processing_time=45, requires=["reserve_pallet"], priority=1, dependencies=[qc.id])
     put_back = Task(id=str(uuid.uuid4()), name="PUT_BACK", processing_time=45, requires=["disassemble"], priority=1, dependencies=[disassemble.id, reserve.id])
     return Job(
         id=str(uuid.uuid4()),
