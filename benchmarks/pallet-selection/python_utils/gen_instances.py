@@ -77,6 +77,21 @@ def gen_mill_job() -> Job:
     )
 
 
+def gen_lego_job() -> Job:
+    ld = Task(id=str(uuid.uuid4()), name="LD", processing_time=45, requires=["reserve_pallet"], priority=1)
+    rbtc = Task(id=str(uuid.uuid4()), name="RBTC", processing_time=45, requires=["assemble"], priority=1, dependencies=[ld.id])
+    qc = Task(id=str(uuid.uuid4()), name="QC", processing_time=45, requires=["quality_check"], priority=1, dependencies=[rbtc.id])
+    disassemble = Task(id=str(uuid.uuid4()), name="DISASSEMBLE", processing_time=45, requires=["disassemble"], priority=1, dependencies=[qc.id])
+    reserve = Task(id=str(uuid.uuid4()), name="RESERVE", processing_time=45, requires=["reserve_pallet"], priority=1, dependencies=[disassemble.id])
+    put_back = Task(id=str(uuid.uuid4()), name="PUT_BACK", processing_time=45, requires=["disassemble"], priority=1, dependencies=[disassemble.id, reserve.id])
+    return Job(
+        id=str(uuid.uuid4()),
+        name="LegoRecipe",
+        priority=1,
+        tasks=[ld, rbtc, qc, disassemble, reserve, put_back],
+    )
+
+
 def _gen_machines() -> list[Machine]:
     return [
         Machine(id="RoboticCell", name="cell3", capabilities=["assemble"]),

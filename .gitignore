@@ -12,7 +12,7 @@ build/
 src-gen/
 fed-gen/
 include/
-
+benchmarks/pallet-selection/lego/
 # Distribution / packaging
 .Python
 build/

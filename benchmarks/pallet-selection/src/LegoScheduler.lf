@@ -1,0 +1,273 @@
+target Python{
+    files:[
+        "python_utils/pallet_distance.py",
+        "python_utils/gen_instances.py",
+    ]
+}
+
+import FrostMachine from "../../../ice-frost/frost/src/lib/FrostMachine.lf";
+
+preamble{=
+import uuid
+import random
+from frost import *
+from statistics import mean, stdev
+
+from frost_planner.generator.instance_generator import load_instance_from_json
+from frost_planner.solver.dummy_solver import DummySolver
+from frost_planner.executor.dynamic_executor import DynamicExecutor
+from frost_planner.core.base import TaskStatus, Task, Job, SchedulingInstance, Machine
+from pallet_distance import PalletPosition, get_conveyor_position, _get_pallet_metric
+from gen_instances import gen_lego_job
+
+OUTPUT_DIR = os.getenv("OUTPUT_DIR")
+METRIC = os.getenv("METRIC")
+INSTANCE = os.getenv("INSTANCE")
+
+# Override config parameters
+reactors_config = FROST_CONFIG["reactors"]
+reactors_config["conveyor"]["parameters"]["pallet_metric"] = METRIC
+if INSTANCE is not None and INSTANCE != "":
+    reactors_config["scheduler"]["parameters"]["scheduling_instance"] = INSTANCE
+random.seed(42)
+=}
+
+reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1, _lego_jobs=30) extends FrostMachine {
+    state scheduling_instance = _scheduling_instance
+    state scheduling_interval = _scheduling_interval # in seconds
+    state _executor
+    state _active_tasks = {= {} =}
+
+    state task_mapping = {= {} =}  # dictionary (<schedule task name>, <CompositeMethodNode path>)
+    state jobs_scopes = {= {} =}    # dictionary (job.id, <job scope>)
+    state task_start = {= {} =}
+    state task_end = {= {} =}
+    state job_start = {= {} =}
+    state recipe_durations = {= [] =}
+
+    state lego_jobs = _lego_jobs
+    state min_task_spacing = 15
+    state max_task_spacing = 20
+
+    logical action create_lego_job
+
+    logical action start_tasks
+    logical action update_schedule
+
+    reaction(startup) {=
+        loaded = load_instance_from_json(self.scheduling_instance)
+        # Keep machine definitions but start with no jobs — recipes are generated dynamically
+        empty_instance = SchedulingInstance(
+            jobs=[],
+            machines=loaded.machines,
+            travel_times=loaded.travel_times,
+        )
+        self._executor = DynamicExecutor(DummySolver(instance=empty_instance))
+    =}
+
+    method create_method_request(t, method_path, args, kwargs) {=
+        return self.message_builder.build_invoke_method_message(
+            target=t,
+            node=method_path,
+            args=args,
+            kwargs=kwargs
+        )
+    =}
+
+    method get_task_spacing() {=
+        return SECS(random.randint(
+            int(self.min_task_spacing),
+            int(self.max_task_spacing)
+        ))
+    =}
+
+    // @label connected_to_bus
+    reaction(connected_to_bus) -> update_schedule, create_lego_job {=
+        self.logger.info("Connected to bus. Starting scheduling...")
+        update_schedule.schedule(SEC(10))
+        create_lego_job.schedule(self.get_task_spacing())
+    =}
+
+    reaction(create_lego_job) -> update_schedule {=
+        job = gen_lego_job()
+        self.logger.error(f"Creating lego job {job.id} (remaining: {self.lego_jobs}) at time {self._get_current_logical_time_sec()} sec")
+        current_instance = self._executor.solver.instance
+        self._executor.solver = DummySolver(instance=SchedulingInstance(
+            jobs=current_instance.jobs + [job],
+            machines=current_instance.machines,
+            travel_times=current_instance.travel_times,
+        ))
+        update_schedule.schedule(0)
+    =}
+
+    // @label update_schedule
+    reaction(update_schedule) -> start_tasks {=
+        '''
+        Update the current schedule to run new tasks.
+        '''
+        executor = self._executor
+        logical_time = self._get_current_logical_time_sec()
+        self.logger.debug(f"Scheduling at logical time {logical_time} sec")
+        executor.update_task_status()
+        schedule = executor.update_schedule(start_time=0)
+
+        # get the tasks that can be started now
+        next_tasks = executor.next_ready_tasks()
+
+        if len(next_tasks) > 0:
+            start_tasks.schedule(0, next_tasks)
+    =}
+
+    // @label run_tasks
+    reaction(start_tasks) {=
+        '''
+        When there are new tasks to run, send a method invoke request
+        to the scheduler's CompositeMethodNode that has the same name of the task to run.
+
+        The CompositeMethodNode, which handles the task, has access to the job's scope.
+        '''
+        self.logger.debug(f"Starting tasks: {start_tasks.value}")
+
+        for task, machine in start_tasks.value:
+            machine = machine.name
+            task_id = task.task.id
+            task_name = task.task.name
+            self.logger.info(f"Starting task {task_name} on machine {machine}")
+
+            assert task_id not in self.task_start, f"Task '{task_id}' is already started."
+            self.task_start[task_id] = self._get_current_logical_time_sec()
+            self._executor.task_started(task)
+
+            # given the current task, retrieve the scope of its job
+            parent_job_id = task.task.job_id
+            if parent_job_id not in self.jobs_scopes:
+                self.jobs_scopes[parent_job_id] = {}
+            job_scope = self.jobs_scopes[parent_job_id]
+
+            # Record recipe start time when the first task (LD) begins
+            if task_name == "LD":
+                self.job_start[parent_job_id] = self._get_current_logical_time_sec()
+
+            assert task_name in self.task_mapping, f"Task '{task_name}' has no mapping to its CompositeMethodNode path. Add it to the frost config file using the 'task_mapping' parameter."
+            composite_method_node_path = self.task_mapping[task_name]
+            msg = self.create_method_request(self.data_model.name, composite_method_node_path, args=[machine], kwargs=job_scope)
+            self._active_tasks[msg.correlation_id] = task
+            response = self.protocol_mng.handle_request(msg)
+            self.logger.debug(f"Requesting method start with msg {msg}, got response {response}")
+    =}
+
+    method merge_scopes(scope1, scope2) {=
+        '''
+        Given two scopes, returns a new scope
+        which contains the values of `scope1`,
+        modified by the values inside of `scope2`
+        '''
+        new_scope = copy.deepcopy(scope1)
+        new_scope.update(scope2)
+        return new_scope
+    =}
+
+    method are_all_tasks_completed() {=
+        '''
+        Returns True if all the tasks are in the 'COMPLETED' state.
+        '''
+        if self.lego_jobs > 0:
+            return False
+        tasks = [task for job in self._executor.solver.instance.jobs for task in job.tasks]
+        return all(task.status == TaskStatus.COMPLETED for task in tasks)
+    =}
+
+    reaction(response_messages) -> update_schedule, create_lego_job {=
+        '''
+        When the scheduler receives response messages,
+        check if a task was completed and save its
+        return values inside the parent job's scope.
+        '''
+        for bank_index, message in response_messages.value:
+
+            if message.correlation_id not in self._active_tasks:
+                continue
+
+            if message.header.msg_name != MethodMsgName.COMPLETED:
+                continue
+
+            task = self._active_tasks.pop(message.correlation_id)
+            task_id = task.task.id
+            task_name = task.task.name
+            assert task_id in self.task_start, f"Task '{task_id}' was not started."
+            assert task_id not in self.task_end, f"Task '{task_id}' was already completed."
+            self.task_end[task_id] = self._get_current_logical_time_sec()
+
+            # save return values in the job's scope
+            returned_values = message.payload.ret
+            parent_job_id = task.task.job_id
+            job_scope = self.jobs_scopes[parent_job_id]
+            self.jobs_scopes[parent_job_id] = self.merge_scopes(job_scope, returned_values)
+            self.logger.debug(f"[response_messages] {self.jobs_scopes=}")
+
+            self._executor.task_completed(task)
+            self.logger.error(f"Task {task_name} completed on machine {task.machine.name} at logical time {self._get_current_logical_time_sec()} sec")
+
+            # Schedule new lego job when the full recipe completes
+            if task_name == "PUT_BACK":
+                if parent_job_id in self.job_start:
+                    duration = self._get_current_logical_time_sec() - self.job_start.pop(parent_job_id)
+                    self.recipe_durations.append(duration)
+                    self.logger.error(f"Recipe {len(self.recipe_durations)} completed in {duration:.1f} s")
+                self.lego_jobs -= 1
+                if self.lego_jobs > 0:
+                    create_lego_job.schedule(self.get_task_spacing())
+
+            # check if there are other tasks to complete
+            if self.are_all_tasks_completed():
+                self.logger.warning("All tasks completed. Stopping execution.")
+                lf.request_stop()
+
+            # scheduling_interval = SECS(self.scheduling_interval)
+            # self.logger.debug(f"Scheduling next task in {scheduling_interval}...")
+            update_schedule.schedule(0)
+    =}
+}
+
+
+reactor Scheduler(type="sim") extends FrostScheduler{
+
+    reaction(shutdown){=
+        schedule = self._executor.get_current_schedule()
+        # Update task start/end times
+        for task in schedule.get_tasks():
+            task_id = task.task.id
+            if task_id not in self.task_start or task_id not in self.task_end:
+                continue
+            task.start_time = self.task_start[task_id]
+            task.end_time = self.task_end[task_id]
+
+        task_durations = [
+            task.end_time - task.start_time
+            for task in schedule.get_tasks()
+            if task.end_time is not None and task.start_time is not None
+        ]
+        if task_durations:
+            self.logger.error(f"Mean task duration: {mean(task_durations)} s")
+
+        if self.recipe_durations:
+            sd = f"{stdev(self.recipe_durations):.1f}" if len(self.recipe_durations) > 1 else "n/a"
+            self.logger.error(
+                f"Lego recipe executions: {len(self.recipe_durations)} | "
+                f"Durations: {[round(d,1) for d in self.recipe_durations]} s | "
+                f"Average: {mean(self.recipe_durations):.1f} s | "
+                f"Stdev: {sd} s | "
+                f"Min: {min(self.recipe_durations):.1f} s | "
+                f"Max: {max(self.recipe_durations):.1f} s"
+            )
+
+        # Save schedule in the results folder with a unique name
+        instance_name = os.path.basename(INSTANCE).replace(".json", "") if INSTANCE else "lego"
+        output_file = f"{OUTPUT_DIR}/{self.type}_{instance_name}_{METRIC}_{uuid.uuid4().hex}.json"
+
+        os.makedirs(OUTPUT_DIR, exist_ok=True)
+        with open(output_file, "w") as f:
+            f.write(schedule.model_dump_json(indent=2))
+        self.logger.error(f"Schedule saved to {output_file}")
+    =}
+}

@@ -9,12 +9,15 @@ reactors:
     logging_level: ERROR
     parameters:
       data_model_path: "resource/data-model/opcua_conveyor_full.yml"
+      conveyor_graph: "resource/conveyor-graph.gml"
+      pallet_metric: "DISTANCE"
   scheduler:
     logging_level: ERROR
     parameters:
       data_model_path: "resource/data-model/demo_lego_scheduler.yml"
-      scheduling_instance: "resource/instance/simulation_lego_demo.json"
-      task_mapping: 
+      scheduling_instance: "../../ice-frost/resources/schedules/simulation-lego-demo.json"
+      
+      task_mapping:
         LD: /Scheduler/LD
         RBTC: /Scheduler/RBTC
         QC: /Scheduler/QC
@@ -29,4 +32,3 @@ reactors:
     logging_level: ERROR
     parameters:
       data_model_path: "resource/data-model/opcua_cell4.yml"
-  

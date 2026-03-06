@@ -10,7 +10,7 @@ connectors:
     port_env_var: "ICE_CELL4_PORT"
 root:
   !!FolderNode
-  name: "Cell4"
+  name: "Objects"
   description: "OPCUA"
   children:
     - !!FolderNode

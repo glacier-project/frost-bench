@@ -8,7 +8,8 @@ reactors:
   conveyor:
     logging_level: ERROR
     parameters:
-      data_model_path: "resource/data-model/conveyor.yml"
+      data_model_path: "../../ice-frost/resources/data_model/conveyor.yml"
+      conveyor_graph: "resource/conveyor-graph.gml"
     reactors:
      message_filter:
        logging_level: ERROR

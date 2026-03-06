@@ -17,298 +17,109 @@ root: !!FolderNode
       - !!FolderNode
         children:
         - !!FolderNode
+          name: "UtilityMethods"
+          description: ""
           children:
-          - !!AsyncMethodNode
-            description: ''
-            id: fa171e29-eea3-4a60-9629-770ee02b5f8d
-            name: setDestination
-            parameters:
-            - !!NumericalVariableNode
-              description: ''
-              id: 82271687-31a4-483e-a4ac-60c13aa6506a
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: palletNumber
-            - !!NumericalVariableNode
-              description: ''
-              id: 9b3acff4-e306-4008-a2dc-70c7a8e116cd
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: destination
-            returns:
-            - !!StringVariableNode
-              description: ''
-              id: 9b5377f9-bacf-49e6-ad2c-3a77fd075800
-              initial_value: ''
-              name: res
-          - !!CompositeMethodNode
-            cfg:
-            - !!CallMethodNode
-              args:
-              - ${numPallets}
-              - ${contentPos1}
-              - ${contentPos2}
-              - ${contentPos3}
-              - ${palletType}
-              kwargs: {}
-              method: Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/reservePalletOfType2
-            description: ''
-            id: 75509760-c7fd-41c1-8edb-322ce470c1fe
-            name: ReserveFreePalletOfType2
-            parameters:
-            - !!NumericalVariableNode
-              description: ''
-              id: e35d18e6-00be-4a70-afc9-0a8baae30521
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: numPallets
-            - !!NumericalVariableNode
-              description: ''
-              id: 47560f2e-4fd1-4eea-a83f-92a3eb9e23ee
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: contentPos1
-            - !!NumericalVariableNode
-              description: ''
-              id: 7b31b3be-4809-4007-b7e5-037196b58275
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: contentPos2
-            - !!NumericalVariableNode
-              description: ''
-              id: 6ec2c526-2f51-487a-aba7-3b8631afcd4c
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: contentPos3
-            - !!NumericalVariableNode
-              description: ''
-              id: 640792aa-6575-4ed7-9fe8-05e42a3d1ef7
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: palletType
-            returns:
-            - !!NumericalVariableNode
-              description: ''
-              id: ef312224-786f-476d-9057-9acc9355e02e
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: reservationId
-          - !!AsyncMethodNode
-            description: ''
-            id: 8c08ee14-228c-4759-b5d6-9727697fd3a1
-            name: "reservePalletOfTypeWithDestination"
-            parameters:
-            - !!NumericalVariableNode
-              description: ''
-              id: f21410e6-fc74-4cdc-9aa8-f2837d040c05
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: numPallets
-            - !!NumericalVariableNode
-              description: ''
-              id: 9827b50d-05f0-4959-a6b2-98171c6f150c
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: contentPos1
-            - !!NumericalVariableNode
-              description: ''
-              id: 8ec76c3a-210b-41fb-a9ab-b1cf79d18c42
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: contentPos2
-            - !!NumericalVariableNode
-              description: ''
-              id: 4fe3df2a-df10-4977-aaa6-99d3e62a8969
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: contentPos3
-            - !!NumericalVariableNode
-              description: ''
-              id: 37f81cf4-f7af-4685-8d7f-1fa32a9643fe
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: palletType
-            - !!NumericalVariableNode
-              description: ''
-              id: 1c8e7b9c-5a0c-4d9b-8f1c-2a3e5a9c8b0d
-              default_value: -1
-              measure_unit: NoneMeasureUnits.NONE
-              name: destination
-            returns:
-            - !!NumericalVariableNode
-              description: ''
-              id: 5cf66abe-8795-4af4-91aa-6e13cd1c1386
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: reservationId
-          - !!AsyncMethodNode
-            description: ''
-            id: 70a559f3-b0e5-4309-abbc-6fe90fe4486c
-            name: CallFreePalletOfTypeTo
-            parameters:
-            - !!NumericalVariableNode
-              description: ''
-              id: 563a6b1d-1037-49fd-8a9d-ac07d3c8aa6f
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: contentPos1
-            - !!NumericalVariableNode
-              description: ''
-              id: 99f0a204-9d62-4f7e-ac9e-05eb52171726
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: contentPos2
-            - !!NumericalVariableNode
-              description: ''
-              id: 134f7ac8-4d58-4fb7-9112-15fea9917a7e
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: contentPos3
-            - !!NumericalVariableNode
-              description: ''
-              id: 0283f0c0-e961-4237-a828-c65cefdd8c86
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: palletType
-            - !!NumericalVariableNode
-              description: ''
-              id: 2ae529e1-dd52-4e71-bc04-4017d324f4bb
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: destination
-            returns:
-            - !!NumericalVariableNode
-              description: ''
-              id: 1a5b541b-dc85-4181-b82c-e7f7ae57f4ab
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: palletNumber
-          - !!CompositeMethodNode
-            cfg:
-            - !!CallMethodNode
-              args:
-              - ${reservationId}
-              kwargs: {}
-              method: Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/getReservedPallet
-            - !!CallMethodNode
-              args:
-              - ${pallet}
-              - ${destination}
-              kwargs: {}
-              method: Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/setPalletDestination
-            description: ''
-            id: cba40301-b8e1-44d5-8d8e-6907c1802724
-            name: callReservedPalletTo
-            parameters:
-            - !!NumericalVariableNode
-              description: ''
-              id: 6729852c-feb5-4aa3-8915-41df762cada7
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: reservationId
-            - !!NumericalVariableNode
-              description: ''
-              id: 782f9c68-c302-4d07-951d-c1af0d596a6f
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: destination
-            returns:
-            - !!NumericalVariableNode
-              description: ''
-              id: cd599935-d310-4ce5-8182-ea77ed46945b
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: pallet
-          - !!CompositeMethodNode
-            cfg:
-            - !!CallMethodNode
-              args:
-              - ${palletNumber}
-              - ${destination}
-              kwargs: {}
-              method: Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/setDestination
-            description: ''
-            id: 753e9296-8186-4373-aae7-a5a7374804d9
-            name: setPalletDestination
-            parameters:
-            - !!NumericalVariableNode
-              description: ''
-              id: 46ed74b4-dca6-4860-9886-72207f0e1fe9
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: palletNumber
-            - !!NumericalVariableNode
-              description: ''
-              id: 88479d6c-a41d-4eea-8853-16fa2c41bcb4
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: destination
-            returns:
-            - !!BooleanVariableNode
-              description: ''
-              id: 8fb9b21e-9ba3-4f1b-ae60-23ee4fe99031
-              initial_value: true
-              name: result
-          - !!CompositeMethodNode
-            cfg:
-            - !!CallMethodNode
-              args:
-              - ${palletNumber}
-              - ${destination}
-              kwargs: {}
-              method: Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/setDestination
-            - !!WriteVariableNode
-              value: ${reservationId}
-              variable: Objects/ConveyorHMI/ConveyorObjects/Pallets/Pallet${palletNumber}/reserved
-            description: ''
-            id: cbaaedb5-99b1-471f-b7e1-b78e08c1ed23
-            name: setPalletDestinationWithReservation
-            parameters:
-            - !!NumericalVariableNode
-              description: ''
-              id: 92b1729a-7f0f-4a16-8282-d95c4d72a536
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: palletNumber
-            - !!NumericalVariableNode
-              description: ''
-              id: 33a342f0-da26-4181-b699-4c0ff49958da
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: destination
-            - !!NumericalVariableNode
-              description: ''
-              id: a69b5560-2a5f-452b-b770-81b92a803e6d
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: reservationId
-            returns:
-            - !!BooleanVariableNode
-              description: ''
-              id: ca31e64a-9fa7-490d-a4e5-39659a7f9b8f
-              initial_value: true
-              name: result
-          - !!AsyncMethodNode
-            description: ''
-            id: 69364d5e-b6e9-491c-804f-68f842f4834e
-            name: getReservedPallet
-            parameters:
-            - !!NumericalVariableNode
-              description: ''
-              id: 1f0f6bff-6457-47f5-9e8d-6bbb7676dba9
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: reservationId
-            returns:
-            - !!NumericalVariableNode
-              description: ''
-              id: 0b888bce-aff2-4802-83c2-94c9aecab4a5
-              initial_value: 0
-              measure_unit: NoneMeasureUnits.NONE
-              name: pallet
-          description: ''
-          id: 53498996-d662-4bba-920a-2937dc67c943
-          name: UtilityMethods
+            - !!AsyncMethodNode
+              name: "setDestination"
+              description: ""
+              parameters:
+                - !!NumericalVariableNode
+                  name: "palletNumber"
+                  description: ""
+                  measure_unit: "NoneMeasureUnits.NONE"
+                  default_value: 0
+                - !!NumericalVariableNode
+                  name: "destination"
+                  description: ""
+                  measure_unit: "NoneMeasureUnits.NONE"
+                  default_value: 0
+              returns:
+                - !!StringVariableNode
+                  name: "res"
+                  description: ""
+            - !!AsyncMethodNode
+              name: "reservePalletOfTypeWithDestination"
+              description: ""
+              parameters:
+                - !!NumericalVariableNode
+                  name: "numPallets"
+                  description: ""
+                  measure_unit: "NoneMeasureUnits.NONE"
+                  default_value: 0
+                - !!NumericalVariableNode
+                  name: "contentPos1"
+                  description: ""
+                  measure_unit: "NoneMeasureUnits.NONE"
+                  default_value: 0
+                - !!NumericalVariableNode
+                  name: "contentPos2"
+                  description: ""
+                  measure_unit: "NoneMeasureUnits.NONE"
+                  default_value: 0
+                - !!NumericalVariableNode
+                  name: "contentPos3"
+                  description: ""
+                  measure_unit: "NoneMeasureUnits.NONE"
+                  default_value: 0
+                - !!NumericalVariableNode
+                  name: "palletType"
+                  description: ""
+                  measure_unit: "NoneMeasureUnits.NONE"
+                  default_value: 0
+                - !!NumericalVariableNode
+                  name: "destination"
+                  description: ""
+                  measure_unit: "NoneMeasureUnits.NONE"
+                  default_value: -1
+              returns:
+                - !!NumericalVariableNode
+                  name: "reservationId"
+                  description: ""
+                  measure_unit: "NoneMeasureUnits.NONE"
+            - !!AsyncMethodNode
+              name: "getReservedPallet"
+              description: ""
+              parameters:
+                - !!NumericalVariableNode
+                  name: "reservationId"
+                  description: ""
+                  measure_unit: "NoneMeasureUnits.NONE"
+                  default_value: 0
+              returns:
+                - !!NumericalVariableNode
+                  name: "pallet"
+                  description: ""
+                  measure_unit: "NoneMeasureUnits.NONE"
+            - !!CompositeMethodNode
+              name: "callReservedPalletTo"
+              description: ""
+              parameters:
+                - !!NumericalVariableNode
+                  name: "reservationId"
+                  description: ""
+                  measure_unit: "NoneMeasureUnits.NONE"
+                  default_value: 0
+                - !!NumericalVariableNode
+                  name: "destination"
+                  description: ""
+                  measure_unit: "NoneMeasureUnits.NONE"
+                  default_value: 0
+              returns:
+                - !!NumericalVariableNode
+                  name: "pallet"
+                  description: ""
+                  measure_unit: "NoneMeasureUnits.NONE"
+              cfg:
+                - !!CallMethodNode
+                  method: "Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/getReservedPallet"
+                  args: 
+                    - "${reservationId}"
+                - !!CallMethodNode
+                  method: "Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/setPalletDestination"
+                  args: 
+                    - "${pallet}"
+                    - "${destination}"
         - !!FolderNode
           children:
           - !!AsyncMethodNode
