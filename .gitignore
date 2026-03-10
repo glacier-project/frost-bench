@@ -148,7 +148,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
-
+lego/
 # mypy
 .mypy_cache/
 .dmypy.json
