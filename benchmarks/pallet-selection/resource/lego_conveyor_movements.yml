@@ -14,7 +14,7 @@ reactors:
   scheduler:
     logging_level: ERROR
     parameters:
-      data_model_path: "resource/data-model/demo_lego_scheduler.yml"
+      data_model_path: "resource/data-model/demo_lego_conveyor_movements.yml"
       scheduling_instance: "../../ice-frost/resources/schedules/simulation-lego-demo.json"
       task_mapping:
         LD: /Scheduler/LD

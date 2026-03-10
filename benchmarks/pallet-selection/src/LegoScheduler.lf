@@ -32,7 +32,7 @@ if INSTANCE is not None and INSTANCE != "":
 random.seed(42)
 =}
 
-reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1, _lego_jobs=30) extends FrostMachine {
+reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1, _lego_jobs=20) extends FrostMachine {
     state scheduling_instance = _scheduling_instance
     state scheduling_interval = _scheduling_interval # in seconds
     state _executor
@@ -46,8 +46,8 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1,
     state recipe_durations = {= [] =}
 
     state lego_jobs = _lego_jobs
-    state min_task_spacing = 15
-    state max_task_spacing = 20
+    state min_task_spacing = 20
+    state max_task_spacing = 60
 
     logical action create_lego_job
 
@@ -145,7 +145,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1,
             job_scope = self.jobs_scopes[parent_job_id]
 
             # Record recipe start time when the first task (LD) begins
-            if task_name == "LD":
+            if task_name == "RBTC":
                 self.job_start[parent_job_id] = self._get_current_logical_time_sec()
 
             assert task_name in self.task_mapping, f"Task '{task_name}' has no mapping to its CompositeMethodNode path. Add it to the frost config file using the 'task_mapping' parameter."

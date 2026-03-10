@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-METRICS=("DISTANCE")
+METRICS=("ID")
 OUTPUT_DIR="lego/opcua-lego-$(date +%Y%m%d_%H%M%S)"
 FROST_CONFIG="resource/lego_conveyor_movements.yml"
 SAVE_PUPDATES="true"
