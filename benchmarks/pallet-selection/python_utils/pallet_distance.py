@@ -393,7 +393,9 @@ class AbstractPalletMetric(ABC):
         pass
 
     def _create_log_file(self):
-        filename = f"pallet_distance_metric_log_{uuid.uuid4()}.csv"
+        log_dir = "results/pallet_distance"
+        os.makedirs(log_dir, exist_ok=True)
+        filename = os.path.join(log_dir, f"pallet_distance_metric_log_{uuid.uuid4()}.csv")
         logger.debug(f"Creating pallet distance metric log file: {filename}")
         self._log_file = open(filename, mode="w")  # noqa: SIM115
         self._csv_writer = csv.writer(self._log_file)

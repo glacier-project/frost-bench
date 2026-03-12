@@ -4,13 +4,17 @@ This module reconstructs end-to-end Lego recipe durations and per-task timing
 distributions from the output files produced by LegoScheduler.
 
 Usage:
-    python plot_lego.py --directory lego/opcua-lego-20260309_084139
-    python plot_lego.py --directory lego/            # aggregates all runs
-    python plot_lego.py --directory lego/run1 --compare lego/run2
+    python plot_lego.py --directory results/lego/lego-sim-20260311_103354
+    python plot_lego.py --directory results/lego/   # aggregates all runs
+    python plot_lego.py --directory results/lego/run1 --compare results/lego/run2
+    python plot_lego.py --base-dir results/lego/    # topic-grouped view
+    python plot_lego.py --base-dir results/lego/ --topic movements
 """
 
 import argparse
 import json
+import re
+import textwrap
 from collections import defaultdict
 from pathlib import Path
 
@@ -35,9 +39,10 @@ plt.rcParams.update(
 )
 
 # Ordered steps of the Lego recipe (used for sorting subplots)
-# Matches gen_lego_job() in gen_instances.py: RBTC -> QC -> DISASSEMBLE -> PUT_BACK
-LEGO_RECIPE_STEPS = ["RBTC", "QC", "DISASSEMBLE", "PUT_BACK"]
-LEGO_RECIPE_START = "RBTC"
+# Full recipe: LD → RBTC → QC → DISASSEMBLE → RESERVE → PUT_BACK
+# Movements recipe (no cells): RBTC → QC → DISASSEMBLE → PUT_BACK
+# Functions filter by presence, so both variants are handled automatically.
+LEGO_RECIPE_STEPS = ["LD", "RBTC", "QC", "DISASSEMBLE", "RESERVE", "PUT_BACK"]
 LEGO_RECIPE_END = "PUT_BACK"
 PLOT_COLORS = ["#4C72B0", "#DD8452", "#55A868", "#C44E52", "#8172B3", "#937860"]
 
@@ -95,13 +100,14 @@ def _reconstruct_recipes(tasks: dict[str, dict]) -> list[dict[str, dict]]:
             recipe[name] = entry
             stack.extend(dependents.get(tid, []))
 
-        # Keep only recipes that have at least the first and last step with timing
-        first = recipe.get(LEGO_RECIPE_START)
+        # Keep only recipes that have the last step with timing (at least one start step present)
         last = recipe.get(LEGO_RECIPE_END)
-        if (
-            first is not None and first.get("start_time") is not None
-            and last is not None and last.get("end_time") is not None
-        ):
+        first_time = next(
+            (e["start_time"] for s in LEGO_RECIPE_STEPS
+             if (e := recipe.get(s)) is not None and e.get("start_time") is not None),
+            None,
+        )
+        if last is not None and last.get("end_time") is not None and first_time is not None:
             recipes.append(recipe)
 
     return recipes
@@ -123,14 +129,48 @@ def get_json_files(directory: str) -> list[str]:
     return [str(p) for p in Path(directory).rglob("*.json")]
 
 
+def _extract_metric(filepath: str) -> str | None:
+    """Return the metric name embedded in a result filename, e.g. 'DISTANCE', 'ID', 'RANDOM'.
+
+    Filename pattern: <type>_<instance>_<run_type>_<METRIC>_<uuid>.json
+    """
+    stem = Path(filepath).stem
+    match = re.search(r"_(DISTANCE|RANDOM|ID)_", stem)
+    return match.group(1) if match else None
+
+
+def _load_recipes_by_metric(directory: str) -> dict[str, list[dict[str, dict]]]:
+    """Load all JSON results under *directory* and group recipes by metric.
+
+    Returns:
+        {metric_name: [recipe, ...]}
+    """
+    by_metric: dict[str, list[dict[str, dict]]] = defaultdict(list)
+    for filepath in get_json_files(directory):
+        metric = _extract_metric(filepath)
+        if metric is None:
+            continue
+        by_metric[metric].extend(load_lego_results(filepath))
+    return dict(by_metric)
+
+
+def _recipe_start_time(recipe: dict[str, dict]) -> float:
+    """Return the start_time of the first present step in the recipe."""
+    for step in LEGO_RECIPE_STEPS:
+        entry = recipe.get(step)
+        if entry is not None and entry.get("start_time") is not None:
+            return entry["start_time"]
+    raise ValueError(f"Recipe has no known step with a start_time: {list(recipe.keys())}")
+
+
 # ---------------------------------------------------------------------------
 # Metric computation
 # ---------------------------------------------------------------------------
 
 
 def recipe_duration(recipe: dict[str, dict]) -> float:
-    """End-to-end duration: from RBTC.start_time to PUT_BACK.end_time (seconds)."""
-    start = recipe[LEGO_RECIPE_START]["start_time"]
+    """End-to-end duration: from first step start_time to PUT_BACK end_time (seconds)."""
+    start = _recipe_start_time(recipe)
     end = recipe[LEGO_RECIPE_END]["end_time"]
     return end - start
 
@@ -212,8 +252,8 @@ def plot_recipe_timeline(recipes: list[dict[str, dict]], title: str = "") -> Non
         print("No complete recipes to plot.")
         return
 
-    # Sort by RBTC start time
-    recipes_sorted = sorted(recipes, key=lambda r: r[LEGO_RECIPE_START]["start_time"])
+    # Sort by first step start time
+    recipes_sorted = sorted(recipes, key=_recipe_start_time)
 
     fig, ax = plt.subplots(figsize=(14, max(4, len(recipes_sorted) * 0.5 + 2)))
     _setup_axes(ax)
@@ -222,7 +262,7 @@ def plot_recipe_timeline(recipes: list[dict[str, dict]], title: str = "") -> Non
     yticks, ylabels = [], []
 
     for i, recipe in enumerate(recipes_sorted):
-        ld_start = recipe[LEGO_RECIPE_START]["start_time"]
+        first_start = _recipe_start_time(recipe)
         y = i
         yticks.append(y)
         ylabels.append(f"Recipe {i + 1}")
@@ -231,7 +271,7 @@ def plot_recipe_timeline(recipes: list[dict[str, dict]], title: str = "") -> Non
             entry = recipe.get(step)
             if entry is None:
                 continue
-            start = entry["start_time"] - ld_start
+            start = entry["start_time"] - first_start
             dur = entry["end_time"] - entry["start_time"]
             ax.barh(y, dur, left=start, color=colors[step], edgecolor="white", linewidth=0.5, height=0.7)
 
@@ -239,10 +279,10 @@ def plot_recipe_timeline(recipes: list[dict[str, dict]], title: str = "") -> Non
     ax.legend(handles=legend_handles, loc="lower right", frameon=True, fontsize=9)
     ax.set_yticks(yticks)
     ax.set_yticklabels(ylabels)
-    ax.set_xlabel("Time from LD start (s)")
+    ax.set_xlabel("Time from first step (s)")
     ax.set_title(title or f"Lego Recipe Gantt — {len(recipes_sorted)} recipes")
     fig.patch.set_facecolor("white")
-    plt.tight_layout()
+    fig.tight_layout(pad=1.2)
 
 
 # ---------------------------------------------------------------------------
@@ -264,7 +304,7 @@ def plot_task_distributions(
     ncols = 3
     nrows = (len(steps) + ncols - 1) // ncols
 
-    fig, axes = plt.subplots(nrows, ncols, figsize=(14, 4 * nrows))
+    fig, axes = plt.subplots(nrows, ncols, figsize=(14, max(5, 4.5 * nrows)))
     axes = np.array(axes).flatten()
     fig.patch.set_facecolor("white")
 
@@ -286,11 +326,8 @@ def plot_task_distributions(
         axes[idx].set_visible(False)
 
     recipe_label = f" — {label}" if label else ""
-    fig.suptitle(
-        f"Per-task duration distribution{recipe_label}  (n={len(recipes)} recipes)",
-        y=1.01,
-    )
-    plt.tight_layout()
+    fig.suptitle(f"Per-task duration distribution{recipe_label}  (n={len(recipes)} recipes)")
+    fig.tight_layout(rect=[0, 0, 1, 0.94])
 
 
 # ---------------------------------------------------------------------------
@@ -310,7 +347,7 @@ def plot_recipe_durations(
 
     durations = [recipe_duration(r) for r in recipes]
 
-    fig, (ax_vio, ax_line) = plt.subplots(1, 2, figsize=(13, 5))
+    fig, (ax_vio, ax_line) = plt.subplots(1, 2, figsize=(14, 6))
     fig.patch.set_facecolor("white")
 
     # Left: violin / bar
@@ -324,7 +361,7 @@ def plot_recipe_durations(
 
     # Right: sequential trend
     _setup_axes(ax_line)
-    recipes_sorted = sorted(recipes, key=lambda r: r[LEGO_RECIPE_START]["start_time"])
+    recipes_sorted = sorted(recipes, key=_recipe_start_time)
     sorted_durations = [recipe_duration(r) for r in recipes_sorted]
     ax_line.plot(range(1, len(sorted_durations) + 1), sorted_durations, marker="o", color=color, linewidth=1.5, alpha=0.8)
     ax_line.axhline(np.mean(sorted_durations), color="black", linestyle="--", linewidth=1, label=f"Mean={np.mean(sorted_durations):.1f}s")
@@ -334,8 +371,8 @@ def plot_recipe_durations(
     ax_line.legend(frameon=True)
 
     title_label = f" — {label}" if label else ""
-    fig.suptitle(f"Lego Recipe Durations{title_label}", y=1.01)
-    plt.tight_layout()
+    fig.suptitle(f"Lego Recipe Durations{title_label}")
+    fig.tight_layout(rect=[0, 0, 1, 0.94])
 
 
 # ---------------------------------------------------------------------------
@@ -369,8 +406,8 @@ def plot_waiting_times(recipes: list[dict[str, dict]], label: str = "") -> None:
         ax.set_xlim(0.3, 1.7)
 
     title_label = f" — {label}" if label else ""
-    fig.suptitle(f"Waiting times between recipe steps{title_label}  (n={len(recipes)} recipes)", y=1.01)
-    plt.tight_layout()
+    fig.suptitle(f"Waiting times between recipe steps{title_label}  (n={len(recipes)} recipes)")
+    fig.tight_layout(rect=[0, 0, 1, 0.94])
 
 
 # ---------------------------------------------------------------------------
@@ -385,8 +422,8 @@ def plot_compare_durations(
     label_b: str,
 ) -> None:
     """Side-by-side violin of total recipe duration + sequential trend for both runs."""
-    dur_a = [recipe_duration(r) for r in sorted(recipes_a, key=lambda r: r[LEGO_RECIPE_START]["start_time"])]
-    dur_b = [recipe_duration(r) for r in sorted(recipes_b, key=lambda r: r[LEGO_RECIPE_START]["start_time"])]
+    dur_a = [recipe_duration(r) for r in sorted(recipes_a, key=_recipe_start_time)]
+    dur_b = [recipe_duration(r) for r in sorted(recipes_b, key=_recipe_start_time)]
 
     fig, (ax_vio, ax_line) = plt.subplots(1, 2, figsize=(14, 6))
     fig.patch.set_facecolor("white")
@@ -430,8 +467,8 @@ def plot_compare_durations(
     ax_line.set_title("Recipe duration over time")
     ax_line.legend(frameon=True, fontsize=9)
 
-    fig.suptitle(f"Recipe Duration — {label_a} vs {label_b}", y=1.01)
-    plt.tight_layout()
+    fig.suptitle(f"Recipe Duration — {label_a} vs {label_b}")
+    fig.tight_layout(rect=[0, 0, 1, 0.94])
 
 
 def plot_compare_tasks(
@@ -446,7 +483,7 @@ def plot_compare_tasks(
 
     ncols = 3
     nrows = (len(steps) + ncols - 1) // ncols
-    fig, axes = plt.subplots(nrows, ncols, figsize=(14, 4 * nrows))
+    fig, axes = plt.subplots(nrows, ncols, figsize=(14, max(5, 4.5 * nrows)))
     axes = np.array(axes).flatten()
     fig.patch.set_facecolor("white")
 
@@ -475,11 +512,8 @@ def plot_compare_tasks(
     for idx in range(len(steps), len(axes)):
         axes[idx].set_visible(False)
 
-    fig.suptitle(
-        f"Per-task duration — {label_a} vs {label_b}",
-        y=1.01,
-    )
-    plt.tight_layout()
+    fig.suptitle(f"Per-task duration — {label_a} vs {label_b}")
+    fig.tight_layout(rect=[0, 0, 1, 0.94])
 
 
 def plot_compare_waiting_times(
@@ -517,16 +551,403 @@ def plot_compare_waiting_times(
         ax.set_title(f"{step_a}→{step_b}", pad=10)
         ax.set_xlim(0.3, 2.7)
 
-    fig.suptitle(
-        f"Waiting times between steps — {label_a} vs {label_b}",
-        y=1.01,
-    )
-    plt.tight_layout()
+    fig.suptitle(f"Waiting times between steps — {label_a} vs {label_b}")
+    fig.tight_layout(rect=[0, 0, 1, 0.94])
+
+
+# ---------------------------------------------------------------------------
+# Per-task 2×2 grid: sim/opcua × metric_a/metric_b
+# ---------------------------------------------------------------------------
+
+
+def plot_tasks_sim_opcua_by_metric(
+    sim_by_metric: dict[str, list[dict[str, dict]]],
+    opcua_by_metric: dict[str, list[dict[str, dict]]],
+    metric_a: str,
+    metric_b: str,
+    topic_label: str = "",
+) -> None:
+    """One figure per task step, 2 rows × 2 columns.
+
+    Row 0 — Simulation:  left = metric_a,  right = metric_b
+    Row 1 — OPC-UA:      left = metric_a,  right = metric_b
+    """
+    buckets: dict[tuple[str, str], list[dict[str, dict]]] = {
+        ("sim",   metric_a): sim_by_metric.get(metric_a, []),
+        ("sim",   metric_b): sim_by_metric.get(metric_b, []),
+        ("opcua", metric_a): opcua_by_metric.get(metric_a, []),
+        ("opcua", metric_b): opcua_by_metric.get(metric_b, []),
+    }
+    all_recipes = [r for recs in buckets.values() for r in recs]
+    steps = [s for s in LEGO_RECIPE_STEPS if any(s in r for r in all_recipes)]
+    metric_colors = {metric_a: PLOT_COLORS[0], metric_b: PLOT_COLORS[1]}
+
+    for step in steps:
+        fig, axes = plt.subplots(2, 2, figsize=(10, 8), sharey=False)
+        fig.patch.set_facecolor("white")
+
+        for row, variant in enumerate(["sim", "opcua"]):
+            variant_label = VARIANT_LABELS[variant]
+            for col, metric in enumerate([metric_a, metric_b]):
+                ax = axes[row][col]
+                _setup_axes(ax)
+                recipes = buckets[(variant, metric)]
+                durations = [d for r in recipes if (d := task_duration(r, step)) is not None]
+                if durations:
+                    tick = _violin_or_bar(ax, durations, metric_colors[metric], metric, 1)
+                    ax.set_xticks([1])
+                    ax.set_xticklabels([tick])
+                else:
+                    ax.text(
+                        0.5, 0.5, "No data",
+                        ha="center", va="center",
+                        transform=ax.transAxes, color="grey", fontsize=11,
+                    )
+                ax.set_ylabel("Duration (s)")
+                ax.set_title(f"{variant_label} — {metric}", pad=8)
+                ax.set_xlim(0.3, 1.7)
+
+        suffix = f" [{topic_label}]" if topic_label else ""
+        fig.suptitle(f"Task: {step}{suffix}  |  Sim (top) vs OPC-UA (bottom)")
+        fig.tight_layout(rect=[0, 0, 1, 0.94])
+
+
+# ---------------------------------------------------------------------------
+# Delta plots: OPC-UA minus Simulation
+# ---------------------------------------------------------------------------
+
+
+def plot_delta_sim_opcua(
+    sim_by_metric: dict[str, list[dict[str, dict]]],
+    opcua_by_metric: dict[str, list[dict[str, dict]]],
+    metric_a: str,
+    metric_b: str,
+    topic_label: str = "",
+) -> None:
+    """Two complementary views of the difference OPC-UA − Simulation.
+
+    Figure 1 — Grouped bar chart (one group per task step):
+        Two bars per group: metric_a delta and metric_b delta.
+        Error bars = std of individual recipe durations.
+        Horizontal zero line. Positive = OPC-UA is slower.
+
+    Figure 2 — Heatmap (task steps × metrics):
+        Cell colour = delta mean (diverging palette, centred at 0).
+        Cell text shows Δ mean ± std in seconds.
+    """
+    all_recipes = [r for m in (sim_by_metric, opcua_by_metric) for recs in m.values() for r in recs]
+    steps = [s for s in LEGO_RECIPE_STEPS if any(s in r for r in all_recipes)]
+    metrics = [metric_a, metric_b]
+    metric_colors = {metric_a: PLOT_COLORS[0], metric_b: PLOT_COLORS[1]}
+
+    # --- collect per-task, per-metric delta (mean and std) ---
+    delta_mean: dict[str, dict[str, float]] = {m: {} for m in metrics}
+    delta_std:  dict[str, dict[str, float]] = {m: {} for m in metrics}
+
+    for metric in metrics:
+        sim_recs   = sim_by_metric.get(metric, [])
+        opcua_recs = opcua_by_metric.get(metric, [])
+        for step in steps:
+            sim_d   = [d for r in sim_recs   if (d := task_duration(r, step)) is not None]
+            opcua_d = [d for r in opcua_recs if (d := task_duration(r, step)) is not None]
+            if sim_d and opcua_d:
+                delta_mean[metric][step] = np.mean(opcua_d) - np.mean(sim_d)
+                # error bar = sqrt(var_sim/n_sim + var_opcua/n_opcua)
+                delta_std[metric][step] = np.sqrt(
+                    np.var(sim_d, ddof=1) / len(sim_d) + np.var(opcua_d, ddof=1) / len(opcua_d)
+                )
+            else:
+                delta_mean[metric][step] = float("nan")
+                delta_std[metric][step]  = float("nan")
+
+    suffix = f" — {topic_label}" if topic_label else ""
+
+    # ── Figure 1: grouped bar chart ──────────────────────────────────────────
+    fig1, ax1 = plt.subplots(figsize=(max(8, len(steps) * 1.8), 6))
+    fig1.patch.set_facecolor("white")
+    _setup_axes(ax1)
+
+    n_metrics = len(metrics)
+    bar_width  = 0.35
+    x = np.arange(len(steps))
+
+    for i, metric in enumerate(metrics):
+        offsets = x + (i - (n_metrics - 1) / 2) * bar_width
+        means  = [delta_mean[metric].get(s, float("nan")) for s in steps]
+        errors = [delta_std[metric].get(s, float("nan"))  for s in steps]
+        bars = ax1.bar(
+            offsets, means, bar_width,
+            color=metric_colors[metric], alpha=0.85,
+            label=metric,
+            yerr=errors, capsize=4, error_kw={"elinewidth": 1.2, "alpha": 0.7},
+        )
+        # annotate value above / below each bar
+        for bar, mean in zip(bars, means):
+            if np.isnan(mean):
+                continue
+            va  = "bottom" if mean >= 0 else "top"
+            pad = 0.05 if mean >= 0 else -0.05
+            ax1.text(
+                bar.get_x() + bar.get_width() / 2,
+                mean + pad,
+                f"{mean:+.1f}s",
+                ha="center", va=va, fontsize=8, fontweight="bold",
+                color=metric_colors[metric],
+            )
+
+    ax1.axhline(0, color="black", linewidth=1.2, linestyle="--", alpha=0.6)
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(steps)
+    ax1.set_ylabel("Δ duration  (OPC-UA − Sim)  [s]")
+    ax1.set_title(f"Per-task duration difference  (OPC-UA − Simulation){suffix}")
+    ax1.legend(frameon=True, fontsize=9)
+    fig1.tight_layout(pad=1.4)
+
+    # ── Figure 2: heatmap ────────────────────────────────────────────────────
+    matrix = np.array([[delta_mean[m].get(s, float("nan")) for s in steps] for m in metrics])
+
+    fig2, ax2 = plt.subplots(figsize=(max(7, len(steps) * 1.4), 3.5))
+    fig2.patch.set_facecolor("white")
+
+    vmax = np.nanmax(np.abs(matrix)) or 1.0
+    im = ax2.imshow(matrix, cmap="RdBu_r", aspect="auto", vmin=-vmax, vmax=vmax)
+
+    ax2.set_xticks(range(len(steps)))
+    ax2.set_xticklabels(steps, fontsize=10)
+    ax2.set_yticks(range(len(metrics)))
+    ax2.set_yticklabels(metrics, fontsize=10)
+    ax2.tick_params(left=False, bottom=False)
+
+    for r, metric in enumerate(metrics):
+        for c, step in enumerate(steps):
+            val = delta_mean[metric].get(step, float("nan"))
+            std = delta_std[metric].get(step, float("nan"))
+            if np.isnan(val):
+                txt = "n/a"
+            else:
+                txt = f"{val:+.1f}s\n±{std:.1f}s"
+            ax2.text(
+                c, r, txt,
+                ha="center", va="center", fontsize=9, fontweight="bold",
+                color="white" if abs(val) > vmax * 0.5 else "black",
+            )
+
+    cbar = fig2.colorbar(im, ax=ax2, orientation="vertical", fraction=0.04, pad=0.02)
+    cbar.set_label("Δ [s]  (OPC-UA − Sim)", fontsize=9)
+    ax2.set_title(f"Δ mean per task{suffix}  (red = OPC-UA slower, blue = OPC-UA faster)")
+    fig2.tight_layout(pad=1.4)
 
 
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
+
+
+def _classify_run_dir(dirname: str) -> tuple[str, str] | None:
+    """Classify a run directory name into (topic, variant).
+
+    Topics:
+        'full'      — complete lego recipe (LegoSim / LegoOpcua)
+        'movements' — conveyor movements only (LegoMovementsSim / LegoMovementsOpcua)
+
+    Variants: 'sim' or 'opcua'
+    """
+    name = Path(dirname).name.lower()
+    # New naming: lego-sim-*, lego-opcua-*, movements-sim-*, movements-opcua-*
+    if name.startswith("movements-sim") or name.startswith("sim-lego-movements"):
+        return ("movements", "sim")
+    if name.startswith("movements-opcua") or name.startswith("opcua-lego-movements"):
+        return ("movements", "opcua")
+    if name.startswith("lego-sim") or name.startswith("sim-lego"):
+        return ("full", "sim")
+    if name.startswith("lego-opcua") or name.startswith("opcua-lego"):
+        return ("full", "opcua")
+    return None
+
+
+def _aggregate_by_topic(
+    base_dir: str,
+) -> dict[str, dict[str, list[dict[str, dict]]]]:
+    """Scan base_dir and group all runs by topic and variant.
+
+    Returns:
+        {topic: {variant: [recipes]}}
+        e.g. {'full': {'sim': [...], 'opcua': [...]}, 'movements': {...}}
+    """
+    result: dict[str, dict[str, list]] = {}
+    base = Path(base_dir)
+    if not base.is_dir():
+        print(f"Base directory not found: {base_dir}")
+        return result
+
+    for run_dir in sorted(base.iterdir()):
+        if not run_dir.is_dir():
+            continue
+        classification = _classify_run_dir(run_dir.name)
+        if classification is None:
+            continue
+        topic, variant = classification
+        files = [str(p) for p in run_dir.rglob("*.json")]
+        if not files:
+            continue
+        recipes: list[dict[str, dict]] = []
+        for f in files:
+            recipes.extend(load_lego_results(f))
+        if recipes:
+            result.setdefault(topic, {}).setdefault(variant, []).extend(recipes)
+
+    return result
+
+
+def _aggregate_by_topic_metric(
+    base_dir: str,
+) -> dict[str, dict[str, dict[str, list[dict[str, dict]]]]]:
+    """Like _aggregate_by_topic but also splits by metric.
+
+    Returns:
+        {topic: {variant: {metric: [recipes]}}}
+    """
+    result: dict[str, dict[str, dict[str, list]]] = {}
+    base = Path(base_dir)
+    if not base.is_dir():
+        print(f"Base directory not found: {base_dir}")
+        return result
+
+    for run_dir in sorted(base.iterdir()):
+        if not run_dir.is_dir():
+            continue
+        classification = _classify_run_dir(run_dir.name)
+        if classification is None:
+            continue
+        topic, variant = classification
+        for filepath in run_dir.rglob("*.json"):
+            metric = _extract_metric(str(filepath))
+            if metric is None:
+                continue
+            recipes = load_lego_results(str(filepath))
+            if recipes:
+                (
+                    result
+                    .setdefault(topic, {})
+                    .setdefault(variant, {})
+                    .setdefault(metric, [])
+                    .extend(recipes)
+                )
+
+    return result
+
+
+TOPIC_LABELS = {
+    "full": "Full Lego Recipe",
+    "movements": "Lego Conveyor Movements",
+}
+VARIANT_LABELS = {"sim": "Simulation", "opcua": "OPC-UA"}
+
+
+def _run_topic_mode(
+    base_dir: str,
+    filter_topic: str | None,
+    no_timeline: bool,
+    metrics: tuple[str, str] | None = None,
+) -> None:
+    """Aggregate all runs by topic and plot.
+
+    If *metrics* is given (e.g. ('DISTANCE', 'ID')), also split by metric and
+    produce 4-way comparisons:
+      - sim[metric_a]   vs sim[metric_b]
+      - opcua[metric_a] vs opcua[metric_b]
+      - sim[metric_a]   vs opcua[metric_a]
+      - sim[metric_b]   vs opcua[metric_b]
+    """
+    if metrics:
+        data_m = _aggregate_by_topic_metric(base_dir)
+        if not data_m:
+            print(f"No classifiable run directories found in {base_dir}")
+            return
+        metric_a, metric_b = (m.upper() for m in metrics)
+
+        for topic, variants in data_m.items():
+            if filter_topic and topic != filter_topic:
+                continue
+            topic_label = TOPIC_LABELS.get(topic, topic)
+            print(f"\n{'='*60}")
+            print(f"Topic: {topic_label}  |  metrics: {metric_a} vs {metric_b}")
+            print(f"{'='*60}")
+
+            for variant, by_metric in variants.items():
+                vl = VARIANT_LABELS[variant]
+                ra = by_metric.get(metric_a, [])
+                rb = by_metric.get(metric_b, [])
+                if ra:
+                    _print_stats(ra, f"{topic_label} [{vl}] [{metric_a}]")
+                if rb:
+                    _print_stats(rb, f"{topic_label} [{vl}] [{metric_b}]")
+                # metric_a vs metric_b within same variant
+                if ra and rb:
+                    la = f"{vl} [{metric_a}]"
+                    lb = f"{vl} [{metric_b}]"
+                    print(f"\n  {la} vs {lb}")
+                    plot_compare_durations(ra, rb, la, lb)
+                    plot_compare_tasks(ra, rb, la, lb)
+                    plot_compare_waiting_times(ra, rb, la, lb)
+
+            # sim vs opcua for each metric
+            for metric in (metric_a, metric_b):
+                rs = variants.get("sim", {}).get(metric, [])
+                ro = variants.get("opcua", {}).get(metric, [])
+                if rs and ro:
+                    ls = f"Simulation [{metric}]"
+                    lo = f"OPC-UA [{metric}]"
+                    print(f"\n  {ls} vs {lo}")
+                    plot_compare_durations(rs, ro, ls, lo)
+                    plot_compare_tasks(rs, ro, ls, lo)
+                    plot_compare_waiting_times(rs, ro, ls, lo)
+
+            # Per-task 2×2 grid: one figure per step, sim on top, opcua on bottom
+            sim_bm = variants.get("sim", {})
+            opcua_bm = variants.get("opcua", {})
+            if sim_bm or opcua_bm:
+                plot_tasks_sim_opcua_by_metric(
+                    sim_bm, opcua_bm, metric_a, metric_b, topic_label
+                )
+            # Delta plots: OPC-UA − Simulation
+            if sim_bm and opcua_bm:
+                plot_delta_sim_opcua(
+                    sim_bm, opcua_bm, metric_a, metric_b, topic_label
+                )
+        return
+
+    # ---- original metric-agnostic path ----
+    data = _aggregate_by_topic(base_dir)
+    if not data:
+        print(f"No classifiable run directories found in {base_dir}")
+        return
+
+    for topic, variants in data.items():
+        if filter_topic and topic != filter_topic:
+            continue
+        topic_label = TOPIC_LABELS.get(topic, topic)
+        print(f"\n{'='*60}")
+        print(f"Topic: {topic_label}")
+        print(f"{'='*60}")
+
+        # Print stats for each variant
+        for variant, recipes in variants.items():
+            _print_stats(recipes, f"{topic_label} [{VARIANT_LABELS[variant]}]")
+
+        # Individual plots per variant
+        for i, (variant, recipes) in enumerate(variants.items()):
+            label = f"{topic_label} [{VARIANT_LABELS[variant]}]"
+            _plot_individual(recipes, label, PLOT_COLORS[i], no_timeline)
+
+        # Comparison plot if both sim and opcua exist
+        if "sim" in variants and "opcua" in variants:
+            label_sim = f"{topic_label} [Simulation]"
+            label_opcua = f"{topic_label} [OPC-UA]"
+            print(f"\nPlotting comparison: Simulation vs OPC-UA for {topic_label}…")
+            plot_compare_durations(variants["sim"], variants["opcua"], label_sim, label_opcua)
+            plot_compare_tasks(variants["sim"], variants["opcua"], label_sim, label_opcua)
+            plot_compare_waiting_times(variants["sim"], variants["opcua"], label_sim, label_opcua)
 
 
 def _load_all_recipes(directory: str) -> list[dict[str, dict]]:
@@ -568,13 +989,58 @@ def _plot_individual(recipes: list[dict[str, dict]], label: str, color: str, no_
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Plot Lego recipe execution times from result JSON files."
+        description="Plot Lego recipe execution times from result JSON files.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=textwrap.dedent("""\
+            MODES
+            -----
+            Single directory (one run or a folder of aggregated runs):
+              python plot_lego.py -d results/lego/lego-sim-20260311_103354
+              python plot_lego.py -d results/lego/
+
+            Compare two runs side-by-side (e.g. sim vs opcua):
+              python plot_lego.py -d results/lego/lego-sim-20260311 -c results/lego/lego-opcua-20260311
+
+            Compare two metrics within a directory (e.g. DISTANCE vs ID):
+              python plot_lego.py -d results/lego/ -M DISTANCE ID
+              python plot_lego.py -d results/lego/movements-sim-20260311 -M DISTANCE ID
+
+            Topic mode — auto-group all runs under a base dir by recipe×variant:
+              python plot_lego.py -b results/lego/
+              python plot_lego.py -b results/lego/ --topic full
+              python plot_lego.py -b results/lego/ --topic movements
+
+            Topic mode with metric comparison (-b + -M):
+              python plot_lego.py -b results/lego/ -M DISTANCE ID
+              python plot_lego.py -b results/lego/ --topic movements -M DISTANCE ID
+
+              Produces the following figures per topic:
+                1. Per-variant violin: Sim[MA] vs Sim[MB], OPC-UA[MA] vs OPC-UA[MB]
+                2. Per-metric violin:  Sim[MA] vs OPC-UA[MA], Sim[MB] vs OPC-UA[MB]
+                3. Per-task 2×2 grid: one figure per step — Sim on top, OPC-UA on bottom,
+                   left column = MA, right column = MB
+                4. Delta bar chart:   Δ(OPC-UA − Sim) per task, bars grouped by metric
+                5. Delta heatmap:     task steps × metrics, diverging colour (red = OPC-UA
+                   slower, blue = OPC-UA faster), cell text = Δmean ± std
+
+            OPTIONS
+            -------
+            --no-timeline   Skip Gantt bar-chart (speeds up rendering for large datasets).
+            --topic         Restrict -b mode to 'full' (LegoSim/LegoOpcua) or
+                            'movements' (LegoMovementsSim/LegoMovementsOpcua).
+
+            OUTPUT
+            ------
+            JSON files are expected to live inside OUTPUT_DIR subfolders as written
+            by LegoScheduler / Scheduler (e.g. results/lego/lego-sim-20260311/).
+            The filename pattern is:  <type>_<instance>_<RUN_TYPE>_<METRIC>_<uuid>.json
+        """),
     )
     parser.add_argument(
         "--directory",
         "-d",
-        required=True,
         type=str,
+        default="",
         help="Directory containing result JSON files (searched recursively).",
     )
     parser.add_argument(
@@ -585,11 +1051,69 @@ def main() -> None:
         help="Second directory to compare against (also shown individually).",
     )
     parser.add_argument(
+        "--base-dir",
+        "-b",
+        type=str,
+        default="",
+        help="Base results/lego/ directory: auto-groups all runs by topic and plots aggregated.",
+    )
+    parser.add_argument(
+        "--topic",
+        type=str,
+        default="",
+        choices=["full", "movements"],
+        help="Filter --base-dir mode to a single topic ('full' or 'movements').",
+    )
+    parser.add_argument(
+        "--metric-compare",
+        "-M",
+        type=str,
+        nargs=2,
+        metavar=("METRIC_A", "METRIC_B"),
+        help="Compare two metrics from --directory, e.g. -M DISTANCE ID",
+    )
+    parser.add_argument(
         "--no-timeline",
         action="store_true",
         help="Skip the Gantt timeline plots.",
     )
     args = parser.parse_args()
+
+    # --- Topic mode ---
+    if args.base_dir:
+        _run_topic_mode(
+            args.base_dir,
+            args.topic or None,
+            args.no_timeline,
+            metrics=tuple(args.metric_compare) if args.metric_compare else None,
+        )
+        plt.show()
+        return
+
+    if not args.directory:
+        parser.error("Either --directory or --base-dir is required.")
+
+    # --- Metric comparison mode ---
+    if args.metric_compare:
+        metric_a, metric_b = (m.upper() for m in args.metric_compare)
+        by_metric = _load_recipes_by_metric(args.directory)
+        recipes_a = by_metric.get(metric_a, [])
+        recipes_b = by_metric.get(metric_b, [])
+        if not recipes_a:
+            parser.error(f"No recipes found for metric '{metric_a}' in {args.directory}")
+        if not recipes_b:
+            parser.error(f"No recipes found for metric '{metric_b}' in {args.directory}")
+        _print_stats(recipes_a, metric_a)
+        _print_stats(recipes_b, metric_b)
+        plot_compare_durations(recipes_a, recipes_b, metric_a, metric_b)
+        plot_compare_tasks(recipes_a, recipes_b, metric_a, metric_b)
+        plot_compare_waiting_times(recipes_a, recipes_b, metric_a, metric_b)
+        if not args.no_timeline:
+            label_a = Path(args.directory).name
+            plot_recipe_timeline(recipes_a, title=f"Gantt — {label_a} [{metric_a}]")
+            plot_recipe_timeline(recipes_b, title=f"Gantt — {label_a} [{metric_b}]")
+        plt.show()
+        return
 
     # --- Load ---
     recipes_a = _load_all_recipes(args.directory)

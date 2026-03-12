@@ -8,6 +8,7 @@ import argparse
 import json
 import os
 import re
+import textwrap
 from collections import defaultdict
 from pathlib import Path
 
@@ -324,16 +325,92 @@ def _plot_comparisons(
     plt.show()
 
 
-def main() -> None:
+# ---------------------------------------------------------------------------
+# Base-dir mode — auto-group sim / opcua, compare
+# ---------------------------------------------------------------------------
+
+
+def _classify_distance_dir(dirname: str) -> str | None:
+    """Return 'sim' or 'opcua' based on folder name, or None if unrecognised."""
+    name = dirname.lower()
+    if name.startswith("sim"):
+        return "sim"
+    if name.startswith("opcua"):
+        return "opcua"
+    return None
+
+
+def _run_base_dir_mode(base_dir: str, metrics: list[str]) -> None:
+    """Scan *base_dir*, group run folders by variant (sim/opcua), print stats,
+    and produce:
+      - one distribution plot per variant
+      - a sim-vs-opcua comparison plot (if both are present)
+    """
+    base = Path(base_dir)
+    grouped: dict[str, list[str]] = {"sim": [], "opcua": []}
+
+    for run_dir in sorted(base.iterdir()):
+        if not run_dir.is_dir():
+            continue
+        variant = _classify_distance_dir(run_dir.name)
+        if variant is None:
+            continue
+        files = _get_files_in_directory(str(run_dir), metrics)
+        grouped[variant].extend(files)
+
+    if not any(grouped.values()):
+        print(f"No result files found under '{base_dir}'.")
+        return
+
+    variant_labels = {"sim": "Simulation", "opcua": "OPC-UA"}
+
+    for variant, files in grouped.items():
+        if not files:
+            continue
+        label = variant_labels[variant]
+        print(f"\n[{label}] {len(files)} files found")
+        _plot_distributions(files)  # shows its own plt.show()
+
+    sim_files = grouped["sim"]
+    opcua_files = grouped["opcua"]
+    if sim_files and opcua_files:
+        print("\nPlotting Simulation vs OPC-UA comparison…")
+        _plot_comparisons(sim_files, opcua_files, "Simulation", "OPC-UA")
+    elif not sim_files:
+        print("No simulation files found — skipping comparison.")
+    else:
+        print("No OPC-UA files found — skipping comparison.")
+
+
+def main():
     """Main entry point for the plotting script."""
     parser = argparse.ArgumentParser(
-        description="Compare task durations between simulation result files."
+        description="Compare task durations between distance-recipe result files.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=textwrap.dedent("""\
+            MODES
+            -----
+            Single directory — compare metrics (ID / DISTANCE / RANDOM) within one run:
+              python plot.py -d results/distance/opcua-20260311_103354
+              python plot.py -d results/distance/sim-20260311_103354
+
+            Compare two directories (e.g. sim vs opcua):
+              python plot.py -d results/distance/sim-20260311 -c results/distance/opcua-20260311
+
+            Base-dir mode — auto-group all sim-* and opcua-* subfolders and compare:
+              python plot.py -b results/distance/
+
+            OPTIONS
+            -------
+            --metrics   Restrict which metric names appear in filenames to include
+                        (default: ID DISTANCE RANDOM)
+        """),
     )
     parser.add_argument(
         "--directory",
         "-d",
-        required=True,
         type=str,
+        default="",
         help="Directory containing result files.",
     )
     parser.add_argument(
@@ -344,6 +421,13 @@ def main() -> None:
         help="Directory containing result files to compare against.",
     )
     parser.add_argument(
+        "--base-dir",
+        "-b",
+        type=str,
+        default="",
+        help="Base directory: auto-groups sim-* and opcua-* subfolders and compares them.",
+    )
+    parser.add_argument(
         "--metrics",
         "-m",
         type=str,
@@ -352,6 +436,14 @@ def main() -> None:
         help="Metric names to look for in filenames (e.g., ID DISTANCE RANDOM)",
     )
     args = parser.parse_args()
+
+    # --- Base-dir mode ---
+    if args.base_dir:
+        _run_base_dir_mode(args.base_dir, args.metrics)
+        return
+
+    if not args.directory:
+        parser.error("Either --directory or --base-dir is required.")
 
     dir_files = _get_files_in_directory(args.directory, args.metrics)
 

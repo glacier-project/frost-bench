@@ -145,17 +145,12 @@ reactors:
   scheduler:
     logging_level: ERROR
     parameters:
-      data_model_path: "resource/data-model/scheduler.yml"
-      # scheduling_instance: "resource/instance/instance_medium.json"
-      wh_tasks: 30
-      mill_tasks: 30
-      rbtc_tasks: 30
-      qc_tasks: 30
-      min_task_spacing: 25 # seconds
-      max_task_spacing: 35 # seconds
+      data_model_path: "resource/data-model/lego_movements_scheduler.yml"
+      scheduling_instance: "../../ice-frost/resources/schedules/simulation-lego-demo.json"
+      max_task_spacing: 180
+      min_task_spacing: 15
       task_mapping:
-        ToWarehouseAndBack: /Scheduler/ToWarehouseAndBack
-        ToQcAndBack: /Scheduler/ToQcAndBack
-        ToRbtcAndBack: /Scheduler/ToRbtcAndBack
-        ToMillAndBack: /Scheduler/ToMillAndBack
-        WaitPalletAtSegment: /Scheduler/WaitPalletAtSegment
+        RBTC: /Scheduler/RBTC
+        QC: /Scheduler/QC
+        DISASSEMBLE: /Scheduler/DISASSEMBLE
+        PUT_BACK: /Scheduler/PUT_BACK

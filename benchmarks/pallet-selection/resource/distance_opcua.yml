@@ -40,7 +40,7 @@ reactors:
   scheduler:
     logging_level: ERROR
     parameters:
-      data_model_path: "resource/data-model/scheduler.yml"
+      data_model_path: "resource/data-model/distance_scheduler.yml"
       wh_tasks: 5
       mill_tasks: 5
       rbtc_tasks: 5

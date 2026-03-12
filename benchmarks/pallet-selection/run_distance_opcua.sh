@@ -2,8 +2,8 @@
 
 METRICS=("DISTANCE" "RANDOM" "ID" )
 INSTANCES=("instance_empty.json") # "instance_mini.json" "instance_small.json" "instance_medium.json" "instance_large.json")
-OUTPUT_DIR="results/opcua-$(date +%Y%m%d_%H%M%S)"
-FROST_CONFIG="resource/frost_config_opcua.yml"
+OUTPUT_DIR="results/distance/opcua-$(date +%Y%m%d_%H%M%S)"
+FROST_CONFIG="resource/distance_opcua.yml"
 SAVE_PUPDATES="true"
 
 for METRIC in "${METRICS[@]}"; do
@@ -11,6 +11,6 @@ for METRIC in "${METRICS[@]}"; do
     echo "Running opcua with FROST_CONFIG=${FROST_CONFIG} METRIC=${METRIC} and INSTANCE=${INSTANCE}"
     INSTANCE_PATH="resource/instance/${INSTANCE}"
 
-    FROST_CONFIG="${FROST_CONFIG}" METRIC="${METRIC}" INSTANCE="${INSTANCE_PATH}" OUTPUT_DIR="${OUTPUT_DIR}" SAVE_PUPDATES="${SAVE_PUPDATES}" ./bin/Conveyor
+    FROST_CONFIG="${FROST_CONFIG}" METRIC="${METRIC}" INSTANCE="${INSTANCE_PATH}" OUTPUT_DIR="${OUTPUT_DIR}" SAVE_PUPDATES="${SAVE_PUPDATES}" RUN_TYPE="opcua" ./bin/DistanceOpcua
   done
 done

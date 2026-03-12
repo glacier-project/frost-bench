@@ -77,16 +77,33 @@ def gen_mill_job() -> Job:
     )
 
 
-def gen_lego_job() -> Job:
+def gen_lego_movements_job() -> Job:
+    """Generate a movements-only lego job: RBTC → QC → DISASSEMBLE → PUT_BACK (no LD/RESERVE)."""
     rbtc = Task(id=str(uuid.uuid4()), name="RBTC", processing_time=15, requires=["assemble"], priority=1)
     qc = Task(id=str(uuid.uuid4()), name="QC", processing_time=25, requires=["quality_check"], priority=1, dependencies=[rbtc.id])
     disassemble = Task(id=str(uuid.uuid4()), name="DISASSEMBLE", processing_time=45, requires=["disassemble"], priority=1, dependencies=[qc.id])
     put_back = Task(id=str(uuid.uuid4()), name="PUT_BACK", processing_time=45, requires=["disassemble"], priority=1, dependencies=[disassemble.id])
     return Job(
         id=str(uuid.uuid4()),
-        name="LegoRecipe",
+        name="LegoMovementsRecipe",
         priority=1,
         tasks=[rbtc, qc, disassemble, put_back],
+    )
+
+
+def gen_lego_job() -> Job:
+    """Generate a full lego job: LD → RBTC → QC → DISASSEMBLE → RESERVE → PUT_BACK."""
+    ld = Task(id=str(uuid.uuid4()), name="LD", processing_time=60, requires=["reserve_pallet"], priority=1)
+    rbtc = Task(id=str(uuid.uuid4()), name="RBTC", processing_time=45, requires=["assemble"], priority=1, dependencies=[ld.id])
+    qc = Task(id=str(uuid.uuid4()), name="QC", processing_time=30, requires=["quality_check"], priority=1, dependencies=[rbtc.id])
+    disassemble = Task(id=str(uuid.uuid4()), name="DISASSEMBLE", processing_time=60, requires=["disassemble"], priority=1, dependencies=[qc.id])
+    reserve = Task(id=str(uuid.uuid4()), name="RESERVE", processing_time=60, requires=["reserve_pallet"], priority=1, dependencies=[disassemble.id])
+    put_back = Task(id=str(uuid.uuid4()), name="PUT_BACK", processing_time=30, requires=["disassemble"], priority=1, dependencies=[disassemble.id, reserve.id])
+    return Job(
+        id=str(uuid.uuid4()),
+        name="LegoRecipe",
+        priority=1,
+        tasks=[ld, rbtc, qc, disassemble, reserve, put_back],
     )
 
 

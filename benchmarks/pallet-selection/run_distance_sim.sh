@@ -2,14 +2,14 @@
 
 METRICS=("DISTANCE" "RANDOM" "ID" )
 INSTANCES=("instance_empty.json") # "instance_mini.json" "instance_small.json" "instance_medium.json" "instance_large.json")
-OUTPUT_DIR="results/sim-$(date +%Y%m%d_%H%M%S)"
+OUTPUT_DIR="results/distance/sim-$(date +%Y%m%d_%H%M%S)"
 
-FROST_CONFIG="resource/frost_config.yml"
+FROST_CONFIG="resource/distance_sim.yml"
 for METRIC in "${METRICS[@]}"; do
   for INSTANCE in "${INSTANCES[@]}"; do
     echo "Running simulation with FROST_CONFIG=${FROST_CONFIG} METRIC=${METRIC} and INSTANCE=${INSTANCE}"
     INSTANCE_PATH="resource/instance/${INSTANCE}"
 
-    FROST_CONFIG="${FROST_CONFIG}" METRIC="${METRIC}" INSTANCE="${INSTANCE_PATH}" OUTPUT_DIR="${OUTPUT_DIR}" ./bin/SimConveyor
+    FROST_CONFIG="${FROST_CONFIG}" METRIC="${METRIC}" INSTANCE="${INSTANCE_PATH}" OUTPUT_DIR="${OUTPUT_DIR}" RUN_TYPE="sim" ./bin/DistanceSim
   done
 done

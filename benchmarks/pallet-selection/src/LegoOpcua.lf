@@ -19,6 +19,6 @@ main reactor {
     cell4 = new FrostMachine(name="cell4")
     cell5 = new FrostMachine(name="cell5")
 
-    conveyor.channel_out, scheduler.channel_out, cell4.channel_out, cell5.channel_out -> bus.channel_in after 100 msec
-    bus.channel_out -> conveyor.channel_in, scheduler.channel_in, cell4.channel_in, cell5.channel_in after 100 msec
+    conveyor.channel_out, scheduler.channel_out, cell4.channel_out, cell5.channel_out -> bus.channel_in after 0 msec
+    bus.channel_out -> conveyor.channel_in, scheduler.channel_in, cell4.channel_in, cell5.channel_in after 0 msec
 }

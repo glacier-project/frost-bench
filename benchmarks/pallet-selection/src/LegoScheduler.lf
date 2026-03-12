@@ -1,4 +1,5 @@
 target Python{
+    fast: true,
     files:[
         "python_utils/pallet_distance.py",
         "python_utils/gen_instances.py",
@@ -18,11 +19,12 @@ from frost_planner.solver.dummy_solver import DummySolver
 from frost_planner.executor.dynamic_executor import DynamicExecutor
 from frost_planner.core.base import TaskStatus, Task, Job, SchedulingInstance, Machine
 from pallet_distance import PalletPosition, get_conveyor_position, _get_pallet_metric
-from gen_instances import gen_lego_job
+from gen_instances import gen_lego_job, gen_lego_movements_job
 
 OUTPUT_DIR = os.getenv("OUTPUT_DIR")
 METRIC = os.getenv("METRIC")
 INSTANCE = os.getenv("INSTANCE")
+RUN_TYPE = os.getenv("RUN_TYPE", "")
 
 # Override config parameters
 reactors_config = FROST_CONFIG["reactors"]
@@ -32,7 +34,7 @@ if INSTANCE is not None and INSTANCE != "":
 random.seed(42)
 =}
 
-reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1, _lego_jobs=20) extends FrostMachine {
+reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=20, _lego_jobs=5) extends FrostMachine {
     state scheduling_instance = _scheduling_instance
     state scheduling_interval = _scheduling_interval # in seconds
     state _executor
@@ -47,7 +49,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1,
 
     state lego_jobs = _lego_jobs
     state min_task_spacing = 20
-    state max_task_spacing = 60
+    state max_task_spacing = 180
 
     logical action create_lego_job
 
@@ -63,6 +65,8 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1,
             travel_times=loaded.travel_times,
         )
         self._executor = DynamicExecutor(DummySolver(instance=empty_instance))
+        # Pick job generator based on whether LD is in the task mapping (full vs movements recipe)
+        self._job_generator = gen_lego_job if "LD" in self.task_mapping else gen_lego_movements_job
     =}
 
     method create_method_request(t, method_path, args, kwargs) {=
@@ -89,7 +93,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1,
     =}
 
     reaction(create_lego_job) -> update_schedule {=
-        job = gen_lego_job()
+        job = self._job_generator()
         self.logger.error(f"Creating lego job {job.id} (remaining: {self.lego_jobs}) at time {self._get_current_logical_time_sec()} sec")
         current_instance = self._executor.solver.instance
         self._executor.solver = DummySolver(instance=SchedulingInstance(
@@ -144,8 +148,8 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1,
                 self.jobs_scopes[parent_job_id] = {}
             job_scope = self.jobs_scopes[parent_job_id]
 
-            # Record recipe start time when the first task (LD) begins
-            if task_name == "RBTC":
+            # Record recipe start time when the first task of the recipe begins
+            if parent_job_id not in self.job_start:
                 self.job_start[parent_job_id] = self._get_current_logical_time_sec()
 
             assert task_name in self.task_mapping, f"Task '{task_name}' has no mapping to its CompositeMethodNode path. Add it to the frost config file using the 'task_mapping' parameter."
@@ -153,6 +157,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1,
             msg = self.create_method_request(self.data_model.name, composite_method_node_path, args=[machine], kwargs=job_scope)
             self._active_tasks[msg.correlation_id] = task
             response = self.protocol_mng.handle_request(msg)
+            self.logger.error(f"Task {task_name} started on machine {machine} at logical time {self._get_current_logical_time_sec()} sec")
             self.logger.debug(f"Requesting method start with msg {msg}, got response {response}")
     =}
 
@@ -263,7 +268,8 @@ reactor Scheduler(type="sim") extends FrostScheduler{
 
         # Save schedule in the results folder with a unique name
         instance_name = os.path.basename(INSTANCE).replace(".json", "") if INSTANCE else "lego"
-        output_file = f"{OUTPUT_DIR}/{self.type}_{instance_name}_{METRIC}_{uuid.uuid4().hex}.json"
+        run_type_part = f"_{RUN_TYPE}" if RUN_TYPE else ""
+        output_file = f"{OUTPUT_DIR}/{self.type}_{instance_name}{run_type_part}_{METRIC}_{uuid.uuid4().hex}.json"
 
         os.makedirs(OUTPUT_DIR, exist_ok=True)
         with open(output_file, "w") as f:

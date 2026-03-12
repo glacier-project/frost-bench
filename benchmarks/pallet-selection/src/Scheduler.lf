@@ -23,6 +23,7 @@ from gen_instances import gen_wh_job, gen_qc_job, gen_rbtc_job, gen_mill_job
 OUTPUT_DIR = os.getenv("OUTPUT_DIR")
 METRIC = os.getenv("METRIC")
 INSTANCE = os.getenv("INSTANCE")
+RUN_TYPE = os.getenv("RUN_TYPE", "")
 
 # Override config parameters
 reactors_config = FROST_CONFIG["reactors"]
@@ -272,7 +273,8 @@ reactor Scheduler(type="sim") extends FrostScheduler{
 
         # Save schedule in the results folder with a unique name
         instance_name = os.path.basename(INSTANCE).replace(".json", "") if INSTANCE else "lego"
-        output_file = f"{OUTPUT_DIR}/{self.type}_{instance_name}_{METRIC}_{uuid.uuid4().hex}.json"
+        run_type_part = f"_{RUN_TYPE}" if RUN_TYPE else ""
+        output_file = f"{OUTPUT_DIR}/{self.type}_{instance_name}{run_type_part}_{METRIC}_{uuid.uuid4().hex}.json"
 
         os.makedirs(OUTPUT_DIR, exist_ok=True)
         with open(output_file, "w") as f:

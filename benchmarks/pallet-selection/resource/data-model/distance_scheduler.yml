@@ -37,8 +37,9 @@ root:
       cfg:
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
-          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/CallFreePalletOfTypeTo"
+          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/reservePalletOfTypeWithDestination"
           kwargs:
+            numPallets: 1
             contentPos1: -1
             contentPos2: -1
             contentPos3: -1
@@ -46,26 +47,31 @@ root:
             destination: ${destination}
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
+          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/getReservedPallet"
+          kwargs:
+            reservationId: ${reservationId}
+        - !!CallRemoteMethodNode
+          remote_id: "conveyor"
           method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/setPalletDestination"
           kwargs:
-            palletNumber: ${palletNumber}
+            palletNumber: ${pallet}
             destination: ${destination}
         - !!WaitRemoteEventNode
           remote_id: "conveyor"
           variable: "/Objects/ConveyorHMI/ConveyorDataExchange/Destinations/${destination_name}"
-          rhs: "${palletNumber}"
+          rhs: "${pallet}"
           operator: "=="
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
           method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/setPalletDestination"
           kwargs:
-            palletNumber: ${palletNumber}
+            palletNumber: ${pallet}
             destination: 0
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
           method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/releasePallet"
           kwargs:
-            palletNumber: ${palletNumber}
+            palletNumber: ${pallet}
     - !!CompositeMethodNode
       name: "ToQcAndBack"
       parameters:
@@ -81,8 +87,9 @@ root:
       cfg:
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
-          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/CallFreePalletOfTypeTo"
+          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/reservePalletOfTypeWithDestination"
           kwargs:
+            numPallets: 1
             contentPos1: -1
             contentPos2: -1
             contentPos3: -1
@@ -90,26 +97,31 @@ root:
             destination: ${destination}
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
+          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/getReservedPallet"
+          kwargs:
+            reservationId: ${reservationId}
+        - !!CallRemoteMethodNode
+          remote_id: "conveyor"
           method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/setPalletDestination"
           kwargs:
-            palletNumber: ${palletNumber}
+            palletNumber: ${pallet}
             destination: ${destination}
         - !!WaitRemoteEventNode
           remote_id: "conveyor"
           variable: "/Objects/ConveyorHMI/ConveyorDataExchange/Destinations/${destination_name}"
-          rhs: "${palletNumber}"
+          rhs: "${pallet}"
           operator: "=="
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
           method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/setPalletDestination"
           kwargs:
-            palletNumber: ${palletNumber}
+            palletNumber: ${pallet}
             destination: 0
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
           method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/releasePallet"
           kwargs:
-            palletNumber: ${palletNumber}
+            palletNumber: ${pallet}
     - !!CompositeMethodNode
       name: "ToRbtcAndBack"
       parameters:
@@ -125,8 +137,9 @@ root:
       cfg:
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
-          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/CallFreePalletOfTypeTo"
+          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/reservePalletOfTypeWithDestination"
           kwargs:
+            numPallets: 1
             contentPos1: -1
             contentPos2: -1
             contentPos3: -1
@@ -134,26 +147,31 @@ root:
             destination: ${destination}
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
+          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/getReservedPallet"
+          kwargs:
+            reservationId: ${reservationId}
+        - !!CallRemoteMethodNode
+          remote_id: "conveyor"
           method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/setPalletDestination"
           kwargs:
-            palletNumber: ${palletNumber}
+            palletNumber: ${pallet}
             destination: ${destination}
         - !!WaitRemoteEventNode
           remote_id: "conveyor"
           variable: "/Objects/ConveyorHMI/ConveyorDataExchange/Destinations/${destination_name}"
-          rhs: "${palletNumber}"
+          rhs: "${pallet}"
           operator: "=="
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
           method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/setPalletDestination"
           kwargs:
-            palletNumber: ${palletNumber}
+            palletNumber: ${pallet}
             destination: 0
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
           method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/releasePallet"
           kwargs:
-            palletNumber: ${palletNumber}
+            palletNumber: ${pallet}
     - !!CompositeMethodNode
       name: "ToMillAndBack"
       parameters:
@@ -169,8 +187,9 @@ root:
       cfg:
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
-          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/CallFreePalletOfTypeTo"
+          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/reservePalletOfTypeWithDestination"
           kwargs:
+            numPallets: 1
             contentPos1: -1
             contentPos2: -1
             contentPos3: -1
@@ -178,23 +197,28 @@ root:
             destination: ${destination}
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
+          method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/UtilityMethods/getReservedPallet"
+          kwargs:
+            reservationId: ${reservationId}
+        - !!CallRemoteMethodNode
+          remote_id: "conveyor"
           method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/setPalletDestination"
           kwargs:
-            palletNumber: ${palletNumber}
+            palletNumber: ${pallet}
             destination: ${destination}
         - !!WaitRemoteEventNode
           remote_id: "conveyor"
           variable: "/Objects/ConveyorHMI/ConveyorDataExchange/Destinations/${destination_name}"
-          rhs: "${palletNumber}"
+          rhs: "${pallet}"
           operator: "=="
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
           method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/setPalletDestination"
           kwargs:
-            palletNumber: ${palletNumber}
+            palletNumber: ${pallet}
             destination: 0
         - !!CallRemoteMethodNode
           remote_id: "conveyor"
           method: "/Objects/ConveyorHMI/ConveyorDataExchange/Commands/ConveyorCommandsPointer/releasePallet"
           kwargs:
-            palletNumber: ${palletNumber}
+            palletNumber: ${pallet}

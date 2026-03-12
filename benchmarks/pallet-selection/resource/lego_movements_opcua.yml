@@ -10,24 +10,13 @@ reactors:
     parameters:
       data_model_path: "resource/data-model/opcua_conveyor_full.yml"
       conveyor_graph: "resource/conveyor-graph.gml"
-      pallet_metric: "ID"
   scheduler:
     logging_level: ERROR
     parameters:
-      data_model_path: "resource/data-model/demo_lego_scheduler.yml"
+      data_model_path: "resource/data-model/lego_movements_scheduler.yml"
       scheduling_instance: "../../ice-frost/resources/schedules/simulation-lego-demo.json"
       task_mapping:
-        LD: /Scheduler/LD
         RBTC: /Scheduler/RBTC
         QC: /Scheduler/QC
         DISASSEMBLE: /Scheduler/DISASSEMBLE
-        RESERVE: /Scheduler/RESERVE
         PUT_BACK: /Scheduler/PUT_BACK
-  cell5:
-    logging_level: ERROR
-    parameters:
-      data_model_path: "resource/data-model/opcua_cell5.yml"
-  cell4:
-    logging_level: ERROR
-    parameters:
-      data_model_path: "resource/data-model/opcua_cell4.yml"

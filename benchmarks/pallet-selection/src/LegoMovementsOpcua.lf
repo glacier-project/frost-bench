@@ -1,0 +1,21 @@
+target Python{
+    // fast: false,
+}
+
+import OpcuaConveyor from "../../../ice-frost/src/OpcuaConveyor.lf";
+import Scheduler from "LegoScheduler.lf";
+import FrostBus from "../../../ice-frost/frost/src/lib/FrostBus.lf";
+
+preamble{=
+import uuid
+from frost import *
+=}
+
+main reactor {
+    conveyor = new OpcuaConveyor(name="conveyor", update_interval=10 ms)
+    scheduler = new Scheduler(name="scheduler")
+    bus = new FrostBus(name="frost_bus", width = 2)
+
+    conveyor.channel_out, scheduler.channel_out -> bus.channel_in after 0
+    bus.channel_out -> conveyor.channel_in, scheduler.channel_in after 0
+}
