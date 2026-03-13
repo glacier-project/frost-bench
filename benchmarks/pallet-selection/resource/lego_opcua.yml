@@ -10,7 +10,6 @@ reactors:
     parameters:
       data_model_path: "resource/data-model/opcua_conveyor_full.yml"
       conveyor_graph: "resource/conveyor-graph.gml"
-      max_task_spacing: 30
   scheduler:
     logging_level: ERROR
     parameters:
