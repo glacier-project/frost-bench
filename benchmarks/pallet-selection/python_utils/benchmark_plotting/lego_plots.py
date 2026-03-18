@@ -263,8 +263,14 @@ def plot_compare_durations(recipes_a: list[Recipe], recipes_b: list[Recipe], lab
     fig.tight_layout(rect=[0, 0, 1, 0.94])
 
 
-def plot_compare_tasks(recipes_a: list[Recipe], recipes_b: list[Recipe], label_a: str, label_b: str) -> None:
-    steps = [step for step in LEGO_RECIPE_STEPS if any(step in recipe for recipe in recipes_a) or any(step in recipe for recipe in recipes_b)]
+def plot_compare_tasks(
+    recipes_a: list[Recipe], recipes_b: list[Recipe], label_a: str, label_b: str, normalized: bool = False
+) -> None:
+    steps = [
+        step
+        for step in LEGO_RECIPE_STEPS
+        if any(step in recipe for recipe in recipes_a) or any(step in recipe for recipe in recipes_b)
+    ]
     ncols = 3
     nrows = (len(steps) + ncols - 1) // ncols
     fig, axes = plt.subplots(nrows, ncols, figsize=(14, max(5, 4.5 * nrows)))
@@ -277,7 +283,9 @@ def plot_compare_tasks(recipes_a: list[Recipe], recipes_b: list[Recipe], label_a
         dur_a = [value for recipe in recipes_a if (value := task_duration(recipe, step)) is not None]
         dur_b = [value for recipe in recipes_b if (value := task_duration(recipe, step)) is not None]
         tick_labels = []
-        for pos, (durations, label, color) in enumerate([(dur_a, label_a, PLOT_COLORS[0]), (dur_b, label_b, PLOT_COLORS[1])], start=1):
+        for pos, (durations, label, color) in enumerate(
+            [(dur_a, label_a, PLOT_COLORS[0]), (dur_b, label_b, PLOT_COLORS[1])], start=1
+        ):
             if not durations:
                 tick_labels.append(label)
                 continue
@@ -287,6 +295,10 @@ def plot_compare_tasks(recipes_a: list[Recipe], recipes_b: list[Recipe], label_a
         ax.set_ylabel("Duration (s)")
         ax.set_title(step, pad=10)
         ax.set_xlim(0.3, 2.7)
+        if normalized:
+            all_values = dur_a + dur_b
+            max_value = max(all_values) if all_values else 1
+            ax.set_ylim(0, max_value * 1.15)
 
     for index in range(len(steps), len(axes)):
         axes[index].set_visible(False)
@@ -319,3 +331,56 @@ def plot_compare_waiting_times(recipes_a: list[Recipe], recipes_b: list[Recipe],
 
     fig.suptitle(f"Waiting times between steps — {label_a} vs {label_b}")
     fig.tight_layout(rect=[0, 0, 1, 0.94])
+
+
+def plot_speedup_comparison(
+    id_recipes_sim: list[Recipe],
+    dist_recipes_sim: list[Recipe],
+    id_recipes_opcua: list[Recipe],
+    dist_recipes_opcua: list[Recipe],
+    topic_label: str,
+) -> None:
+    """Plots a bar chart comparing the speedup from ID to DISTANCE metric for sim and opcua."""
+    mean_duration_id_sim = np.mean([recipe_duration(r) for r in id_recipes_sim]) if id_recipes_sim else 0
+    mean_duration_dist_sim = np.mean([recipe_duration(r) for r in dist_recipes_sim]) if dist_recipes_sim else 0
+    speedup_sim = (
+        mean_duration_id_sim / mean_duration_dist_sim if mean_duration_dist_sim > 0 else 0
+    )
+
+    mean_duration_id_opcua = np.mean([recipe_duration(r) for r in id_recipes_opcua]) if id_recipes_opcua else 0
+    mean_duration_dist_opcua = (
+        np.mean([recipe_duration(r) for r in dist_recipes_opcua]) if dist_recipes_opcua else 0
+    )
+    speedup_opcua = (
+        mean_duration_id_opcua / mean_duration_dist_opcua if mean_duration_dist_opcua > 0 else 0
+    )
+
+    if not speedup_sim and not speedup_opcua:
+        print("Not enough data to plot speedup comparison.")
+        return
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+    setup_axes(ax)
+    variants = ["Simulation", "Real"]
+    speedups = [speedup_sim, speedup_opcua]
+    colors = [PLOT_COLORS[0], PLOT_COLORS[1]]
+
+    bars = ax.bar(variants, speedups, color=colors, width=0.5)
+    ax.set_ylabel("Speedup (ID duration / DISTANCE duration)")
+    ax.set_title(f"Speedup from ID to DISTANCE Metric for {topic_label}")
+    ax.axhline(1, color="grey", linestyle="--", linewidth=1)
+    ax.set_ylim(bottom=0, top=max(speedups) * 1.15 if speedups else 1.2)
+
+    for bar in bars:
+        height = bar.get_height()
+        ax.text(
+            bar.get_x() + bar.get_width() / 2.0,
+            height,
+            f"{height:.2f}x",
+            ha="center",
+            va="bottom",
+            fontsize=11,
+            fontweight="bold",
+        )
+
+    fig.tight_layout()

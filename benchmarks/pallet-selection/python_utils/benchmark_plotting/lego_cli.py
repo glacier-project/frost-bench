@@ -13,6 +13,7 @@ from .lego_data import (
     load_all_recipes,
     load_recipes_by_metric,
     print_recipe_stats,
+    normalize_recipes,
 )
 from .lego_plots import (
     plot_compare_durations,
@@ -24,8 +25,9 @@ from .lego_plots import (
     plot_recipe_timeline,
     plot_task_distributions,
     plot_waiting_times,
+    plot_speedup_comparison,
 )
-from .outliers import DEFAULT_PERCENTILE_RANGE
+from .outliers import DEFAULT_PERCENTILE_RANGE, filter_recipes_by_duration_percentile
 
 PLOT_TYPES = {"gaussian", "violin", "tasks", "waiting", "timeline"}
 
@@ -63,7 +65,7 @@ def plot_individual(recipes, label: str, color: str, selected_plots: set[str]) -
         plot_recipe_timeline(recipes, title=f"Lego Recipe Gantt — {label}")
 
 
-def plot_selected_comparisons(recipes_a, recipes_b, label_a: str, label_b: str, selected_plots: set[str]) -> None:
+def plot_selected_comparisons(recipes_a, recipes_b, label_a: str, label_b: str, selected_plots: set[str], normalized: bool = False) -> None:
     if "gaussian" in selected_plots:
         plot_compare_gaussians(recipes_a, recipes_b, label_a, label_b, DEFAULT_PERCENTILE_RANGE)
     if "violin" in selected_plots:
@@ -74,7 +76,7 @@ def plot_selected_comparisons(recipes_a, recipes_b, label_a: str, label_b: str, 
         plot_compare_waiting_times(recipes_a, recipes_b, label_a, label_b)
 
 
-def run_topic_mode(base_dir: str, filter_topic: str | None, metrics: list[str], selected_plots: set[str]) -> None:
+def run_topic_mode(base_dir: str, filter_topic: str | None, metrics: list[str], selected_plots: set[str], args: argparse.Namespace) -> None:
     data = aggregate_by_topic_metric(base_dir, metrics)
     if not data:
         print(f"No classifiable run directories found in {base_dir}")
@@ -87,9 +89,31 @@ def run_topic_mode(base_dir: str, filter_topic: str | None, metrics: list[str], 
         print(f"{'=' * 60}")
         topic_variants = data[topic]
 
+        if args.speedup:
+            id_recipes_sim = topic_variants.get("sim", {}).get("ID", [])
+            dist_recipes_sim = topic_variants.get("sim", {}).get("DISTANCE", [])
+            id_recipes_opcua = topic_variants.get("opcua", {}).get("ID", [])
+            dist_recipes_opcua = topic_variants.get("opcua", {}).get("DISTANCE", [])
+
+            if args.use_filter:
+                id_recipes_sim = filter_recipes_by_duration_percentile(id_recipes_sim)
+                dist_recipes_sim = filter_recipes_by_duration_percentile(dist_recipes_sim)
+                id_recipes_opcua = filter_recipes_by_duration_percentile(id_recipes_opcua)
+                dist_recipes_opcua = filter_recipes_by_duration_percentile(dist_recipes_opcua)
+
+            plot_speedup_comparison(
+                id_recipes_sim, dist_recipes_sim, id_recipes_opcua, dist_recipes_opcua, topic_label
+            )
+
+        # 1) Compare SIM vs OPC-UA for each metric (the original behaviour that the user wants to KEEP)
         for metric in metrics:
             sim_recipes = topic_variants.get("sim", {}).get(metric, [])
             opcua_recipes = topic_variants.get("opcua", {}).get(metric, [])
+
+            if args.use_filter:
+                sim_recipes = filter_recipes_by_duration_percentile(sim_recipes)
+                opcua_recipes = filter_recipes_by_duration_percentile(opcua_recipes)
+
             if not sim_recipes and not opcua_recipes:
                 continue
 
@@ -99,48 +123,55 @@ def run_topic_mode(base_dir: str, filter_topic: str | None, metrics: list[str], 
                 print_recipe_stats(sim_recipes, sim_label, include_outlier_evaluation="gaussian" in selected_plots)
                 plot_individual(sim_recipes, sim_label, PLOT_COLORS[0], selected_plots)
             if opcua_recipes:
-                opcua_label = f"{topic_label} [{metric}] [OPC-UA]"
+                opcua_label = f"{topic_label} [{metric}] [Real]"
                 print_recipe_stats(opcua_recipes, opcua_label, include_outlier_evaluation="gaussian" in selected_plots)
                 plot_individual(opcua_recipes, opcua_label, PLOT_COLORS[1], selected_plots)
 
             if "compare" in selected_plots and sim_recipes and opcua_recipes:
-                print(f"\nPlotting comparison: {topic_label} [{metric}] Simulation vs OPC-UA…")
+                print(f"\nPlotting comparison: {topic_label} [{metric}] Simulation vs Real…")
+
+                if args.normalized:
+                    sim_recipes, opcua_recipes = normalize_recipes(sim_recipes, opcua_recipes)
+
                 plot_selected_comparisons(
                     sim_recipes,
                     opcua_recipes,
                     f"{topic_label} [{metric}] [Simulation]",
-                    f"{topic_label} [{metric}] [OPC-UA]",
+                    f"{topic_label} [{metric}] [Real]",
                     selected_plots,
+                    normalized=args.normalized,
                 )
+                
+        # 2) Additional comparison: compare metrics (ID vs DISTANCE) for the same context (SIM or Real)
+        if "compare" in selected_plots and "ID" in metrics and "DISTANCE" in metrics:
+            for variant, variant_name in [("sim", "Simulation"), ("opcua", "Real")]:
+                id_recipes = topic_variants.get(variant, {}).get("ID", [])
+                dist_recipes = topic_variants.get(variant, {}).get("DISTANCE", [])
+
+                if args.use_filter:
+                    id_recipes = filter_recipes_by_duration_percentile(id_recipes)
+                    dist_recipes = filter_recipes_by_duration_percentile(dist_recipes)
+
+                if id_recipes and dist_recipes:
+                    print(f"\nPlotting metric comparison: {topic_label} [{variant_name}] ID vs DISTANCE…")
+
+                    if args.normalized:
+                        id_recipes, dist_recipes = normalize_recipes(id_recipes, dist_recipes)
+
+                    plot_selected_comparisons(
+                        id_recipes,
+                        dist_recipes,
+                        f"{topic_label} [{variant_name}] [ID]",
+                        f"{topic_label} [{variant_name}] [DISTANCE]",
+                        selected_plots,
+                        normalized=args.normalized,
+                    )
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Plot Lego recipe execution times from result JSON files.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog=textwrap.dedent(
-            """\
-            MODES
-            -----
-            Single directory:
-              python plot_lego.py -d results/lego/lego-sim-20260311_103354 --gaussian
-              python plot_lego.py -d results/lego/lego-sim-20260311_103354 --violin --tasks
-
-            Compare two directories:
-              python plot_lego.py -d results/lego/lego-sim-20260311 -c results/lego/lego-opcua-20260311 --gaussian --compare-plots
-
-            Base-dir mode — compare Simulation vs OPC-UA inside each topic and metric:
-              python plot_lego.py -b ../results/lego --gaussian --compare-plots
-              python plot_lego.py -b ../results/lego --topic full --gaussian --violin --compare-plots
-              python plot_lego.py -b ../results/lego -M ID DISTANCE --gaussian --compare-plots
-
-            NOTES
-            -----
-            - Base-dir mode does not compare 'full' against 'movements'.
-            - It compares sim vs opcua within each topic and metric.
-            - Gaussian plots use internal P1-P99 trimming and print an outlier evaluation summary.
-            """
-        ),
     )
     parser.add_argument("--directory", "-d", type=str, default="", help="Directory containing result JSON files.")
     parser.add_argument("--compare", "-c", type=str, default="", help="Second directory to compare against.")
@@ -153,13 +184,18 @@ def main() -> None:
     parser.add_argument("--waiting", action="store_true", help="Plot waiting times between recipe steps.")
     parser.add_argument("--timeline", action="store_true", help="Plot Gantt-style recipe timelines.")
     parser.add_argument("--compare-plots", action="store_true", help="Also plot sim-vs-opcua or dir-vs-dir comparisons for the selected plot types.")
+    parser.add_argument("--speedup", action="store_true", help="Show speedup comparison.")
+    parser.add_argument("--use-filter", action="store_true", default=True, help="Use percentiles filter.")
+    parser.add_argument("--no-filter", action="store_false", dest="use_filter", help="Disable percentiles filter.")
+    parser.add_argument("--normalized", action="store_true", help="Normalize tasks relative to opcua.")
+    
     args = parser.parse_args()
 
     selected_plots = selected_plot_modes(args, parser)
     metrics = [metric.upper() for metric in args.metric_compare]
 
     if args.base_dir:
-        run_topic_mode(args.base_dir, args.topic or None, metrics, selected_plots)
+        run_topic_mode(args.base_dir, args.topic or None, metrics, selected_plots, args)
         maybe_show()
         return
 
@@ -194,3 +230,6 @@ def main() -> None:
             )
 
     maybe_show()
+
+if __name__ == "__main__":
+    main()

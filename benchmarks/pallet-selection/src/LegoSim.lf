@@ -14,11 +14,11 @@ from frost import *
 =}
 
 main reactor {
-    conveyor = new CellConveyor(name="conveyor", update_interval=10 ms)
-    scheduler = new Scheduler(name="scheduler")
+    conveyor = new CellConveyor(name="conveyor", update_interval=50 ms)
+    scheduler = new Scheduler(name="scheduler", update_interval=50 ms)
     bus = new FrostBus(name="frost_bus", width = 4)
-    cell4 = new Cell4(name="cell4")
-    cell5 = new Cell5(name="cell5")
+    cell4 = new Cell4(name="cell4", update_interval=50 ms)
+    cell5 = new Cell5(name="cell5", update_interval=50 ms)
 
     conveyor.channel_out, scheduler.channel_out, cell4.channel_out, cell5.channel_out -> bus.channel_in after 0
     bus.channel_out -> conveyor.channel_in, scheduler.channel_in, cell4.channel_in, cell5.channel_in after 0

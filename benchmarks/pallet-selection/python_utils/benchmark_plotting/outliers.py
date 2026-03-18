@@ -1,10 +1,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 import numpy as np
 
-DEFAULT_PERCENTILE_RANGE = (1.0, 99.0)
+if TYPE_CHECKING:
+    from .lego_data import Recipe, recipe_duration
+
+DEFAULT_PERCENTILE_RANGE = (15.0, 85.0)
 
 
 @dataclass(frozen=True)
@@ -94,3 +98,24 @@ def evaluate_outlier_methods(values: list[float]) -> list[FilterEvaluation]:
         )
         for name, result in results
     ]
+
+
+def filter_recipes_by_duration_percentile(
+    recipes: list, percentile_range: tuple[float, float] = DEFAULT_PERCENTILE_RANGE
+) -> list:
+    """Filters a list of recipes based on the percentile range of their total duration."""
+    from .lego_data import recipe_duration
+
+    if not recipes:
+        return []
+    durations = [recipe_duration(r) for r in recipes]
+    if not durations:
+        return []
+    lower_bound, upper_bound = np.percentile(durations, [percentile_range[0], percentile_range[1]])
+    filtered_recipes = [r for r in recipes if lower_bound <= recipe_duration(r) <= upper_bound]
+    print(
+        f"  FILTER: Kept {len(filtered_recipes)} of {len(recipes)} recipes "
+        f"(duration P{percentile_range[0]}-P{percentile_range[1]}: "
+        f"[{lower_bound:.1f}s, {upper_bound:.1f}s])"
+    )
+    return filtered_recipes

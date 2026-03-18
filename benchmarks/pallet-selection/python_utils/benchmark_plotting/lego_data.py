@@ -15,7 +15,7 @@ TOPIC_LABELS = {
     "full": "Full Lego Recipe",
     "movements": "Lego Conveyor Movements",
 }
-VARIANT_LABELS = {"sim": "Simulation", "opcua": "OPC-UA"}
+VARIANT_LABELS = {"sim": "Simulation", "opcua": "Real"}
 DEFAULT_LEGO_METRICS = ["ID", "DISTANCE"]
 
 Recipe = dict[str, dict]
@@ -174,3 +174,68 @@ def print_recipe_stats(recipes: list[Recipe], label: str, include_outlier_evalua
                 f"    {evaluation.method:12s} keeps {evaluation.kept_count}/{len(durations)} "
                 f"(removed {evaluation.removed_count}) in [{evaluation.lower_bound:.1f}, {evaluation.upper_bound:.1f}]"
             )
+
+
+def normalize_recipes(
+    recipes_sim: list[Recipe], recipes_opcua: list[Recipe]
+) -> tuple[list[Recipe], list[Recipe]]:
+    """Normalizes task durations and total recipe time independently."""
+    if not recipes_opcua:
+        return recipes_sim, recipes_opcua
+
+    mean_recipe_duration_opcua = np.mean([recipe_duration(r) for r in recipes_opcua])
+    
+    mean_task_durations_opcua = {}
+    for step in LEGO_RECIPE_STEPS:
+        durations = [
+            task_duration(recipe, step)
+            for recipe in recipes_opcua
+            if task_duration(recipe, step) is not None
+        ]
+        if durations:
+            mean_task_durations_opcua[step] = np.mean(durations)
+
+    def normalize_single_recipe(recipe: Recipe) -> Recipe:
+        new_recipe = {}
+        
+        real_total_dur = recipe_duration(recipe)
+        norm_total_dur = real_total_dur / mean_recipe_duration_opcua if mean_recipe_duration_opcua > 0 else real_total_dur
+
+        norm_task_durations = {}
+        for task_name, entry in recipe.items():
+            mean_duration = mean_task_durations_opcua.get(task_name)
+            real_task_dur = entry["end_time"] - entry["start_time"]
+            if mean_duration and mean_duration > 0:
+                norm_task_durations[task_name] = real_task_dur / mean_duration
+            else:
+                norm_task_durations[task_name] = real_task_dur
+                
+        present_steps = [step for step in LEGO_RECIPE_STEPS if step in recipe]
+        
+        if len(present_steps) > 1 and LEGO_RECIPE_END in present_steps:
+            sum_norm_tasks = sum(norm_task_durations[s] for s in present_steps)
+            total_gap = norm_total_dur - sum_norm_tasks
+            gap_per_step = total_gap / (len(present_steps) - 1)
+        else:
+            gap_per_step = 0
+            
+        current_time = 0.0
+        for step in present_steps:
+            dur = norm_task_durations[step]
+            new_recipe[step] = {
+                "start_time": current_time,
+                "end_time": current_time + dur,
+            }
+            current_time += dur + gap_per_step
+            
+        for task_name, entry in recipe.items():
+            if task_name not in new_recipe:
+                dur = norm_task_durations[task_name]
+                new_recipe[task_name] = {
+                    "start_time": 0.0,
+                    "end_time": dur,
+                }
+        
+        return new_recipe
+
+    return [normalize_single_recipe(r) for r in recipes_sim], [normalize_single_recipe(r) for r in recipes_opcua]

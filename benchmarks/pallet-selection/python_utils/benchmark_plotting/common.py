@@ -51,12 +51,9 @@ def find_json_files(directory: str, anchor: Path = UTILS_DIR) -> list[str]:
     return [str(path) for path in resolve_input_path(directory, anchor).rglob("*.json")]
 
 
-def extract_metric_name(filepath: str, metrics: list[str] | None = None) -> str | None:
-    if metrics:
-        pattern = "|".join(re.escape(metric) for metric in metrics)
-        match = re.search(rf"_({pattern})_", Path(filepath).stem)
-        return match.group(1) if match else None
-    match = re.search(r"_([A-Z]+)_", Path(filepath).stem)
+def extract_metric_name(filepath: str, metrics: list[str]) -> str | None:
+    pattern = "|".join(re.escape(metric) for metric in metrics)
+    match = re.search(rf"_({pattern})_", Path(filepath).stem)
     return match.group(1) if match else None
 
 

@@ -13,7 +13,7 @@ from frost import *
 
 main reactor {
     conveyor = new OpcuaConveyor(name="conveyor", update_interval=10 ms)
-    scheduler = new Scheduler(name="scheduler")
+    scheduler = new Scheduler(name="scheduler", update_interval=10 ms)
     bus = new FrostBus(name="frost_bus", width = 2)
 
     conveyor.channel_out, scheduler.channel_out -> bus.channel_in after 0

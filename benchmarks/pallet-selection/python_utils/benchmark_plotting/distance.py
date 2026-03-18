@@ -23,7 +23,7 @@ def load_task_durations(filepath: str) -> dict[str, list[int]]:
     for tasks in data.get("mapping", {}).values():
         for entry in tasks:
             task_name = entry["task"]["name"]
-            if task_name not in EXCLUDED_TASKS:
+            if task_name not in EXCLUDED_TASKS and entry["end_time"] - entry["start_time"] < 150: 
                 task_durations[task_name].append(entry["end_time"] - entry["start_time"])
     return dict(task_durations)
 
@@ -59,10 +59,10 @@ def plot_violin(ax: plt.Axes, plot_data: list[tuple[list[int], str, str]], title
     ax.set_xlim(0.3, len(plot_data) + 0.7)
 
 
-def plot_distributions(files: list[str]) -> None:
+def plot_distributions(files: list[str], metrics_to_extract: list[str] = DEFAULT_METRICS) -> None:
     metric_durations: dict[str, dict[str, list[int]]] = defaultdict(lambda: defaultdict(list))
     for filepath in files:
-        metric = extract_metric_name(filepath)
+        metric = extract_metric_name(filepath, metrics_to_extract)
         if metric is None:
             continue
         for task, durations in load_task_durations(filepath).items():
@@ -92,9 +92,9 @@ def plot_distributions(files: list[str]) -> None:
     plt.tight_layout(rect=[0, 0, 1, 0.95])
 
 
-def plot_comparisons(dir1_files: list[str], dir2_files: list[str], dir1_label: str, dir2_label: str) -> None:
-    dir1_by_metric = {extract_metric_name(filepath): filepath for filepath in dir1_files}
-    dir2_by_metric = {extract_metric_name(filepath): filepath for filepath in dir2_files}
+def plot_comparisons(dir1_files: list[str], dir2_files: list[str], dir1_label: str, dir2_label: str, metrics_to_extract: list[str] = DEFAULT_METRICS) -> None:
+    dir1_by_metric = {extract_metric_name(filepath, metrics_to_extract): filepath for filepath in dir1_files}
+    dir2_by_metric = {extract_metric_name(filepath, metrics_to_extract): filepath for filepath in dir2_files}
     common_metrics = sorted(set(dir1_by_metric.keys()) & set(dir2_by_metric.keys()))
     if not common_metrics:
         print("No common metrics found between directories.")
@@ -194,7 +194,7 @@ def run_base_dir_mode(base_dir: str, metrics: list[str]) -> None:
 
     if grouped["sim"] and grouped["opcua"]:
         print("\nPlotting Simulation vs OPC-UA comparison…")
-        plot_comparisons(grouped["sim"], grouped["opcua"], "Simulation", "OPC-UA")
+        plot_comparisons(grouped["sim"], grouped["opcua"], "Simulation", "OPC-UA", metrics)
 
 
 def main() -> None:
@@ -233,7 +233,7 @@ def main() -> None:
     files = get_files_in_directory(args.directory, args.metrics)
     if args.compare:
         compare_files = get_files_in_directory(args.compare, args.metrics)
-        plot_comparisons(files, compare_files, Path(args.directory).name, Path(args.compare).name)
+        plot_comparisons(files, compare_files, Path(args.directory).name, Path(args.compare).name, args.metrics)
     else:
-        plot_distributions(files)
+        plot_distributions(files, args.metrics)
     maybe_show()
