@@ -134,7 +134,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=20
         self.logger.debug(f"Starting tasks: {start_tasks.value}")
 
         for task, machine in start_tasks.value:
-            machine = machine.name
+            machine = machine
             task_id = task.task.id
             task_name = task.task.name
             self.logger.info(f"Starting task {task_name} on machine {machine}")
