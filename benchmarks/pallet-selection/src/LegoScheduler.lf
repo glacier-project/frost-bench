@@ -49,12 +49,13 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=20
 
     state lego_jobs = _lego_jobs
     state min_task_spacing = 20
-    state max_task_spacing = 180
+    state max_task_spacing = 20
 
     logical action create_lego_job
 
     logical action start_tasks
     logical action update_schedule
+    timer update_chart(500 ms, 500 ms)
 
     reaction(startup) {=
         loaded = load_instance_from_json(self.scheduling_instance)
@@ -96,12 +97,55 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=20
         job = self._job_generator()
         self.logger.error(f"Creating lego job {job.id} (remaining: {self.lego_jobs}) at time {self._get_current_logical_time_sec()} sec")
         current_instance = self._executor.solver.instance
-        self._executor.solver = DummySolver(instance=SchedulingInstance(
+        self._executor.solver.update_instance(SchedulingInstance(
             jobs=current_instance.jobs + [job],
             machines=current_instance.machines,
             travel_times=current_instance.travel_times,
         ))
         update_schedule.schedule(0)
+    =}
+
+    method restore_actual_task_times() {=
+        '''
+        After the solver re-plans, completed/running tasks have their
+        start_time/end_time overwritten with planned values. Restore the
+        real recorded times so the plot shows what actually happened.
+        '''
+        schedule = self._executor.get_current_schedule()
+        for task in schedule.get_tasks():
+            task_id = task.task.id
+            if task_id in self.task_start:
+                task.start_time = self.task_start[task_id]
+            if task_id in self.task_end:
+                task.end_time = self.task_end[task_id]
+    =}
+
+    method refresh_running_task_end_times(logical_time) {=
+        '''
+        Active (IN_PROGRESS) locked tasks keep the planned end_time set when
+        they were first scheduled. If that planned end has already passed,
+        the solver still treats the machine as free at the stale time and
+        places successors there — leaving a fixed phantom gap in the plot
+        until the task actually completes.
+
+        Push end_time forward to "right now" so the planner sees the machine
+        as busy up to the current instant; successors then plan at now
+        instead of at the stale planned end.
+        '''
+        for st in self._executor.solver.locked_tasks.values():
+            if st.task.status != TaskStatus.IN_PROGRESS:
+                continue
+            if st.end_time < logical_time:
+                st.end_time = logical_time
+    =}
+
+    reaction(update_chart){=
+        logical_time = self._get_current_logical_time_sec()
+        self._executor.step(logical_time - self._executor.current_time)
+        self.refresh_running_task_end_times(logical_time)
+        self._executor.update_schedule(start_time=logical_time)
+        self.restore_actual_task_times()
+        self._executor.update_plot()
     =}
 
     // @label update_schedule
@@ -113,8 +157,10 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=20
         logical_time = self._get_current_logical_time_sec()
         self.logger.debug(f"Scheduling at logical time {logical_time} sec")
         executor.update_task_status()
-        schedule = executor.update_schedule(start_time=0)
-        executor.update_plot()
+        executor.step(logical_time - executor.current_time)
+        self.logger.error(f"logical time: {logical_time}")
+        schedule = executor.update_schedule(start_time=logical_time)
+        
 
         # get the tasks that can be started now
         next_tasks = executor.next_ready_tasks()
@@ -141,6 +187,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=20
 
             assert task_id not in self.task_start, f"Task '{task_id}' is already started."
             self.task_start[task_id] = self._get_current_logical_time_sec()
+            task.start_time = self._get_current_logical_time_sec()
             self._executor.task_started(task)
 
             # given the current task, retrieve the scope of its job
@@ -203,6 +250,8 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=20
             assert task_id in self.task_start, f"Task '{task_id}' was not started."
             assert task_id not in self.task_end, f"Task '{task_id}' was already completed."
             self.task_end[task_id] = self._get_current_logical_time_sec()
+            task.end_time = self._get_current_logical_time_sec()
+            task.task.processing_time = task.end_time - task.start_time
 
             # save return values in the job's scope
             returned_values = message.payload.ret

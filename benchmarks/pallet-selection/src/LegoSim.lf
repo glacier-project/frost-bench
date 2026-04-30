@@ -1,4 +1,5 @@
 target Python{
+    single-threaded:true,
     fast: true,
 }
 
