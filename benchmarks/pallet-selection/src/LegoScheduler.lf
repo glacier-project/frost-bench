@@ -64,7 +64,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=20
             machines=loaded.machines,
             travel_times=loaded.travel_times,
         )
-        self._executor = DynamicExecutor(DummySolver(instance=empty_instance))
+        self._executor = DynamicExecutor(DummySolver(instance=empty_instance), True)
         # Pick job generator based on whether LD is in the task mapping (full vs movements recipe)
         self._job_generator = gen_lego_job if "LD" in self.task_mapping else gen_lego_movements_job
     =}
@@ -114,6 +114,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=20
         self.logger.debug(f"Scheduling at logical time {logical_time} sec")
         executor.update_task_status()
         schedule = executor.update_schedule(start_time=0)
+        executor.update_plot()
 
         # get the tasks that can be started now
         next_tasks = executor.next_ready_tasks()
