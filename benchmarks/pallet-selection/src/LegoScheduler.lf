@@ -49,7 +49,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=20
 
     state lego_jobs = _lego_jobs
     state min_task_spacing = 20
-    state max_task_spacing = 20
+    state max_task_spacing = 40
 
     logical action create_lego_job
 

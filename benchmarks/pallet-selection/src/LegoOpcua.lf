@@ -1,5 +1,6 @@
 target Python{
     // fast: false,
+    single-threaded:true
 }
 
 import OpcuaConveyor from "../../../ice-frost/src/OpcuaConveyor.lf";
@@ -13,9 +14,10 @@ from frost import *
 =}
 
 main reactor {
+
+    bus = new FrostBus(name="frost_bus", width = 4)
     conveyor = new OpcuaConveyor(name="conveyor", update_interval= 10 msec)
     scheduler = new Scheduler(name="scheduler", update_interval= 10 msec)
-    bus = new FrostBus(name="frost_bus", width = 4)
     cell4 = new FrostMachine(name="cell4", update_interval = 10 msec)
     cell5 = new FrostMachine(name="cell5", update_interval = 10 msec)
 
