@@ -1,3 +1,5 @@
+"""Outlier-filtering helpers for duration arrays and recipe lists."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -6,9 +8,9 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
-    from .lego_data import Recipe, recipe_duration
+    from .lego import Recipe
 
-DEFAULT_PERCENTILE_RANGE = (15.0, 85.0)
+DEFAULT_PERCENTILE_RANGE: tuple[float, float] = (25.0, 75.0)
 
 
 @dataclass(frozen=True)
@@ -35,7 +37,6 @@ def trim_percentile_range(
 ) -> FilterResult:
     if not values:
         return FilterResult([], float("nan"), float("nan"), 0)
-
     if len(values) < 3:
         return FilterResult(list(values), min(values), max(values), 0)
 
@@ -101,21 +102,22 @@ def evaluate_outlier_methods(values: list[float]) -> list[FilterEvaluation]:
 
 
 def filter_recipes_by_duration_percentile(
-    recipes: list, percentile_range: tuple[float, float] = DEFAULT_PERCENTILE_RANGE
-) -> list:
-    """Filters a list of recipes based on the percentile range of their total duration."""
-    from .lego_data import recipe_duration
+    recipes: list[Recipe],
+    percentile_range: tuple[float, float] = DEFAULT_PERCENTILE_RANGE,
+    verbose: bool = True,
+) -> list[Recipe]:
+    """Drop recipes whose total duration falls outside ``percentile_range``."""
+    from .lego import recipe_duration
 
     if not recipes:
         return []
-    durations = [recipe_duration(r) for r in recipes]
-    if not durations:
-        return []
-    lower_bound, upper_bound = np.percentile(durations, [percentile_range[0], percentile_range[1]])
-    filtered_recipes = [r for r in recipes if lower_bound <= recipe_duration(r) <= upper_bound]
-    print(
-        f"  FILTER: Kept {len(filtered_recipes)} of {len(recipes)} recipes "
-        f"(duration P{percentile_range[0]}-P{percentile_range[1]}: "
-        f"[{lower_bound:.1f}s, {upper_bound:.1f}s])"
-    )
-    return filtered_recipes
+    durations = [recipe_duration(recipe) for recipe in recipes]
+    lower_bound, upper_bound = np.percentile(durations, list(percentile_range))
+    filtered = [recipe for recipe in recipes if lower_bound <= recipe_duration(recipe) <= upper_bound]
+    if verbose:
+        print(
+            f"  FILTER: Kept {len(filtered)} of {len(recipes)} recipes "
+            f"(duration P{percentile_range[0]}-P{percentile_range[1]}: "
+            f"[{lower_bound:.1f}s, {upper_bound:.1f}s])"
+        )
+    return filtered
