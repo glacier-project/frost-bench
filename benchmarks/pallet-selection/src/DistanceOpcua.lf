@@ -3,8 +3,8 @@ target Python{
 }
 
 import OpcuaConveyor from "../../../ice-frost/src/OpcuaConveyor.lf";
-import Scheduler from "Scheduler.lf";
-import FrostBus from "../../../ice-frost/frost/src/lib/FrostBus.lf";
+import Scheduler from "DistanceScheduler.lf";
+import FrostLink from "../../../ice-frost/frost/src/lib/FrostLink.lf";
 
 preamble{=
 import uuid
@@ -16,7 +16,7 @@ from frost import *
 main reactor{
     conveyor = new OpcuaConveyor(name="conveyor", update_interval=10 ms)
     scheduler = new Scheduler(name="scheduler", type="real", update_interval=10 ms)
-    bus = new FrostBus(name="frost_bus", width = 2)
+    bus = new FrostLink(name="frost_link", width = 2)
 
     conveyor.channel_out, scheduler.channel_out -> bus.channel_in after 0
     bus.channel_out -> conveyor.channel_in, scheduler.channel_in after 0

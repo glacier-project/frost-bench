@@ -5,7 +5,7 @@ target Python{
     ]
 }
 
-import FrostMachine from "../../../ice-frost/frost/src/lib/FrostMachine.lf";
+import FrostReactor from "../../../ice-frost/frost/src/lib/FrostReactor.lf";
 
 preamble{=
 import uuid
@@ -33,7 +33,7 @@ if INSTANCE is not None and INSTANCE != "":
 random.seed(42)
 =}
 
-reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1) extends FrostMachine {
+reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1) extends FrostReactor {
     state scheduling_instance = _scheduling_instance
     state scheduling_interval = _scheduling_interval # in seconds
     state _executor
@@ -80,8 +80,8 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1)
         ))
     =}
 
-    // @label connected_to_bus
-    reaction(connected_to_bus) -> update_schedule,create_wh_task,create_qc_task,create_rbtc_task,create_mill_task {=
+    // @label connected_to_link
+    reaction(connected_to_link) -> update_schedule,create_wh_task,create_qc_task,create_rbtc_task,create_mill_task {=
         self.logger.info("Connected to bus. Starting scheduling...")
         update_schedule.schedule(SEC(20))
         create_wh_task.schedule(self.get_task_spacing())
@@ -146,7 +146,7 @@ reactor FrostScheduler(_scheduling_instance="undefined", _scheduling_interval=1)
         self.logger.debug(f"Starting tasks: {start_tasks.value}")
 
         for task, machine in start_tasks.value:
-            machine = machine.name
+            machine = task.machine.name
             task_id = task.task.id
             task_name = task.task.name
             self.logger.info(f"Starting task {task_name} on machine {machine}")

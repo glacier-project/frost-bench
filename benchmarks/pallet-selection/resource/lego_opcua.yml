@@ -1,10 +1,10 @@
 time_precision: MSECS
 logging_level: ERROR
 reactors:
-  frost_bus:
+  frost_link:
     logging_level: ERROR
     parameters:
-      data_model_path: "resource/data-model/bus.yml"
+      data_model_path: "../../ice-frost/resources/data_model/frost_link.yml"
   conveyor:
     logging_level: ERROR
     parameters:

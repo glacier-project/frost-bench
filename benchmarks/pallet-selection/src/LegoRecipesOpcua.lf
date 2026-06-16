@@ -4,9 +4,9 @@ target Python{
 
 import OpcuaConveyor from "../../../ice-frost/src/OpcuaConveyor.lf";
 import Cell4 from "../../../ice-frost/src/Cell4.lf";
-import Scheduler from "Lego3Scheduler.lf";
-import FrostBus from "../../../ice-frost/frost/src/lib/FrostBus.lf";
-import FrostMachine from "../../../ice-frost/frost/src/lib/FrostMachine.lf";
+import Scheduler from "LegoRecipesScheduler.lf";
+import FrostLink from "../../../ice-frost/frost/src/lib/FrostLink.lf";
+import FrostReactor from "../../../ice-frost/frost/src/lib/FrostReactor.lf";
 
 preamble{=
 import uuid
@@ -16,9 +16,9 @@ from frost import *
 main reactor {
     conveyor = new OpcuaConveyor(name="conveyor", update_interval= 10 msec)
     scheduler = new Scheduler(name="scheduler", update_interval= 10 msec)
-    bus = new FrostBus(name="frost_bus", width = 4)
+    bus = new FrostLink(name="frost_link", width = 4)
     cell4 = new Cell4(name="cell4", update_interval=10 ms)
-    cell5 = new FrostMachine(name="cell5", update_interval = 10 msec)
+    cell5 = new FrostReactor(name="cell5", update_interval = 10 msec)
 
     conveyor.channel_out, scheduler.channel_out, cell4.channel_out, cell5.channel_out -> bus.channel_in after 0 msec
     bus.channel_out -> conveyor.channel_in, scheduler.channel_in, cell4.channel_in, cell5.channel_in after 0 msec

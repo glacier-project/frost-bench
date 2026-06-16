@@ -4,7 +4,7 @@ target Python{
 
 import CellConveyor from "../../../ice-frost/src/CellConveyor.lf";
 import Scheduler from "LegoScheduler.lf";
-import FrostBus from "../../../ice-frost/frost/src/lib/FrostBus.lf";
+import FrostLink from "../../../ice-frost/frost/src/lib/FrostLink.lf";
 
 preamble{=
 import uuid
@@ -14,7 +14,7 @@ from frost import *
 main reactor {
     conveyor = new CellConveyor(name="conveyor", update_interval=50 ms)
     scheduler = new Scheduler(name="scheduler", update_interval=50 ms)
-    bus = new FrostBus(name="frost_bus", width = 2)
+    bus = new FrostLink(name="frost_link", width = 2)
 
     conveyor.channel_out, scheduler.channel_out -> bus.channel_in after 0
     bus.channel_out -> conveyor.channel_in, scheduler.channel_in after 0
